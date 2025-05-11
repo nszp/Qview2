@@ -23,10 +23,14 @@ tasks:
   dev:
     command: 'pnpm dev'
     local: true
+    deps:
+      - 'frontend:install'
   build:
     command: 'pnpm build'
     inputs:
       - '@globs(sources)'
+    deps:
+      - 'frontend:install'
     outputs:
       - '@globs(output)'
   format:
@@ -34,8 +38,12 @@ tasks:
     inputs:
       - '@globs(sources)'
       - 'biome.json'
+    deps:
+      - 'frontend:install'
   lint:
     command: 'pnpm lint'
     inputs:
       - '@globs(sources)'
       - 'biome.json'
+    deps:
+      - 'frontend:install'
