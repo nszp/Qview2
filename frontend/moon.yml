@@ -1,0 +1,41 @@
+language: 'typescript'
+type: 'application'
+
+project:
+  name: 'frontend'
+  description: 'Stats viewing frontend'
+
+fileGroups:
+  sources:
+    - 'src/**/*'
+    - 'public/**/*'
+    - 'index.html'
+    - 'package.json'
+  output:
+    - 'dist/**/*'
+
+tasks:
+  install:
+    command: 'pnpm install'
+    inputs:
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+  dev:
+    command: 'pnpm dev'
+    local: true
+  build:
+    command: 'pnpm build'
+    inputs:
+      - '@globs(sources)'
+    outputs:
+      - '@globs(output)'
+  format:
+    command: 'pnpm format'
+    inputs:
+      - '@globs(sources)'
+      - 'biome.json'
+  lint:
+    command: 'pnpm lint'
+    inputs:
+      - '@globs(sources)'
+      - 'biome.json'

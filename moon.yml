@@ -1,0 +1,9 @@
+tasks:
+  lint:
+    deps:
+      - 'frontend:lint'
+      - 'backend:lint'
+  format:
+    deps:
+      - 'frontend:format'
+      - 'backend:format'
