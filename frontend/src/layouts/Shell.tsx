@@ -202,36 +202,148 @@
 //   );
 // };
 
-import { AppShell, Burger, Group, Skeleton } from "@mantine/core";
+import {
+  AppShell,
+  Burger,
+  Group,
+  Skeleton,
+  Text,
+  ActionIcon,
+  useComputedColorScheme,
+  useMantineColorScheme,
+  NavLink,
+} from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Outlet } from "react-router";
+import { Outlet, useLocation, useNavigate } from "react-router";
+import { useContext, useEffect } from "react";
+import { Moon, Sun } from "lucide-react";
+import { DataContext } from "@/context.ts";
+
+/*
+
+display: block;
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-md);
+  font-weight: 500;
+
+  @mixin hover {
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
+  }
+}
+ */
+
+// const NavbarButton = ({ children }: { children: React.ReactNode }) => (
+//   <UnstyledButton
+//     sx={(theme, u) => ({
+//       display: "block",
+//       padding: `${theme.spacing.xs} ${theme.spacing.md}`,
+//       borderRadius: theme.radius.md,
+//       fontWeight: 500,
+//       "&:hover": {
+//         [u.light]: {
+//           backgroundColor: theme.colors.gray[0],
+//         },
+//         [u.dark]: {
+//           backgroundColor: theme.colors.dark[6],
+//         },
+//       },
+//     })}
+//   >
+//     {children}
+//   </UnstyledButton>
+// );
 
 export const Shell = () => {
   const [opened, { toggle }] = useDisclosure();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (opened) {
+      toggle();
+    }
+  }, [location.pathname]);
+
+  const { setColorScheme } = useMantineColorScheme();
+
+  const colorScheme = useComputedColorScheme("light");
+
+  const toggleColorScheme = () => {
+    setColorScheme(colorScheme === "dark" ? "light" : "dark");
+  };
+
+  const data = useContext(DataContext);
 
   return (
     <AppShell
       header={{ height: { base: 60, md: 70, lg: 80 } }}
       navbar={{
-        width: { base: 200, md: 300, lg: 400 },
+        width: 300,
         breakpoint: "sm",
-        collapsed: { mobile: !opened },
+        collapsed: { desktop: true, mobile: !opened },
       }}
       padding="md"
     >
       <AppShell.Header>
         <Group h="100%" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+          <Group justify="space-between" sx={{ flex: 1 }}>
+            <Text
+              size="lg"
+              fw={500}
+              sx={{
+                marginTop: "-0.2rem",
+                userSelect: "none",
+                cursor: "pointer",
+              }}
+              onClick={() => navigate("/", { viewTransition: true })}
+            >
+              Q2025 Stats
+            </Text>
+            <Group gap={0}>
+              <ActionIcon
+                variant="transparent"
+                aria-label="Change color scheme"
+                c={colorScheme === "light" ? "black" : "white"}
+                onClick={toggleColorScheme}
+                p={2}
+              >
+                {colorScheme === "light" ? (
+                  <Sun size={24} />
+                ) : (
+                  <Moon size={24} />
+                )}
+              </ActionIcon>
+            </Group>
+          </Group>
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
-        Navbar
-        {Array(15)
-          .fill(0)
-          .map((_, index) => (
-            // biome-ignore lint/suspicious/noArrayIndexKey: temp
-            <Skeleton key={index} h={28} mt="sm" animate={false} />
-          ))}
+        {data.divisions.length === 0 ? (
+          <Skeleton height={40} mb="xs" />
+        ) : (
+          data.divisions.map((division) => (
+            <NavLink key={division.name} label={division.name} defaultOpened>
+              <NavLink
+                label="Individual Standings"
+                onClick={() =>
+                  navigate(
+                    `/individual/${division.name.toLowerCase().replace(/ /g, "_")}`,
+                  )
+                }
+              />
+              <NavLink
+                label="Team Standings"
+                onClick={() =>
+                  navigate(
+                    `/team/${division.name.toLowerCase().replace(/ /g, "_")}`,
+                  )
+                }
+              />
+            </NavLink>
+          ))
+        )}
       </AppShell.Navbar>
       <AppShell.Main>
         <Outlet />

@@ -33,6 +33,11 @@ tasks:
       - 'frontend:install'
     outputs:
       - '@globs(output)'
+  preview:
+    command: 'pnpm preview'
+    local: true
+    deps:
+      - 'frontend:build'
   format:
     command: 'pnpm format'
     inputs:
@@ -47,3 +52,13 @@ tasks:
       - 'biome.json'
     deps:
       - 'frontend:install'
+  login:
+    command: 'pnpm login'
+    local: true
+    deps:
+      - 'frontend:install'
+  deploy:
+    command: 'pnpm deploy-wrangler'
+    local: true
+    deps:
+      - 'frontend:build'

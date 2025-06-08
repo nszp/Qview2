@@ -2,7 +2,7 @@ node:
   version: '22.15.0'
   packageManager: 'pnpm'
   pnpm:
-    version: '10.10.0'
+    version: '10.11.1'
 
 
 rust:
