@@ -44,6 +44,9 @@ child.on("close", (code) => {
   // Write the updated content back to the index.html file
 
   const outputPath = process.argv[process.argv.length - 1];
+  if (!outputPath.endsWith(".html")) {
+    throw new Error("Output path must end with .html");
+  }
   fs.writeFileSync(outputPath, updatedContent, "utf8");
   // Log the success message
   console.log(
