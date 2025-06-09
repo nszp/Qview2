@@ -1,22 +1,22 @@
-import { DataContext } from "@/context";
-import { Flex, Text } from "@mantine/core";
-import { useContext } from "react";
 import { useNavigate, useParams } from "react-router";
+import { useContext } from "react";
+import { DataContext } from "@/context.ts";
+import { Flex, Text } from "@mantine/core";
 
 export function TeamStats() {
   const navigate = useNavigate();
-  const { divisionId } = useParams<{ divisionId: string }>();
+  const { teamName } = useParams<{ teamName: string }>();
 
   const data = useContext(DataContext);
 
-  const division = data.divisions.find(
-    (d) => d.name.toLowerCase().replace(/ /g, "_") === divisionId,
-  );
-
-  if (!division) {
-    navigate("/");
-    return null;
-  }
+  // const division = data.divisions.find(
+  //   (d) => d.name === divisionName,
+  // );
+  //
+  // if (!division) {
+  //   navigate("/");
+  //   return null;
+  // }
 
   return (
     <>
@@ -31,9 +31,9 @@ export function TeamStats() {
           },
         })}
       >
-        <Text size="xl">{division.name}</Text>
+        <Text size="xl">{teamName}</Text>
         <Text size="md" mb="md" c="gray">
-          Team Standings
+          Team Stats Across Divisions
         </Text>
       </Flex>
     </>

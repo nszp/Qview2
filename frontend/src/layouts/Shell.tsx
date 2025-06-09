@@ -329,7 +329,7 @@ export const Shell = () => {
                 label="Individual Standings"
                 onClick={() =>
                   navigate(
-                    `/individual/${division.name.toLowerCase().replace(/ /g, "_")}`,
+                    `/stats/division/${encodeURIComponent(division.name)}/individual`,
                   )
                 }
               />
@@ -337,7 +337,7 @@ export const Shell = () => {
                 label="Team Standings"
                 onClick={() =>
                   navigate(
-                    `/team/${division.name.toLowerCase().replace(/ /g, "_")}`,
+                    `/stats/division/${encodeURIComponent(division.name)}/team`,
                   )
                 }
               />

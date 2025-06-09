@@ -1,22 +1,22 @@
+import { useNavigate, useParams } from "react-router";
+import { useContext } from "react";
 import { DataContext } from "@/context.ts";
 import { Flex, Text } from "@mantine/core";
-import { useContext } from "react";
-import { useNavigate, useParams } from "react-router";
 
 export function IndividualStats() {
   const navigate = useNavigate();
-  const { divisionId } = useParams<{ divisionId: string }>();
+  const { individualName } = useParams<{ individualName: string }>();
 
   const data = useContext(DataContext);
 
-  const division = data.divisions.find(
-    (d) => d.name.toLowerCase().replace(/ /g, "_") === divisionId,
-  );
-
-  if (!division) {
-    navigate("/");
-    return null;
-  }
+  // const division = data.divisions.find(
+  //   (d) => d.name === divisionName,
+  // );
+  //
+  // if (!division) {
+  //   navigate("/");
+  //   return null;
+  // }
 
   return (
     <>
@@ -31,9 +31,9 @@ export function IndividualStats() {
           },
         })}
       >
-        <Text size="xl">{division.name}</Text>
+        <Text size="xl">{individualName}</Text>
         <Text size="md" mb="md" c="gray">
-          Individual Standings
+          Individual Stats Across Divisions
         </Text>
       </Flex>
     </>

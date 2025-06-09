@@ -26,10 +26,29 @@ if (root) {
               <Route element={<Layouts.Shell />}>
                 <Route path="/" element={<Pages.Home />} />
                 <Route
-                  path="/individual/:divisionId"
+                  path="/stats/division/:divisionName/individual"
+                  element={<Pages.DivisionIndividualStats />}
+                />
+                <Route
+                  path="/stats/division/:divisionName/team"
+                  element={<Pages.DivisionTeamStats />}
+                />
+                <Route
+                  path="/stats/individual/:individualName"
                   element={<Pages.IndividualStats />}
                 />
-                <Route path="/team/:divisionId" element={<Pages.TeamStats />} />
+                <Route
+                  path="/stats/team/:teamName"
+                  element={<Pages.TeamStats />}
+                />
+                <Route
+                  path="/schedules/division/:divisionName/:teamName"
+                  element={<Pages.DivisionTeamSchedule />}
+                />
+                <Route
+                  path="/schedules/room/:roomName"
+                  element={<Pages.RoomSchedule />}
+                />
               </Route>
             </Routes>
           </BrowserRouter>

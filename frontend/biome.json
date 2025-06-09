@@ -17,6 +17,9 @@
       "correctness": {
         "noEmptyPattern": {
           "level": "off"
+        },
+        "noUnusedVariables": {
+          "level": "warn"
         }
       },
       "style": {

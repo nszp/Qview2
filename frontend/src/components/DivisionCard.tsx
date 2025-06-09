@@ -39,13 +39,14 @@ export function DivisionCard({ division }: { division: DivisionData }) {
             radius="0"
             onClick={() =>
               navigate(
-                `/individual/${division.name.toLowerCase().replace(/ /g, "_")}`,
+                `/stats/division/${encodeURIComponent(division.name)}/individual`,
                 { viewTransition: true },
               )
             }
             sx={(theme, u) => ({
               borderBottomWidth: 0,
               borderLeftWidth: 0,
+              borderRightWidth: 0.5,
               color:
                 colorScheme === "light"
                   ? theme.colors.gray[9]
@@ -67,13 +68,14 @@ export function DivisionCard({ division }: { division: DivisionData }) {
             radius="0"
             onClick={() =>
               navigate(
-                `/team/${division.name.toLowerCase().replace(/ /g, "_")}`,
+                `/stats/division/${encodeURIComponent(division.name)}/team`,
                 { viewTransition: true },
               )
             }
             sx={(theme, u) => ({
               borderBottomWidth: 0,
               borderRightWidth: 0,
+              borderLeftWidth: 0.5,
               color:
                 colorScheme === "light"
                   ? theme.colors.gray[9]
