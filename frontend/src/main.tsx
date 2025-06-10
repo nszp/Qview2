@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 import { MantineProvider } from "@mantine/core";
 import { emotionTransform, MantineEmotionProvider } from "@mantine/emotion";
 import { theme } from "./theme";
@@ -49,6 +49,7 @@ if (root) {
                   path="/schedules/room/:roomName"
                   element={<Pages.RoomSchedule />}
                 />
+                <Route path="*" element={<Navigate to="/" replace />} />
               </Route>
             </Routes>
           </BrowserRouter>

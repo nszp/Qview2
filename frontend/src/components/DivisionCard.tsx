@@ -15,17 +15,22 @@ export function DivisionCard({ division }: { division: DivisionData }) {
   const colorScheme = useComputedColorScheme("light");
 
   return (
-    <Card withBorder shadow="sm" radius="md" padding="sm" key={division.name}>
+    <Card withBorder shadow="sm" radius="md" p="md" key={division.name}>
       <Card.Section inheritPadding pt="sm">
         <Flex justify="center" align="center">
-          <Text size="md" hiddenFrom="sm" mb="xs" sx={{ whiteSpace: "nowrap" }}>
+          <Text
+            size="md"
+            hiddenFrom="sm"
+            mb="xs"
+            sx={{ whiteSpace: "nowrap", letterSpacing: "-0.02em" }}
+          >
             {division.name}
           </Text>
           <Text
             size="lg"
             visibleFrom="sm"
             mb="xs"
-            sx={{ whiteSpace: "nowrap" }}
+            sx={{ whiteSpace: "nowrap", letterSpacing: "-0.04em" }}
           >
             {division.name}
           </Text>
@@ -47,12 +52,13 @@ export function DivisionCard({ division }: { division: DivisionData }) {
               borderBottomWidth: 0,
               borderLeftWidth: 0,
               borderRightWidth: 0.5,
+              fontWeight: 500,
               color:
                 colorScheme === "light"
                   ? theme.colors.gray[9]
                   : theme.colors.dark[0],
               [u.smallerThan("sm")]: {
-                fontSize: theme.fontSizes.xs,
+                fontSize: "13px",
               },
               [u.largerThan("sm")]: {
                 fontSize: theme.fontSizes.sm,
@@ -76,12 +82,13 @@ export function DivisionCard({ division }: { division: DivisionData }) {
               borderBottomWidth: 0,
               borderRightWidth: 0,
               borderLeftWidth: 0.5,
+              fontWeight: 500,
               color:
                 colorScheme === "light"
                   ? theme.colors.gray[9]
                   : theme.colors.dark[0],
               [u.smallerThan("sm")]: {
-                fontSize: theme.fontSizes.xs,
+                fontSize: "13px",
               },
               [u.largerThan("sm")]: {
                 fontSize: theme.fontSizes.sm,

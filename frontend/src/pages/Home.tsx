@@ -1,30 +1,36 @@
 import { DivisionCard } from "@/components/DivisionCard.tsx";
 import { DataContext } from "@/context.ts";
 import { Autocomplete, SimpleGrid } from "@mantine/core";
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 import { HomepageSection } from "@/components/HomepageSection.tsx";
 import { useNavigate } from "react-router";
+import { DivisionTeamList } from "@/components/DivisionTeamList.tsx";
 
 export function Home() {
   const navigate = useNavigate();
   const data = useContext(DataContext);
-  // const colorScheme = useComputedColorScheme("light");
 
-  const individualsList = [
-    ...new Set(
-      data.divisions.flatMap((division) => {
-        return division.individuals.map((individual) => individual.name);
-      }),
-    ),
-  ];
+  const individualsList = useMemo(
+    () => [
+      ...new Set(
+        data.divisions.flatMap((division) => {
+          return division.individuals.map((individual) => individual.name);
+        }),
+      ),
+    ],
+    [data.divisions],
+  );
 
-  const teamsList = [
-    ...new Set(
-      data.divisions.flatMap((division) => {
-        return division.teams.map((team) => team.name);
-      }),
-    ),
-  ];
+  const teamsList = useMemo(
+    () => [
+      ...new Set(
+        data.divisions.flatMap((division) => {
+          return division.teams.map((team) => team.name);
+        }),
+      ),
+    ],
+    [data.divisions],
+  );
 
   return (
     <>
@@ -32,9 +38,9 @@ export function Home() {
         <SimpleGrid
           cols={{
             base: 1,
-            xxs: Math.min(2, data.divisions.length),
-            md: Math.min(4, data.divisions.length),
-            lg: Math.min(6, data.divisions.length),
+            xs: Math.min(2, data.divisions.length),
+            lg: Math.min(4, data.divisions.length),
+            xl: Math.min(6, data.divisions.length),
           }}
           sx={{
             width: "100%",
@@ -93,7 +99,11 @@ export function Home() {
           />
         </SimpleGrid>
       </HomepageSection>
-      <HomepageSection name={"Team Schedules"}></HomepageSection>
+      <HomepageSection name={"Team Schedules"}>
+        {data.divisions.map((division) => (
+          <DivisionTeamList division={division} key={division.name} />
+        ))}
+      </HomepageSection>
     </>
   );
 }
