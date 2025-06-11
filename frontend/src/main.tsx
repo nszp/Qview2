@@ -49,6 +49,14 @@ if (root) {
                   path="/schedules/room/:roomName"
                   element={<Pages.RoomSchedule />}
                 />
+                <Route
+                  path="/streams/room/:roomName"
+                  element={<Pages.RoomStream />}
+                />
+                <Route
+                  path="/scoresheets/round/:roundNumber"
+                  element={<Pages.Scoresheet />}
+                />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Route>
             </Routes>

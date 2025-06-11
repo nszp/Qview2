@@ -2071,5 +2071,165 @@
     }
   ],
   "tournamentName": "District Invite #1",
+  "scoresheets": [
+    {
+      "tdrri": 2,
+      "division": "Experienced",
+      "room": "1",
+      "round": "1",
+      "teams": [
+        {
+          "name": "Red Team",
+          "quizzersWithCorrectQuestions": 0,
+          "overruledChallenges": 0,
+          "place": 3,
+          "quizzers": [
+            {
+              "name": "Red #1",
+              "questions": [],
+              "totalScore": 0,
+              "totalCorrect": 0,
+              "totalErrors": 0,
+              "totalFouls": 0
+            },
+            {
+              "name": "Red #2",
+              "questions": [],
+              "totalScore": 0,
+              "totalCorrect": 0,
+              "totalErrors": 0,
+              "totalFouls": 0
+            },
+            {
+              "name": "Red #3",
+              "questions": [],
+              "totalScore": 0,
+              "totalCorrect": 0,
+              "totalErrors": 0,
+              "totalFouls": 0
+            },
+            {
+              "name": "Red #4",
+              "questions": [],
+              "totalScore": 0,
+              "totalCorrect": 0,
+              "totalErrors": 0,
+              "totalFouls": 0
+            },
+            {
+              "name": "Red #5",
+              "questions": [],
+              "totalScore": 0,
+              "totalCorrect": 0,
+              "totalErrors": 0,
+              "totalFouls": 0
+            }
+          ],
+          "bonusOrPenaltyPoints": [],
+          "runningScore": []
+        },
+        {
+          "name": "Blue Team",
+          "quizzersWithCorrectQuestions": 1,
+          "overruledChallenges": 0,
+          "place": 2,
+          "quizzers": [
+            {
+              "name": "Blue #1",
+              "questions": [],
+              "totalScore": 20,
+              "totalCorrect": 1,
+              "totalErrors": 0,
+              "totalFouls": 0
+            },
+            {
+              "name": "Blue #2",
+              "questions": [],
+              "totalScore": 90,
+              "totalCorrect": 4,
+              "totalErrors": 0,
+              "totalFouls": 0
+            },
+            {
+              "name": "Blue #3",
+              "questions": [],
+              "totalScore": 40,
+              "totalCorrect": 2,
+              "totalErrors": 0,
+              "totalFouls": 0
+            },
+            {
+              "name": "Blue #4",
+              "questions": [],
+              "totalScore": 0,
+              "totalCorrect": 0,
+              "totalErrors": 0,
+              "totalFouls": 0
+            },
+            {
+              "name": "Blue #5",
+              "questions": [],
+              "totalScore": 0,
+              "totalCorrect": 0,
+              "totalErrors": 0,
+              "totalFouls": 0
+            }
+          ],
+          "bonusOrPenaltyPoints": [],
+          "runningScore": []
+        },
+        {
+          "name": "Green Team",
+          "quizzersWithCorrectQuestions": 1,
+          "overruledChallenges": 0,
+          "place": 2,
+          "quizzers": [
+            {
+              "name": "Green #1",
+              "questions": [],
+              "totalScore": 90,
+              "totalCorrect": 4,
+              "totalErrors": 0,
+              "totalFouls": 0
+            },
+            {
+              "name": "Green #2",
+              "questions": [],
+              "totalScore": 20,
+              "totalCorrect": 1,
+              "totalErrors": 0,
+              "totalFouls": 0
+            },
+            {
+              "name": "Green #3",
+              "questions": [],
+              "totalScore": 90,
+              "totalCorrect": 4,
+              "totalErrors": 0,
+              "totalFouls": 0
+            },
+            {
+              "name": "Green #4",
+              "questions": [],
+              "totalScore": 90,
+              "totalCorrect": 4,
+              "totalErrors": 0,
+              "totalFouls": 0
+            },
+            {
+              "name": "Green #5",
+              "questions": [],
+              "totalScore": 0,
+              "totalCorrect": 0,
+              "totalErrors": 0,
+              "totalFouls": 0
+            }
+          ],
+          "bonusOrPenaltyPoints": [],
+          "runningScore": []
+        }
+      ]
+    }
+  ],
   "updatedEveryMinutes": 1
 }

@@ -557,6 +557,35 @@
     "updatedEveryMinutes": 1
 }*/
 
+export type ScoresheetQuestion = "" | "-10" | "10" | "20" | "30" | "C";
+
+export interface ScoresheetQuizzer {
+  name: string;
+  questions: Array<ScoresheetQuestion>;
+  totalScore: number;
+  totalCorrect: number;
+  totalErrors: number;
+  totalFouls: number;
+}
+
+export interface ScoresheetTeam {
+  name: string;
+  quizzersWithCorrectQuestions: number;
+  overruledChallenges: number;
+  place: number;
+  quizzers: Array<ScoresheetQuizzer>;
+  bonusOrPenaltyPoints: Array<"" | "-10" | "10">;
+  runningScore: Array<string>;
+}
+
+export interface Scoresheet {
+  tdrri: string;
+  division: string;
+  room: string;
+  round: string;
+  teams: Array<ScoresheetTeam>;
+}
+
 export interface TickertapeRoomData {
   division: string;
   room: string;
@@ -569,7 +598,7 @@ export interface TickertapeRoomData {
   livestreamUrl?: string;
 }
 
-export interface IndivdualRoundData {
+export interface IndividualRoundData {
   errors: number;
   room: string;
   round: string;
@@ -589,7 +618,7 @@ export interface IndividualData {
   generals: number;
   memory: number;
   name: string;
-  quizzes: IndivdualRoundData[];
+  quizzes: IndividualRoundData[];
   rounds: number;
   score: number;
   special: number;
@@ -625,4 +654,5 @@ export interface TournamentData {
   tickertape: TickertapeRoomData[];
   tournamentName: string;
   updatedEveryMinutes: number;
+  scoresheets: Scoresheet[];
 }

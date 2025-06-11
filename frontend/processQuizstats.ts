@@ -1,6 +1,7 @@
 import quizstats from "./qstats.json";
-import type { TournamentData } from "./src/types/data";
+import type { ScoresheetQuestion, TournamentData } from "./src/types/data";
 import dayjs from "dayjs";
+import quizstats2 from "./realishData.json";
 import * as fsp from "node:fs/promises";
 
 const prettyDivisionNamesForQ: Record<string, string> = {
@@ -117,4 +118,31 @@ for (const division of tournamentData.divisions) {
   }
 }
 
-fsp.writeFile("./q2024.json", JSON.stringify(tournamentData, null, 2));
+// fsp.writeFile("./q2024.json", JSON.stringify(tournamentData, null, 2));
+
+// Red #1
+(
+  quizstats2 as unknown as TournamentData
+).scoresheets[0].teams[0].quizzers[0].questions =
+  (
+    quizstats2 as unknown as TournamentData
+  ).scoresheets[0].teams[0].bonusOrPenaltyPoints =
+  (
+    quizstats2 as unknown as TournamentData
+  ).scoresheets[0].teams[0].runningScore =
+    ["10"].concat(new Array(20).fill("")) as any[];
+
+// Red #2-5
+(
+  quizstats2 as unknown as TournamentData
+).scoresheets[0].teams[0].quizzers[1].questions =
+  (
+    quizstats2 as unknown as TournamentData
+  ).scoresheets[0].teams[0].quizzers[2].questions =
+  (
+    quizstats2 as unknown as TournamentData
+  ).scoresheets[0].teams[0].quizzers[3].questions =
+  (
+    quizstats2 as unknown as TournamentData
+  ).scoresheets[0].teams[0].quizzers[4].questions =
+    new Array(21).fill("") as ScoresheetQuestion[];
