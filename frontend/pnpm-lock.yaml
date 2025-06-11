@@ -107,6 +107,9 @@ importers:
       vite:
         specifier: ^6.3.5
         version: 6.3.5(sugarss@4.0.1(postcss@8.5.3))
+      vite-bundle-analyzer:
+        specifier: ^0.22.2
+        version: 0.22.2
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.8.3)(vite@6.3.5(sugarss@4.0.1(postcss@8.5.3)))
@@ -1780,6 +1783,10 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
+  vite-bundle-analyzer@0.22.2:
+    resolution: {integrity: sha512-LUw4YNHmo9A/A8bBNomX+jMTExiWTxrpdewb59E6BmqEgUSy3yziVjLX+ZsNwmr40iSm31R0yIJ4UwfWIUjO9g==}
+    hasBin: true
+
   vite-tsconfig-paths@5.1.4:
     resolution: {integrity: sha512-cYj0LRuLV2c2sMqhqhGpaO3LretdtMn/BVX4cPLanIZuwwrkVl+lK84E/miEXkCHWXuq65rhNN4rXsBcOB3S4w==}
     peerDependencies:
@@ -3417,6 +3424,8 @@ snapshots:
       react: 19.1.0
 
   util-deprecate@1.0.2: {}
+
+  vite-bundle-analyzer@0.22.2: {}
 
   vite-tsconfig-paths@5.1.4(typescript@5.8.3)(vite@6.3.5(sugarss@4.0.1(postcss@8.5.3))):
     dependencies:
