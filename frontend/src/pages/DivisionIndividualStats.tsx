@@ -1,18 +1,15 @@
-import { DataContext } from "@/context.ts";
 import { Flex, Text } from "@mantine/core";
-import { useContext, useEffect } from "react";
-import { Navigate, useNavigate, useParams } from "react-router";
+import { Navigate, useParams } from "react-router";
 import { useTournamentData } from "@/api.ts";
 
 export function DivisionIndividualStats() {
-  const navigate = useNavigate();
   const { divisionName } = useParams<{ divisionName: string }>();
 
-  const { isPending, error, data } = useTournamentData();
+  const { isLoading, error, data } = useTournamentData();
 
   const division = data?.divisions.find((d) => d.name === divisionName);
 
-  if (isPending) {
+  if (isLoading) {
     return <p>wait,,,,</p>;
   }
 

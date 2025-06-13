@@ -217,7 +217,6 @@ import { useDisclosure } from "@mantine/hooks";
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { useContext, useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
-import { DataContext } from "@/context.ts";
 
 /*
 
@@ -273,8 +272,6 @@ export const Shell = () => {
     setColorScheme(colorScheme === "dark" ? "light" : "dark");
   };
 
-  const data = useContext(DataContext);
-
   return (
     <AppShell
       header={{ height: { base: 60, md: 70, lg: 80 } }}
@@ -320,30 +317,30 @@ export const Shell = () => {
         </Group>
       </AppShell.Header>
       <AppShell.Navbar p="md">
-        {data.divisions.length === 0 ? (
-          <Skeleton height={40} mb="xs" />
-        ) : (
-          data.divisions.map((division) => (
-            <NavLink key={division.name} label={division.name} defaultOpened>
-              <NavLink
-                label="Individual Standings"
-                onClick={() =>
-                  navigate(
-                    `/stats/division/${encodeURIComponent(division.name)}/individual`,
-                  )
-                }
-              />
-              <NavLink
-                label="Team Standings"
-                onClick={() =>
-                  navigate(
-                    `/stats/division/${encodeURIComponent(division.name)}/team`,
-                  )
-                }
-              />
-            </NavLink>
-          ))
-        )}
+        {/*{data.divisions.length === 0 ? (*/}
+        {/*  <Skeleton height={40} mb="xs" />*/}
+        {/*) : (*/}
+        {/*  data.divisions.map((division) => (*/}
+        {/*    <NavLink key={division.name} label={division.name} defaultOpened>*/}
+        {/*      <NavLink*/}
+        {/*        label="Individual Standings"*/}
+        {/*        onClick={() =>*/}
+        {/*          navigate(*/}
+        {/*            `/stats/division/${encodeURIComponent(division.name)}/individual`,*/}
+        {/*          )*/}
+        {/*        }*/}
+        {/*      />*/}
+        {/*      <NavLink*/}
+        {/*        label="Team Standings"*/}
+        {/*        onClick={() =>*/}
+        {/*          navigate(*/}
+        {/*            `/stats/division/${encodeURIComponent(division.name)}/team`,*/}
+        {/*          )*/}
+        {/*        }*/}
+        {/*      />*/}
+        {/*    </NavLink>*/}
+        {/*  ))*/}
+        {/*)}*/}
       </AppShell.Navbar>
       <AppShell.Main>
         <Outlet />

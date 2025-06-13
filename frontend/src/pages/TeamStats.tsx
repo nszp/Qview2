@@ -1,13 +1,25 @@
-import { useNavigate, useParams } from "react-router";
-import { useContext } from "react";
-import { DataContext } from "@/context.ts";
+import { useParams } from "react-router";
 import { Flex, Text } from "@mantine/core";
+import { useTournamentData } from "@/api.ts";
 
 export function TeamStats() {
-  const navigate = useNavigate();
   const { teamName } = useParams<{ teamName: string }>();
 
-  const data = useContext(DataContext);
+  const { isPending, error, data } = useTournamentData();
+
+  // const division = data?.divisions.find((d) => d.name === divisionName);
+
+  if (isPending) {
+    return <p>wait,,,,</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error.toString()}</p>;
+  }
+
+  // if (!division) {
+  //   return <Navigate to="/" replace />;
+  // }
 
   // const division = data.divisions.find(
   //   (d) => d.name === divisionName,

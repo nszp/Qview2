@@ -1,7 +1,6 @@
 import { DivisionCard } from "@/components/DivisionCard.tsx";
-import { DataContext } from "@/context.ts";
 import { Autocomplete, SimpleGrid, Skeleton } from "@mantine/core";
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import { HomepageSection } from "@/components/HomepageSection.tsx";
 import { useNavigate } from "react-router";
 import { DivisionTeamList } from "@/components/DivisionTeamList.tsx";

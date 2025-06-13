@@ -76,6 +76,18 @@ export function convertScoresheetToQuestionSummaries(
     return previousValue;
   }, new Map());
 
+  const teamColors =
+    scoresheet.teams.length === 2
+      ? ["red", "limegreen"]
+      : ["red", "blue", "limegreen"];
+  const teamToTeamColor = scoresheet.teams.reduce(
+    (previousValue, currentTeam, teamIndex) => {
+      previousValue.set(currentTeam, teamColors[teamIndex]);
+      return previousValue;
+    },
+    new Map<ScoresheetTeam, string>(),
+  );
+
   for (let questionIndex = 0; questionIndex < 21; questionIndex++) {
     const questionNumber = questionIndex + 1;
     const additionalEvents: QuestionSummaryEvent[] = [];
@@ -86,7 +98,7 @@ export function convertScoresheetToQuestionSummaries(
       additionalEvents,
       runningScores: scoresheet.teams.map((t) => ({
         name: t.name,
-        color: t.color,
+        color: teamToTeamColor.get(t) ?? "black",
         runningScore: findMostRecentRunningScore(t.runningScore, questionIndex),
       })),
     };
@@ -103,12 +115,12 @@ export function convertScoresheetToQuestionSummaries(
           primaryQuizzer: quizzer.name,
           primaryTeam: {
             name: team.name,
-            color: team.color,
+            color: teamToTeamColor.get(team) ?? "black",
           },
           additionalEvents,
           runningScores: scoresheet.teams.map((t) => ({
             name: t.name,
-            color: t.color,
+            color: teamToTeamColor.get(t) ?? "black",
             runningScore: findMostRecentRunningScore(
               t.runningScore,
               questionIndex,
@@ -144,12 +156,12 @@ export function convertScoresheetToQuestionSummaries(
         primaryQuizzer: quizzer.name,
         primaryTeam: {
           name: team.name,
-          color: team.color,
+          color: teamToTeamColor.get(team) ?? "black",
         },
         additionalEvents,
         runningScores: scoresheet.teams.map((t) => ({
           name: t.name,
-          color: t.color,
+          color: teamToTeamColor.get(t) ?? "black",
           runningScore: findMostRecentRunningScore(
             t.runningScore,
             questionIndex,
@@ -171,7 +183,7 @@ export function convertScoresheetToQuestionSummaries(
           secondaryQuizzer: secondaryQuizzer.name,
           secondaryTeam: {
             name: secondaryTeam.name,
-            color: secondaryTeam.color,
+            color: teamToTeamColor.get(secondaryTeam) ?? "black",
           },
           correct: secondaryQuizzer.questions[questionIndex] === "B",
         });
@@ -190,7 +202,7 @@ export function convertScoresheetToQuestionSummaries(
               secondaryQuizzer: thirdQuizzer.name,
               secondaryTeam: {
                 name: thirdTeam.name,
-                color: thirdTeam.color,
+                color: teamToTeamColor.get(thirdTeam) ?? "black",
               },
               correct: thirdQuizzer.questions[questionIndex] === "B",
             });
@@ -204,13 +216,13 @@ export function convertScoresheetToQuestionSummaries(
         primaryQuizzer: quizzer.name,
         primaryTeam: {
           name: team.name,
-          color: team.color,
+          color: teamToTeamColor.get(team) ?? "black",
         },
         additionalEvents,
         bonuses,
         runningScores: scoresheet.teams.map((t) => ({
           name: t.name,
-          color: t.color,
+          color: teamToTeamColor.get(t) ?? "black",
           runningScore: findMostRecentRunningScore(
             t.runningScore,
             questionIndex,
