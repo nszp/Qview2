@@ -557,7 +557,17 @@
     "updatedEveryMinutes": 1
 }*/
 
-export type ScoresheetQuestion = "" | "-10" | "10" | "20" | "30" | "C";
+export type ScoresheetQuestion =
+  | ""
+  | "-10"
+  | "10"
+  | "20"
+  | "30"
+  | "C"
+  | "E"
+  | "B"
+  | "/";
+// / == missed bonus, C == 21st question tiebreaker
 
 export interface ScoresheetQuizzer {
   name: string;
@@ -583,6 +593,7 @@ export interface Scoresheet {
   division: string;
   room: string;
   round: string;
+  tournament: string; // TODO: check if matches in main tournament data
   teams: Array<ScoresheetTeam>;
 }
 
@@ -654,5 +665,4 @@ export interface TournamentData {
   tickertape: TickertapeRoomData[];
   tournamentName: string;
   updatedEveryMinutes: number;
-  scoresheets: Scoresheet[];
 }

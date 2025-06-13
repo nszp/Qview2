@@ -23,6 +23,7 @@
     "@mantine/form": "^8.0.0",
     "@mantine/hooks": "^8.0.0",
     "@mantine/tiptap": "^8.0.0",
+    "@tanstack/react-query": "^5.80.2",
     "@tiptap/extension-link": "^2.12.0",
     "@tiptap/pm": "^2.12.0",
     "@tiptap/react": "^2.12.0",
