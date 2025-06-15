@@ -1,9 +1,10 @@
 import { Paper, SimpleGrid, Text, useComputedColorScheme } from "@mantine/core";
 import type { StatGroupData } from "../types/data.ts";
-import { useNavigate } from "react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { createStyles } from "@mantine/emotion";
 import { largerThan, smallerThan } from "@/utils/styleUtils.ts";
+import { statGroupTeamScheduleRoute } from "@/routes.ts";
 
 const useStyles = createStyles((_theme, _, u) => ({
   teamListText: {
@@ -78,13 +79,17 @@ export function StatGroupTeamList({ statGroup }: { statGroup: StatGroupData }) {
             withBorder
             shadow="sm"
             radius="md"
-            p="sm"
+            py="sm"
             key={team.name}
             onClick={() => {
-              navigate(
-                `/schedules/division/${encodeURIComponent(statGroup.name)}/${encodeURIComponent(team.name)}`,
-                { viewTransition: true },
-              );
+              navigate({
+                to: statGroupTeamScheduleRoute.to,
+                params: {
+                  statGroupName: statGroup.name,
+                  teamName: team.name,
+                },
+                viewTransition: true,
+              });
             }}
             sx={(theme) => ({
               cursor: "pointer",

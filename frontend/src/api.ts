@@ -1,10 +1,10 @@
 import type { Scoresheet, TournamentData } from "@/types/data.ts";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { queryOptions, useQuery } from "@tanstack/react-query";
 
 const BASE_URL = "https://pub-6d08eec9bb2b41c1a12ec58fb2943b8d.r2.dev";
 const TOURNAMENT_DATA_URL = `${BASE_URL}/tournamentData.json`;
 
-function getScoresheetDataUrl(scoreSheetId: number): string {
+function getScoresheetDataUrl(scoreSheetId: string): string {
   return `${BASE_URL}/scoresheet${scoreSheetId}.json`;
 }
 
@@ -17,7 +17,7 @@ export async function getTournamentData(): Promise<TournamentData> {
 }
 
 export async function getScoresheetData(
-  scoreSheetId: number,
+  scoreSheetId: string,
 ): Promise<Scoresheet> {
   const url = getScoresheetDataUrl(scoreSheetId);
   const response = await fetch(url);
@@ -27,13 +27,17 @@ export async function getScoresheetData(
   return (await response.json()) as Promise<Scoresheet>;
 }
 
-export function useTournamentData() {
-  return useQuery({ queryKey: ["tournament"], queryFn: getTournamentData });
-}
+export const tournamentDataOptions = queryOptions({
+  queryKey: ["tournament"],
+  queryFn: getTournamentData,
+  refetchOnWindowFocus: false,
+  refetchOnReconnect: false,
+});
 
-export function useScoresheetData(scoreSheetId: number) {
-  return useQuery({
+export const scoresheetDataOptions = (scoreSheetId: string) =>
+  queryOptions({
     queryKey: ["scoresheet", scoreSheetId],
     queryFn: () => getScoresheetData(scoreSheetId),
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
   });
-}

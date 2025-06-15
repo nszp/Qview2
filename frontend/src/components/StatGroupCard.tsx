@@ -7,7 +7,11 @@ import {
   useComputedColorScheme,
 } from "@mantine/core";
 import type { StatGroupData } from "../types/data.ts";
-import { useNavigate } from "react-router";
+import { useNavigate } from "@tanstack/react-router";
+import {
+  statGroupIndividualStandingsRoute,
+  statGroupTeamStandingsRoute,
+} from "@/routes.ts";
 
 export function StatGroupCard({ statGroup }: { statGroup: StatGroupData }) {
   const navigate = useNavigate();
@@ -43,10 +47,11 @@ export function StatGroupCard({ statGroup }: { statGroup: StatGroupData }) {
             color="gray"
             radius="0"
             onClick={() =>
-              navigate(
-                `/stats/division/${encodeURIComponent(statGroup.name)}/individual`,
-                { viewTransition: true },
-              )
+              navigate({
+                to: statGroupIndividualStandingsRoute.to,
+                params: { statGroupName: statGroup.name },
+                viewTransition: true,
+              })
             }
             sx={(theme, u) => ({
               borderBottomWidth: 0,
@@ -73,10 +78,11 @@ export function StatGroupCard({ statGroup }: { statGroup: StatGroupData }) {
             color="gray"
             radius="0"
             onClick={() =>
-              navigate(
-                `/stats/division/${encodeURIComponent(statGroup.name)}/team`,
-                { viewTransition: true },
-              )
+              navigate({
+                to: statGroupTeamStandingsRoute.to,
+                params: { statGroupName: statGroup.name },
+                viewTransition: true,
+              })
             }
             sx={(theme, u) => ({
               borderBottomWidth: 0,
