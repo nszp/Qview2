@@ -42,7 +42,7 @@ const tournamentData: TournamentData = {
   lastUpdated: dayjs().valueOf().toString(),
   updatedEveryMinutes: 1,
   tickertape: [],
-  divisions: [...divisionNameMap.keys()].map((divisionName) => ({
+  statGroups: [...divisionNameMap.keys()].map((divisionName) => ({
     name: divisionName,
     webName: divisionName,
     individuals: [],
@@ -74,7 +74,7 @@ type OldQuizStatsTeamData = {
   avg_score: number;
 };
 
-for (const division of tournamentData.divisions) {
+for (const division of tournamentData.statGroups) {
   const divisionKey = divisionNameMap.get(
     division.name,
   ) as keyof typeof quizstats.individual;

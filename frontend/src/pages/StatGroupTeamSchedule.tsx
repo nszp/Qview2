@@ -1,3 +1,3 @@
-export function DivisionTeamSchedule() {
+export function StatGroupTeamSchedule() {
   return <p>Division team schedule</p>;
 }

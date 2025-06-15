@@ -32,12 +32,12 @@ if (root) {
                 <Route element={<Layouts.Shell />}>
                   <Route path="/" element={<Pages.Home />} />
                   <Route
-                    path="/stats/division/:divisionName/individual"
-                    element={<Pages.DivisionIndividualStats />}
+                    path="/stats/division/:statGroupName/individual"
+                    element={<Pages.StatGroupIndividualStats />}
                   />
                   <Route
-                    path="/stats/division/:divisionName/team"
-                    element={<Pages.DivisionTeamStats />}
+                    path="/stats/division/:statGroupName/team"
+                    element={<Pages.StatGroupTeamStats />}
                   />
                   <Route
                     path="/stats/individual/:individualName"
@@ -48,8 +48,8 @@ if (root) {
                     element={<Pages.TeamStats />}
                   />
                   <Route
-                    path="/schedules/division/:divisionName/:teamName"
-                    element={<Pages.DivisionTeamSchedule />}
+                    path="/schedules/division/:statGroupName/:teamName"
+                    element={<Pages.StatGroupTeamSchedule />}
                   />
                   <Route
                     path="/schedules/room/:roomName"

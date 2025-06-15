@@ -1,5 +1,5 @@
 import { Paper, SimpleGrid, Text, useComputedColorScheme } from "@mantine/core";
-import type { DivisionData } from "../types/data.ts";
+import type { StatGroupData } from "../types/data.ts";
 import { useNavigate } from "react-router";
 import { useMemo } from "react";
 import { createStyles } from "@mantine/emotion";
@@ -32,15 +32,15 @@ const useStyles = createStyles((_theme, _, u) => ({
  * xl: 8 columns and 14px font size
  * */
 
-export function DivisionTeamList({ division }: { division: DivisionData }) {
+export function StatGroupTeamList({ statGroup }: { statGroup: StatGroupData }) {
   const navigate = useNavigate();
 
   const colorScheme = useComputedColorScheme("light");
   const { classes } = useStyles();
 
   const sortedTeams = useMemo(() => {
-    return [...division.teams].sort((a, b) => a.name.localeCompare(b.name));
-  }, [division.teams]);
+    return [...statGroup.teams].sort((a, b) => a.name.localeCompare(b.name));
+  }, [statGroup.teams]);
 
   return (
     <>
@@ -60,16 +60,16 @@ export function DivisionTeamList({ division }: { division: DivisionData }) {
               : theme.colors.dark[4],
         })}
       >
-        {division.name}
+        {statGroup.name}
       </Text>
       <SimpleGrid
         mb="md"
         cols={{
           base: 1,
-          xxs: Math.min(2, division.teams.length),
-          md: Math.min(4, division.teams.length),
-          lg: Math.min(6, division.teams.length),
-          xl: Math.min(8, division.teams.length),
+          xxs: Math.min(2, statGroup.teams.length),
+          md: Math.min(4, statGroup.teams.length),
+          lg: Math.min(6, statGroup.teams.length),
+          xl: Math.min(8, statGroup.teams.length),
         }}
         w="100%"
       >
@@ -82,7 +82,7 @@ export function DivisionTeamList({ division }: { division: DivisionData }) {
             key={team.name}
             onClick={() => {
               navigate(
-                `/schedules/division/${encodeURIComponent(division.name)}/${encodeURIComponent(team.name)}`,
+                `/schedules/division/${encodeURIComponent(statGroup.name)}/${encodeURIComponent(team.name)}`,
                 { viewTransition: true },
               );
             }}

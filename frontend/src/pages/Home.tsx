@@ -1,9 +1,9 @@
-import { DivisionCard } from "@/components/DivisionCard.tsx";
+import { StatGroupCard } from "@/components/StatGroupCard.tsx";
 import { Autocomplete, SimpleGrid, Skeleton } from "@mantine/core";
 import { useMemo } from "react";
 import { HomepageSection } from "@/components/HomepageSection.tsx";
 import { useNavigate } from "react-router";
-import { DivisionTeamList } from "@/components/DivisionTeamList.tsx";
+import { StatGroupTeamList } from "@/components/StatGroupTeamList.tsx";
 import { useTournamentData } from "@/api.ts";
 
 export function Home() {
@@ -14,23 +14,23 @@ export function Home() {
   const individualsList = useMemo(
     () => [
       ...new Set(
-        data?.divisions.flatMap((division) => {
-          return division.individuals.map((individual) => individual.name);
+        data?.statGroups.flatMap((statGroup) => {
+          return statGroup.individuals.map((individual) => individual.name);
         }),
       ),
     ],
-    [data?.divisions],
+    [data?.statGroups],
   );
 
   const teamsList = useMemo(
     () => [
       ...new Set(
-        data?.divisions.flatMap((division) => {
-          return division.teams.map((team) => team.name);
+        data?.statGroups.flatMap((statGroup) => {
+          return statGroup.teams.map((team) => team.name);
         }),
       ),
     ],
-    [data?.divisions],
+    [data?.statGroups],
   );
 
   if (error) {
@@ -43,9 +43,9 @@ export function Home() {
         <SimpleGrid
           cols={{
             base: 1,
-            xs: data ? Math.min(2, data.divisions.length) : 2,
-            lg: data ? Math.min(4, data.divisions.length) : 4,
-            xl: data ? Math.min(6, data.divisions.length) : 6,
+            xs: data ? Math.min(2, data.statGroups.length) : 2,
+            lg: data ? Math.min(4, data.statGroups.length) : 4,
+            xl: data ? Math.min(6, data.statGroups.length) : 6,
           }}
           sx={{
             width: "100%",
@@ -53,13 +53,13 @@ export function Home() {
           spacing="sm"
           verticalSpacing="md"
         >
-          {data?.divisions.map((division) => (
-            <DivisionCard division={division} key={division.name} />
+          {data?.statGroups.map((division) => (
+            <StatGroupCard statGroup={division} key={division.name} />
           )) ??
             new Array(24).fill(undefined).map((_, index) => (
               <Skeleton radius="md" key={Number(index)}>
-                <DivisionCard
-                  division={{
+                <StatGroupCard
+                  statGroup={{
                     name: "Loading...", // placeholder so that the skeleton has the same height as a standard card
                     webName: "Loading...",
                     individuals: [],
@@ -121,8 +121,8 @@ export function Home() {
         </SimpleGrid>
       </HomepageSection>
       <HomepageSection name={"Team Schedules"}>
-        {data?.divisions.map((division) => (
-          <DivisionTeamList division={division} key={division.name} />
+        {data?.statGroups.map((statGroup) => (
+          <StatGroupTeamList statGroup={statGroup} key={statGroup.name} />
         )) ?? <Skeleton height={256} radius="md" mb="md" w="100%" />}
       </HomepageSection>
     </>

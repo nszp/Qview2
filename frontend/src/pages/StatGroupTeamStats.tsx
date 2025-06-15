@@ -2,14 +2,14 @@ import { Flex, Text } from "@mantine/core";
 import { Navigate, useParams } from "react-router";
 import { useTournamentData } from "@/api.ts";
 
-export function DivisionIndividualStats() {
-  const { divisionName } = useParams<{ divisionName: string }>();
+export function StatGroupTeamStats() {
+  const { statGroupName } = useParams<{ statGroupName: string }>();
 
-  const { isLoading, error, data } = useTournamentData();
+  const { isPending, error, data } = useTournamentData();
 
-  const division = data?.divisions.find((d) => d.name === divisionName);
+  const statGroup = data?.statGroups.find((s) => s.name === statGroupName);
 
-  if (isLoading) {
+  if (isPending) {
     return <p>wait,,,,</p>;
   }
 
@@ -17,7 +17,7 @@ export function DivisionIndividualStats() {
     return <p>Error: {error.toString()}</p>;
   }
 
-  if (!division) {
+  if (!statGroup) {
     return <Navigate to="/" replace />;
   }
 
@@ -34,9 +34,9 @@ export function DivisionIndividualStats() {
           },
         })}
       >
-        <Text size="xl">{division.name}</Text>
+        <Text size="xl">{statGroup.name}</Text>
         <Text size="md" mb="md" c="gray">
-          Individual Standings
+          Team Standings
         </Text>
       </Flex>
     </>

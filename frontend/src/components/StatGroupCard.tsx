@@ -6,16 +6,16 @@ import {
   Text,
   useComputedColorScheme,
 } from "@mantine/core";
-import type { DivisionData } from "../types/data.ts";
+import type { StatGroupData } from "../types/data.ts";
 import { useNavigate } from "react-router";
 
-export function DivisionCard({ division }: { division: DivisionData }) {
+export function StatGroupCard({ statGroup }: { statGroup: StatGroupData }) {
   const navigate = useNavigate();
 
   const colorScheme = useComputedColorScheme("light");
 
   return (
-    <Card withBorder shadow="sm" radius="md" p="md" key={division.name}>
+    <Card withBorder shadow="sm" radius="md" p="md" key={statGroup.name}>
       <Card.Section inheritPadding pt="sm">
         <Flex justify="center" align="center">
           <Text
@@ -24,7 +24,7 @@ export function DivisionCard({ division }: { division: DivisionData }) {
             mb="xs"
             sx={{ whiteSpace: "nowrap", letterSpacing: "-0.02em" }}
           >
-            {division.name}
+            {statGroup.name}
           </Text>
           <Text
             size="lg"
@@ -32,7 +32,7 @@ export function DivisionCard({ division }: { division: DivisionData }) {
             mb="xs"
             sx={{ whiteSpace: "nowrap", letterSpacing: "-0.04em" }}
           >
-            {division.name}
+            {statGroup.name}
           </Text>
         </Flex>
       </Card.Section>
@@ -44,7 +44,7 @@ export function DivisionCard({ division }: { division: DivisionData }) {
             radius="0"
             onClick={() =>
               navigate(
-                `/stats/division/${encodeURIComponent(division.name)}/individual`,
+                `/stats/division/${encodeURIComponent(statGroup.name)}/individual`,
                 { viewTransition: true },
               )
             }
@@ -74,7 +74,7 @@ export function DivisionCard({ division }: { division: DivisionData }) {
             radius="0"
             onClick={() =>
               navigate(
-                `/stats/division/${encodeURIComponent(division.name)}/team`,
+                `/stats/division/${encodeURIComponent(statGroup.name)}/team`,
                 { viewTransition: true },
               )
             }
