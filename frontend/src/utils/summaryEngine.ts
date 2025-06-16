@@ -13,20 +13,20 @@ export type QuestionSummaryEvent =
     }
   | {
       type: "perfectQuizout"; // +10 points (done)
-      quizzer: string;
     }
   | {
-      type: "errorOut"; // -10 points, 3rd error by individual
+      type: "errorOut"; // -10 points, 3rd error by individual (done)
     }
   | {
-      type: "fifthError"; // -10 points, 5th error by team and every error after
+      type: "fifthError"; // -10 points, 5th error by team and every error after (done)
     }
   | {
       type: "errorAfterSixteen"; // -10 points, on or after the 16th question (done)
     }
   | {
-      type: "secondFoul"; // -10 points, if penalty points match to nothing else AND check total fouls of team is >= 2
+      type: "secondFoulOrOverruledChallenge"; // -10 points, if penalty points match to nothing else AND check total fouls of team is >= 2
       // multiple fouls can occur in one question, making the penalty points == foulsInQuestion * -10
+      // could also be an overruled challenge
       team: ScoresheetTeam; // (done)
     };
 
@@ -39,7 +39,7 @@ export const eventTypeToPointDifference: Record<
   errorOut: -10,
   fifthError: -10,
   errorAfterSixteen: -10,
-  secondFoul: -10,
+  secondFoulOrOverruledChallenge: -10,
 };
 
 export type QuestionSummary = {
@@ -179,7 +179,6 @@ export function convertScoresheetToQuestionSummaries(
         // quizout
         additionalEvents.push({
           type: "perfectQuizout",
-          quizzer: quizzer.name,
         });
         addBonusPenaltyPoints(team, 10);
       }
@@ -208,12 +207,42 @@ export function convertScoresheetToQuestionSummaries(
       if (error) {
         const [team, quizzer] = error;
 
-        if (questionIndex >= 16) {
+        if (questionNumber >= 16) {
           // add error after sixteen
           additionalEvents.push({
             type: "errorAfterSixteen",
           });
           addBonusPenaltyPoints(team, -10);
+        }
+
+        const errorsByEachQuizzer = team.quizzers.reduce(
+          (previousValue, currentQuizzer) => {
+            const questionsPriorToCurrent = currentQuizzer.questions.slice(
+              0,
+              questionIndex,
+            );
+            previousValue.set(
+              currentQuizzer,
+              questionsPriorToCurrent.filter((q) => q === "E").length,
+            );
+            return previousValue;
+          },
+          new Map<ScoresheetQuizzer, number>(),
+        );
+
+        const errorsByTeam = [...errorsByEachQuizzer.values()].reduce(
+          (previousValue, currentValue) => previousValue + currentValue,
+          0,
+        );
+
+        if (quizzer.questions[questionIndex] === "-10") {
+          additionalEvents.push({
+            type: "errorOut",
+          });
+        } else if (errorsByTeam >= 4) {
+          additionalEvents.push({
+            type: "fifthError",
+          });
         }
 
         const bonuses = [];
@@ -280,13 +309,14 @@ export function convertScoresheetToQuestionSummaries(
     // detect all additional events not already done above
 
     // if the team bonus/penalty doesn't match what's expected AND >= 2 team fouls, assume second foul happened
+    // or an overruled challenge could've happened
     for (const [team, expectedPoints] of expectedBonusPenaltyPoints) {
       const teamFoulCount = team.quizzers.reduce(
         (previousValue, currentQuizzer) =>
           previousValue + currentQuizzer.totalFouls,
         0,
       );
-      if (teamFoulCount >= 2) {
+      if (teamFoulCount >= 2 || team.overruledChallenges >= 2) {
         let actualBonusPenaltyPoints = Number.parseInt(
           team.bonusOrPenaltyPoints[questionIndex],
         );
@@ -304,7 +334,7 @@ export function convertScoresheetToQuestionSummaries(
             const foulsInQuestion = Math.abs(difference) / 10;
             for (let i = 0; i < foulsInQuestion; i++) {
               additionalEvents.push({
-                type: "secondFoul",
+                type: "secondFoulOrOverruledChallenge",
                 team,
               });
             }
