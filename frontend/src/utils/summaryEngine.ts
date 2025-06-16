@@ -8,24 +8,26 @@ export type QuestionSummaryTeam = { name: string; color: string };
 
 export type QuestionSummaryEvent =
   | {
-      type: "bonus"; // +10 points
+      type: "bonus"; // +10 points (done)
       bonusNumber: 3 | 4 | 5;
     }
   | {
-      type: "perfectQuizout"; // +10 points
+      type: "perfectQuizout"; // +10 points (done)
       quizzer: string;
     }
   | {
-      type: "errorOut"; // -10 points
+      type: "errorOut"; // -10 points, 3rd error by individual
     }
   | {
-      type: "fifthError"; // -10 points
+      type: "fifthError"; // -10 points, 5th error by team and every error after
     }
   | {
-      type: "errorAfterSixteen"; // -10 points, on or after 16th question
+      type: "errorAfterSixteen"; // -10 points, on or after the 16th question (done)
     }
   | {
-      type: "secondFoul"; // -10 points, if penalty points match to nothing else AND check total fouls of team
+      type: "secondFoul"; // -10 points, if penalty points match to nothing else AND check total fouls of team is >= 2
+      // multiple fouls can occur in one question, making the penalty points == foulsInQuestion * -10
+      team: ScoresheetTeam; // (done)
     };
 
 export const eventTypeToPointDifference: Record<
@@ -91,6 +93,18 @@ export function convertScoresheetToQuestionSummaries(
   for (let questionIndex = 0; questionIndex < 21; questionIndex++) {
     const questionNumber = questionIndex + 1;
     const additionalEvents: QuestionSummaryEvent[] = [];
+    const expectedBonusPenaltyPoints = scoresheet.teams.reduce(
+      (previousValue, currentTeam) => {
+        previousValue.set(currentTeam, 0);
+        return previousValue;
+      },
+      new Map<ScoresheetTeam, number>(),
+    );
+
+    function addBonusPenaltyPoints(team: ScoresheetTeam, bonus: number) {
+      const previousBonus = expectedBonusPenaltyPoints.get(team) ?? 0;
+      expectedBonusPenaltyPoints.set(team, previousBonus + bonus);
+    }
 
     questionSummaries[questionIndex] = {
       type: "nojump",
@@ -110,7 +124,8 @@ export function convertScoresheetToQuestionSummaries(
         const [team, quizzer] = tiebreaker;
         questionSummaries[questionIndex] = {
           questionNumber,
-          type: quizzer.questions[questionIndex] === "C" ? "correct" : "incorrect",
+          type:
+            quizzer.questions[questionIndex] === "C" ? "correct" : "incorrect",
           bonuses: [], // empty for tiebreaker
           primaryQuizzer: quizzer.name,
           primaryTeam: {
@@ -140,7 +155,25 @@ export function convertScoresheetToQuestionSummaries(
     );
     if (tossupCorrect) {
       const [team, quizzer] = tossupCorrect;
+
+      const questionsAnsweredBeforeAddingQuizzer =
+        quizzersAnsweredTeamCount.get(team)?.size ?? 0;
       quizzersAnsweredTeamCount.get(team)?.add(quizzer);
+      const questionsAnsweredAfterAddingQuizzer =
+        quizzersAnsweredTeamCount.get(team)?.size ?? 0;
+
+      if (
+        questionsAnsweredBeforeAddingQuizzer ===
+          questionsAnsweredAfterAddingQuizzer - 1 &&
+        questionsAnsweredAfterAddingQuizzer >= 3
+      ) {
+        // 3rd, 4th, or 5th team member answered
+        additionalEvents.push({
+          type: "bonus",
+          bonusNumber: questionsAnsweredAfterAddingQuizzer as 3 | 4 | 5,
+        });
+        addBonusPenaltyPoints(team, 10);
+      }
 
       if (quizzer.questions[questionIndex] === "30") {
         // quizout
@@ -148,6 +181,7 @@ export function convertScoresheetToQuestionSummaries(
           type: "perfectQuizout",
           quizzer: quizzer.name,
         });
+        addBonusPenaltyPoints(team, 10);
       }
 
       questionSummaries[questionIndex] = {
@@ -168,68 +202,115 @@ export function convertScoresheetToQuestionSummaries(
           ),
         })),
       };
-      continue;
-    }
-    // check for error
-    const error = searchForValues(questionIndex, ["E", "-10"], scoresheet);
-    if (error) {
-      const [team, quizzer] = error;
+    } else {
+      // check for error
+      const error = searchForValues(questionIndex, ["E", "-10"], scoresheet);
+      if (error) {
+        const [team, quizzer] = error;
 
-      const bonuses = [];
-      const errorBonus = searchForValues(questionIndex, ["B", "/"], scoresheet);
-      if (errorBonus) {
-        const [secondaryTeam, secondaryQuizzer] = errorBonus;
-        bonuses.push({
-          secondaryQuizzer: secondaryQuizzer.name,
-          secondaryTeam: {
-            name: secondaryTeam.name,
-            color: teamToTeamColor.get(secondaryTeam) ?? "black",
+        if (questionIndex >= 16) {
+          // add error after sixteen
+          additionalEvents.push({
+            type: "errorAfterSixteen",
+          });
+          addBonusPenaltyPoints(team, -10);
+        }
+
+        const bonuses = [];
+        const errorBonus = searchForValues(
+          questionIndex,
+          ["B", "/"],
+          scoresheet,
+        );
+        if (errorBonus) {
+          const [secondaryTeam, secondaryQuizzer] = errorBonus;
+          bonuses.push({
+            secondaryQuizzer: secondaryQuizzer.name,
+            secondaryTeam: {
+              name: secondaryTeam.name,
+              color: teamToTeamColor.get(secondaryTeam) ?? "black",
+            },
+            correct: secondaryQuizzer.questions[questionIndex] === "B",
+          });
+
+          // check for third team if necessary
+          if (scoresheet.teams.length === 3) {
+            const errorBonus2 = searchForValues(
+              questionIndex,
+              ["B", "/"],
+              scoresheet,
+              [secondaryTeam],
+            );
+            if (errorBonus2) {
+              const [thirdTeam, thirdQuizzer] = errorBonus2;
+              bonuses.push({
+                secondaryQuizzer: thirdQuizzer.name,
+                secondaryTeam: {
+                  name: thirdTeam.name,
+                  color: teamToTeamColor.get(thirdTeam) ?? "black",
+                },
+                correct: thirdQuizzer.questions[questionIndex] === "B",
+              });
+            }
+          }
+        }
+
+        questionSummaries[questionIndex] = {
+          type: "incorrect",
+          questionNumber,
+          primaryQuizzer: quizzer.name,
+          primaryTeam: {
+            name: team.name,
+            color: teamToTeamColor.get(team) ?? "black",
           },
-          correct: secondaryQuizzer.questions[questionIndex] === "B",
-        });
+          additionalEvents,
+          bonuses,
+          runningScores: scoresheet.teams.map((t) => ({
+            name: t.name,
+            color: teamToTeamColor.get(t) ?? "black",
+            runningScore: findMostRecentRunningScore(
+              t.runningScore,
+              questionIndex,
+            ),
+          })),
+        };
+      }
+    }
 
-        // check for third team if necessary
-        if (scoresheet.teams.length === 3) {
-          const errorBonus2 = searchForValues(
-            questionIndex,
-            ["B", "/"],
-            scoresheet,
-            [secondaryTeam],
+    // detect all additional events not already done above
+
+    // if the team bonus/penalty doesn't match what's expected AND >= 2 team fouls, assume second foul happened
+    for (const [team, expectedPoints] of expectedBonusPenaltyPoints) {
+      const teamFoulCount = team.quizzers.reduce(
+        (previousValue, currentQuizzer) =>
+          previousValue + currentQuizzer.totalFouls,
+        0,
+      );
+      if (teamFoulCount >= 2) {
+        let actualBonusPenaltyPoints = Number.parseInt(
+          team.bonusOrPenaltyPoints[questionIndex],
+        );
+        if (Number.isNaN(actualBonusPenaltyPoints)) {
+          actualBonusPenaltyPoints = 0;
+        }
+
+        if (actualBonusPenaltyPoints !== expectedPoints) {
+          console.log(
+            `actual points ${actualBonusPenaltyPoints} != expected points ${expectedPoints} for team ${team.name} (question #${questionNumber})`,
           );
-          if (errorBonus2) {
-            const [thirdTeam, thirdQuizzer] = errorBonus2;
-            bonuses.push({
-              secondaryQuizzer: thirdQuizzer.name,
-              secondaryTeam: {
-                name: thirdTeam.name,
-                color: teamToTeamColor.get(thirdTeam) ?? "black",
-              },
-              correct: thirdQuizzer.questions[questionIndex] === "B",
-            });
+
+          const difference = actualBonusPenaltyPoints - expectedPoints;
+          if (difference < 0) {
+            const foulsInQuestion = Math.abs(difference) / 10;
+            for (let i = 0; i < foulsInQuestion; i++) {
+              additionalEvents.push({
+                type: "secondFoul",
+                team,
+              });
+            }
           }
         }
       }
-
-      questionSummaries[questionIndex] = {
-        type: "incorrect",
-        questionNumber,
-        primaryQuizzer: quizzer.name,
-        primaryTeam: {
-          name: team.name,
-          color: teamToTeamColor.get(team) ?? "black",
-        },
-        additionalEvents,
-        bonuses,
-        runningScores: scoresheet.teams.map((t) => ({
-          name: t.name,
-          color: teamToTeamColor.get(t) ?? "black",
-          runningScore: findMostRecentRunningScore(
-            t.runningScore,
-            questionIndex,
-          ),
-        })),
-      };
-      continue;
     }
   }
 

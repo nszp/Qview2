@@ -25,7 +25,7 @@ export interface ScoresheetTeam {
   overruledChallenges: number;
   place: number;
   quizzers: Array<ScoresheetQuizzer>;
-  bonusOrPenaltyPoints: Array<"" | "-10" | "10">;
+  bonusOrPenaltyPoints: Array<string>;
   runningScore: Array<string>;
 }
 

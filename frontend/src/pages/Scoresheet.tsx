@@ -6,7 +6,7 @@ import { rootRoute } from "@/rootRoute.ts";
 import {
   convertScoresheetToQuestionSummaries,
   eventTypeToPointDifference,
-} from "@/utils/scoresheet.ts";
+} from "@/utils/summaryEngine.ts";
 import { Badge, Flex, List, Text, Timeline } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Navigate, createRoute } from "@tanstack/react-router";
