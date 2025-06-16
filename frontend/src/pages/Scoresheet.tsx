@@ -1,4 +1,5 @@
 import { scoresheetDataOptions } from "@/api.ts";
+import ScoresheetAdditionalEvents from "@/components/ScoresheetAdditionalEvents.tsx";
 import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
 import ScoresheetTimelineBullet from "@/components/ScoresheetTimelineBullet.tsx";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
@@ -43,7 +44,6 @@ export const scoresheetRoute = createRoute({
         <Flex
           justify="center"
           align="center"
-          mb="md"
           direction="column"
           sx={(_, u) => ({
             [u.smallerThan("sm")]: {
@@ -191,30 +191,16 @@ export const scoresheetRoute = createRoute({
                         ))
                       : undefined}
 
-                    {summary.additionalEvents
-                      .map((event): string | JSX.Element => {
-                        const eventPointDifference =
-                          eventTypeToPointDifference[event.type];
-                        switch (event.type) {
-                          case "perfectQuizout":
-                            return `${event.quizzer} scored a perfect quizout! (+${eventPointDifference})`;
-                          default:
-                            return `Unknown event type: ${event.type} (${eventPointDifference >= 0 ? "+" : ""}${eventPointDifference})`;
-                        }
-                      })
-                      .map((eventText, eventIndex) => {
-                        if (typeof eventText !== "string") return eventText;
-                        return (
-                          <List.Item key={Number(eventIndex)}>
-                            {eventText}
-                          </List.Item>
-                        );
-                      })}
+                    <ScoresheetAdditionalEvents summary={summary} />
                   </List>
                 </Timeline.Item>
               );
             })}
           </Timeline>
+          <Text c="gray.7" pt="xl">
+            Powered by the Quiz Summary Engine.
+          </Text>
+          {/* puppy! */}
         </Flex>
       </>
     );
