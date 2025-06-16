@@ -1,10 +1,11 @@
+import { MantineProvider } from "@mantine/core";
+import { MantineEmotionProvider, emotionTransform } from "@mantine/emotion";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
-import { MantineProvider } from "@mantine/core";
-import { emotionTransform, MantineEmotionProvider } from "@mantine/emotion";
 import { theme } from "./theme";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "@mantine/core/styles.css";
 
@@ -33,6 +34,7 @@ if (root) {
         <MantineEmotionProvider>
           <QueryClientProvider client={queryClient}>
             <RouterProvider router={router} />
+            <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </MantineEmotionProvider>
       </MantineProvider>
