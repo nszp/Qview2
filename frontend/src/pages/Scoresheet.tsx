@@ -1,16 +1,16 @@
-import { createRoute, Navigate } from "@tanstack/react-router";
-import { Flex, Text, Timeline, List } from "@mantine/core";
 import { scoresheetDataOptions } from "@/api.ts";
+import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
+import ScoresheetTimelineBullet from "@/components/ScoresheetTimelineBullet.tsx";
+import { queryClient } from "@/main.tsx";
+import { rootRoute } from "@/rootRoute.ts";
 import {
   convertScoresheetToQuestionSummaries,
   eventTypeToPointDifference,
 } from "@/utils/scoresheet.ts";
-import { useMemo } from "react";
-import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
-import ScoresheetTimelineBullet from "@/components/ScoresheetTimelineBullet.tsx";
-import { rootRoute } from "@/rootRoute.ts";
-import { queryClient } from "@/main.tsx";
+import { Badge, Flex, List, Text, Timeline } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { Navigate, createRoute } from "@tanstack/react-router";
+import { type JSX, useMemo } from "react";
 
 export const scoresheetRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -113,16 +113,37 @@ export const scoresheetRoute = createRoute({
 
               // Title is bold
               //
-              let title = "";
-              if (summary.questionNumber === 21 && summary.type === "correct") {
+              let title: string | JSX.Element = "";
+              if (
+                summary.questionNumber === 21 &&
+                (summary.type === "correct" || summary.type === "incorrect")
+              ) {
                 // tiebreaker
-                title = `${summary.primaryTeam} wins the tiebreaker!`;
+                if (summary.type === "correct") {
+                  title = `${summary.primaryQuizzer} won the round for ${summary.primaryTeam.name}!`;
+                } else {
+                  title = `${summary.primaryQuizzer} lost the round for ${summary.primaryTeam.name}.`;
+                }
               } else if (summary.type === "correct") {
-                title = `${summary.primaryQuizzer} from ${summary.primaryTeam.name} answered correctly!`; // primaryQuizzer [correct] (different darker green badge)
+                title = (
+                  <>
+                    {summary.primaryQuizzer}{" "}
+                    <Badge color="green.8" autoContrast>
+                      Correct
+                    </Badge>
+                  </>
+                ); // primaryQuizzer [correct] (different darker green badge)
               } else if (summary.type === "incorrect") {
-                title = `${summary.primaryQuizzer} from ${summary.primaryTeam.name} answered incorrectly.`; // primaryQuizzer [error] (different darker red badge)
+                title = (
+                  <>
+                    {summary.primaryQuizzer}{" "}
+                    <Badge color="red.8" autoContrast>
+                      Error
+                    </Badge>
+                  </>
+                ); // primaryQuizzer [error] (different darker red badge)
               } else if (summary.type === "nojump") {
-                title = `No jump for question ${summary.questionNumber}`;
+                title = "No jump on question.";
               }
 
               // Timeline item should look like this for an incorrect question:
@@ -136,7 +157,7 @@ export const scoresheetRoute = createRoute({
 
               return (
                 <Timeline.Item
-                  title={title}
+                  title={<Text fw={700}>{title}</Text>}
                   key={summary.questionNumber}
                   bullet={
                     <ScoresheetTimelineBullet
@@ -145,28 +166,38 @@ export const scoresheetRoute = createRoute({
                           ? summary.primaryTeam.color
                           : "gray"
                       }
-                      questionNumber={summary.questionNumber}
+                      questionNumber={
+                        summary.questionNumber === 21
+                          ? "OT"
+                          : summary.questionNumber
+                      }
                     />
                   }
                 >
-                  <Text>
-                    {summary.questionNumber === 21
-                      ? "OT"
-                      : `Question ${summary.questionNumber}`}
-                  </Text>
                   <List>
                     {summary.type === "incorrect"
                       ? summary.bonuses?.map((bonus) => (
                           <List.Item key={bonus.secondaryQuizzer}>
-                            {bonus.secondaryQuizzer} from{" "}
-                            {bonus.secondaryTeam.name} answered{" "}
-                            {bonus.correct ? "correctly" : "incorrectly"}.
+                            <ScoresheetTeamIcon
+                              color={bonus.secondaryTeam.color}
+                              size={16}
+                            />
+                            {bonus.secondaryQuizzer}{" "}
+                            {bonus.correct ? (
+                              <Badge color="green.8" autoContrast>
+                                Correct Bonus
+                              </Badge>
+                            ) : (
+                              <Badge color="red.8" autoContrast>
+                                Error Bonus
+                              </Badge>
+                            )}
                           </List.Item>
                         ))
                       : undefined}
 
                     {summary.additionalEvents
-                      .map((event) => {
+                      .map((event): string | JSX.Element => {
                         const eventPointDifference =
                           eventTypeToPointDifference[event.type];
                         switch (event.type) {

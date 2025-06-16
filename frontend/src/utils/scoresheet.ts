@@ -105,13 +105,13 @@ export function convertScoresheetToQuestionSummaries(
 
     if (questionNumber === 21) {
       // tiebreaker question
-      const tiebreakerWinner = searchForValues(questionIndex, "C", scoresheet);
-      if (tiebreakerWinner) {
-        const [team, quizzer] = tiebreakerWinner;
-        quizzersAnsweredTeamCount.get(team)?.add(quizzer);
+      const tiebreaker = searchForValues(questionIndex, ["C", "E"], scoresheet);
+      if (tiebreaker) {
+        const [team, quizzer] = tiebreaker;
         questionSummaries[questionIndex] = {
           questionNumber,
-          type: "correct",
+          type: quizzer.questions[questionIndex] === "C" ? "correct" : "incorrect",
+          bonuses: [], // empty for tiebreaker
           primaryQuizzer: quizzer.name,
           primaryTeam: {
             name: team.name,

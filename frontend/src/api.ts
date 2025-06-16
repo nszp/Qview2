@@ -5,7 +5,7 @@ const BASE_URL = "https://pub-6d08eec9bb2b41c1a12ec58fb2943b8d.r2.dev";
 const TOURNAMENT_DATA_URL = `${BASE_URL}/tournamentData.json`;
 
 function getScoresheetDataUrl(scoreSheetId: string): string {
-  return `${BASE_URL}/scoresheet${scoreSheetId}.json`;
+  return `${BASE_URL}/scoresheets/scoresheet${scoreSheetId}.json`;
 }
 
 export async function getTournamentData(): Promise<TournamentData> {

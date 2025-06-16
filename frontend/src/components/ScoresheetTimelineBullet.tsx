@@ -3,7 +3,7 @@ import { Badge } from "@mantine/core";
 export default function ScoresheetTimelineBullet({
   teamColor,
   questionNumber,
-}: { teamColor: string; questionNumber: number }) {
+}: { teamColor: string; questionNumber: string | number }) {
   return (
     <Badge
       circle
