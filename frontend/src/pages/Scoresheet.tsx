@@ -161,11 +161,7 @@ export const scoresheetRoute = createRoute({
                   key={summary.questionNumber}
                   bullet={
                     <ScoresheetTimelineBullet
-                      teamColor={
-                        "primaryTeam" in summary
-                          ? summary.primaryTeam.color
-                          : "gray"
-                      }
+                      questionResult={summary.type}
                       questionNumber={
                         summary.questionNumber === 21
                           ? "OT"
