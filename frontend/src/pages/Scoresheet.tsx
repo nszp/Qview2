@@ -1,8 +1,7 @@
 import { scoresheetDataOptions } from "@/api.ts";
 import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
 import ScoresheetTimelineBullet from "@/components/ScoresheetTimelineBullet.tsx";
-import { queryClient } from "@/main.tsx";
-import { rootRoute } from "@/rootRoute.ts";
+import { queryClient, rootRoute } from "@/rootRoute.ts";
 import {
   convertScoresheetToQuestionSummaries,
   eventTypeToPointDifference,
@@ -143,7 +142,7 @@ export const scoresheetRoute = createRoute({
                   </>
                 ); // primaryQuizzer [error] (different darker red badge)
               } else if (summary.type === "nojump") {
-                title = "No jump on question.";
+                title = "No one jumped.";
               }
 
               // Timeline item should look like this for an incorrect question:
@@ -157,7 +156,7 @@ export const scoresheetRoute = createRoute({
 
               return (
                 <Timeline.Item
-                  title={<Text fw={700}>{title}</Text>}
+                  title={<span style={{ fontWeight: 700 }}>{title}</span>}
                   key={summary.questionNumber}
                   bullet={
                     <ScoresheetTimelineBullet

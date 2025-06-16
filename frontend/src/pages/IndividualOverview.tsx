@@ -1,8 +1,7 @@
 import { createRoute } from "@tanstack/react-router";
 import { Flex, Text } from "@mantine/core";
 import { tournamentDataOptions } from "@/api.ts";
-import { rootRoute } from "@/rootRoute.ts";
-import { queryClient } from "@/main.tsx";
+import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 export const individualOverviewRoute = createRoute({

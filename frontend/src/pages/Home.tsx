@@ -6,8 +6,7 @@ import { createRoute, useRouter } from "@tanstack/react-router";
 import { StatGroupTeamList } from "@/components/StatGroupTeamList.tsx";
 import { tournamentDataOptions } from "@/api.ts";
 import { individualOverviewRoute, teamOverviewRoute } from "@/routes.ts";
-import { rootRoute } from "@/rootRoute.ts";
-import { queryClient } from "@/main.tsx";
+import { queryClient, rootRoute } from "@/rootRoute.ts";
 import {
   useQueryErrorResetBoundary,
   useSuspenseQuery,

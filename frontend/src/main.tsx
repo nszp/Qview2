@@ -1,6 +1,6 @@
 import { MantineProvider } from "@mantine/core";
 import { MantineEmotionProvider, emotionTransform } from "@mantine/emotion";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
@@ -10,8 +10,7 @@ import { theme } from "./theme";
 import "@mantine/core/styles.css";
 
 import { routeTree } from "@/routes.ts";
-
-export const queryClient = new QueryClient();
+import { queryClient } from "@/rootRoute.ts";
 
 const root = document.getElementById("root");
 

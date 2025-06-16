@@ -1,7 +1,6 @@
 import { Flex, Text } from "@mantine/core";
 import { createRoute, Navigate } from "@tanstack/react-router";
-import { rootRoute } from "@/rootRoute.ts";
-import { queryClient } from "@/main.tsx";
+import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { tournamentDataOptions } from "@/api.ts";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
