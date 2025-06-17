@@ -35,7 +35,7 @@ export const statGroupIndividualStandingsRoute = createRoute({
           align="center"
           mb="md"
           direction="column"
-          sx={(_, u) => ({
+          sx={(_, __) => ({
             // [u.smallerThan("sm")]: {
             width: "100%",
             // },

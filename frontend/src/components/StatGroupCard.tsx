@@ -7,7 +7,7 @@ import {
   useComputedColorScheme,
 } from "@mantine/core";
 import type { StatGroupData } from "../types/data.ts";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import {
   statGroupIndividualStandingsRoute,
   statGroupTeamStandingsRoute,
@@ -43,16 +43,14 @@ export function StatGroupCard({ statGroup }: { statGroup: StatGroupData }) {
       <Card.Section>
         <SimpleGrid cols={2} spacing="0">
           <Button
+            component={Link}
+            to={statGroupIndividualStandingsRoute.to}
+            // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+            params={{ statGroupName: statGroup.name }}
+            viewTransition
             variant="outline"
             color="gray"
             radius="0"
-            onClick={() =>
-              navigate({
-                to: statGroupIndividualStandingsRoute.to,
-                params: { statGroupName: statGroup.name },
-                viewTransition: true,
-              })
-            }
             sx={(theme, u) => ({
               borderBottomWidth: 0,
               borderLeftWidth: 0,
@@ -74,16 +72,14 @@ export function StatGroupCard({ statGroup }: { statGroup: StatGroupData }) {
           </Button>
 
           <Button
+            component={Link}
+            to={statGroupTeamStandingsRoute.to}
+            // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+            params={{ statGroupName: statGroup.name }}
+            viewTransition
             variant="outline"
             color="gray"
             radius="0"
-            onClick={() =>
-              navigate({
-                to: statGroupTeamStandingsRoute.to,
-                params: { statGroupName: statGroup.name },
-                viewTransition: true,
-              })
-            }
             sx={(theme, u) => ({
               borderBottomWidth: 0,
               borderRightWidth: 0,

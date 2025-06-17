@@ -8,7 +8,7 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Outlet, useLocation, useNavigate } from "@tanstack/react-router";
+import { Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
@@ -55,16 +55,15 @@ export const Shell = () => {
             />
             <Group justify="space-between" sx={{ flex: 1 }}>
               <Text
+                component={Link}
+                to={homeRoute.to}
+                viewTransition={true}
                 size="lg"
                 fw={500}
                 sx={{
-                  marginTop: "-0.2rem",
+                  marginTop: "-0.1rem",
                   userSelect: "none",
-                  cursor: "pointer",
                 }}
-                onClick={() =>
-                  navigate({ to: homeRoute.to, viewTransition: true })
-                }
               >
                 Q2025 Stats
               </Text>

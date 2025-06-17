@@ -1,27 +1,19 @@
 import { DataTable } from "mantine-datatable";
 import type { IndividualData } from "@/types/data.ts";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { placesWithTies } from "@/utils/places.ts";
 import styled from "@emotion/styled";
-import { ChevronLeftIcon } from "lucide-react";
+import { ExternalLinkIcon } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { Text } from "@mantine/core";
 
-const ExpandIcon = styled(ChevronLeftIcon)({
-  // marginTop: "auto",
+const Open = styled(ExternalLinkIcon)({
   marginBottom: "-6px",
-  transition: "transform 0.2s ease-in-out",
-  "&.expanded": {
-    transform: "rotate(-90deg)",
-  },
 });
 
 export default function IndividualStandingsTable({
   individuals,
 }: { individuals: IndividualData[] }) {
-  const [expandedIndividualIds, setExpandedIndividualIds] = useState<string[]>(
-    [],
-  );
-  const [animatingIds, setAnimatingIds] = useState<string[]>([]);
-
   const individualsWithPlaces = useMemo(() => {
     return placesWithTies(individuals, "score", "errors");
   }, [individuals]);
@@ -34,19 +26,8 @@ export default function IndividualStandingsTable({
           title: "#",
           textAlign: "center",
           width: "5%",
-          // cellsStyle: {
-          //   position: "sticky",
-          // },
           render: (individual) => {
-            return (
-              <span
-                style={{
-                  fontWeight: "bold",
-                }}
-              >
-                {individual.place}
-              </span>
-            );
+            return <strong>{individual.place}</strong>;
           },
         },
         {
@@ -80,30 +61,18 @@ export default function IndividualStandingsTable({
           width: "20%",
         },
         {
+          accessor: "team",
+          title: "Team",
+          textAlign: "left",
+          noWrap: true,
+        },
+        {
           accessor: "expandIcon",
           render: (individual) => (
-            <ExpandIcon
-              // size={24}
-              onClick={() => {
-                if (animatingIds.includes(individual.name)) return;
-                setAnimatingIds((prev) => [...prev, individual.name]);
-                setExpandedIndividualIds((prev) =>
-                  prev.includes(individual.name)
-                    ? prev.filter((id) => id !== individual.name)
-                    : [...prev, individual.name],
-                );
-                setTimeout(() => {
-                  setAnimatingIds((prev) =>
-                    prev.filter((id) => id !== individual.name),
-                  );
-                }, 200); // match transition duration
-              }}
-              className={
-                expandedIndividualIds.includes(individual.name)
-                  ? "expanded"
-                  : ""
-              }
-            />
+            // Todo: figure out where this link should go
+            <Text component={Link} to={`/individual/${individual.name}`}>
+              <Open size={24} />
+            </Text>
           ),
           title: "",
           textAlign: "center",
@@ -119,25 +88,9 @@ export default function IndividualStandingsTable({
       }}
       idAccessor={"name"}
       pinFirstColumn
-      highlightOnHover
-      rowExpansion={{
-        allowMultiple: true,
-        trigger: "never",
-        expanded: {
-          recordIds: expandedIndividualIds,
-          onRecordIdsChange: setExpandedIndividualIds,
-        },
-        content: ({ record: individual }) => (
-          <div>
-            <p>Rounds: {individual.rounds}</p>
-            <p>Average Score: {individual.averageScore}</p>
-            <p>
-              Correct/Errors: {individual.correct}/{individual.errors}
-            </p>
-            {/* Add more details as needed */}
-          </div>
-        ),
-      }}
+      emptyState={
+        <Text>No standings yet. Check back after the first round!</Text>
+      }
     />
   );
 }
