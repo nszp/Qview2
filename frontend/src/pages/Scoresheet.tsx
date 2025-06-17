@@ -138,10 +138,12 @@ export const scoresheetRoute = createRoute({
               pt="sm"
               pb="md"
               cols={{ base: 1, sm: data.teams.length }}
-              miw="36em"
               sx={(_, u) => ({
                 [u.smallerThan("sm")]: {
                   width: "100%",
+                },
+                [u.largerThan("sm")]: {
+                  minWidth: "36em",
                 },
               })}
             >
