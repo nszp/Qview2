@@ -1,8 +1,10 @@
+import { theme } from "@/theme.ts";
 import type {
   Scoresheet,
   ScoresheetQuizzer,
   ScoresheetTeam,
 } from "@/types/data.ts";
+import { getTeamColorsForTeamCount } from "@/utils/styleUtils.ts";
 
 export type QuestionSummaryTeam = { name: string; color: string };
 
@@ -69,7 +71,36 @@ export type QuestionSummary = {
 export function convertScoresheetToQuestionSummaries(
   scoresheet: Scoresheet,
 ): QuestionSummary[] {
-  const questionSummaries: QuestionSummary[] = new Array(21);
+  const sumOfAllPlaces = scoresheet.teams.reduce(
+    (previousValue, team) => previousValue + team.place,
+    0,
+  );
+  // if all teams have a place of 0, then the round is incomplete
+
+  const furthestQuestionIndexAsked = scoresheet.teams.reduce(
+    (previousValue, team) => {
+      const furthestQuestionTeamAnswered = team.quizzers.reduce(
+        (previous, quizzer) => {
+          let furthestQuestionAnswered = 0;
+          for (let i = quizzer.questions.length - 1; i >= 0; i--) {
+            const question = quizzer.questions[i];
+            if (question !== "") {
+              furthestQuestionAnswered = i;
+              break;
+            }
+          }
+          return Math.max(previous, furthestQuestionAnswered);
+        },
+        0,
+      );
+      return Math.max(previousValue, furthestQuestionTeamAnswered);
+    },
+    0,
+  );
+
+  const questionSummaries: QuestionSummary[] = new Array(
+    sumOfAllPlaces === 0 ? furthestQuestionIndexAsked + 1 : 21,
+  );
   const quizzersAnsweredTeamCount: Map<
     ScoresheetTeam,
     Set<ScoresheetQuizzer>
@@ -78,10 +109,7 @@ export function convertScoresheetToQuestionSummaries(
     return previousValue;
   }, new Map());
 
-  const teamColors =
-    scoresheet.teams.length === 2
-      ? ["red", "limegreen"]
-      : ["red", "blue", "limegreen"];
+  const teamColors = getTeamColorsForTeamCount(scoresheet.teams.length);
   const teamToTeamColor = scoresheet.teams.reduce(
     (previousValue, currentTeam, teamIndex) => {
       previousValue.set(currentTeam, teamColors[teamIndex]);
@@ -90,7 +118,11 @@ export function convertScoresheetToQuestionSummaries(
     new Map<ScoresheetTeam, string>(),
   );
 
-  for (let questionIndex = 0; questionIndex < 21; questionIndex++) {
+  for (
+    let questionIndex = 0;
+    questionIndex < questionSummaries.length;
+    questionIndex++
+  ) {
     const questionNumber = questionIndex + 1;
     const additionalEvents: QuestionSummaryEvent[] = [];
     const expectedBonusPenaltyPoints = scoresheet.teams.reduce(
