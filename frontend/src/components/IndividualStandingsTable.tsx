@@ -21,6 +21,7 @@ export default function IndividualStandingsTable({
       sx={{
         marginBottom: "4rem",
       }}
+      p
       idAccessor={"name"}
     />
   );

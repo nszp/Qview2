@@ -1,6 +1,6 @@
 import {
-  type QuestionSummary,
   eventTypeToPointDifference,
+  type QuestionSummary,
 } from "@/utils/summaryEngine.ts";
 import { List } from "@mantine/core";
 import type { JSX } from "react";

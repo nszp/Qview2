@@ -1,5 +1,5 @@
 import type { ScoresheetTeam } from "@/types/data.ts";
-import { Box, Card, Divider, Flex, List, Paper, Text } from "@mantine/core";
+import { Box, Card, Flex, Text } from "@mantine/core";
 
 function CardDivider({ color }: { color: string }) {
   return (

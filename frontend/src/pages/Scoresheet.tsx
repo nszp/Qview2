@@ -1,5 +1,4 @@
 import { scoresheetDataOptions } from "@/api.ts";
-import ScoresheetTable from "@/components/ScoresheetTable.tsx";
 import ScoresheetTeamCard from "@/components/ScoresheetTeamCard.tsx";
 import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
 import ScoresheetTimeline from "@/components/ScoresheetTimeline.tsx";
@@ -14,7 +13,7 @@ import {
   Text,
 } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Navigate, createRoute } from "@tanstack/react-router";
+import { createRoute, Navigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 export const scoresheetRoute = createRoute({

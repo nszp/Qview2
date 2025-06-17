@@ -1,4 +1,3 @@
-import { theme } from "@/theme.ts";
 import type {
   Scoresheet,
   ScoresheetQuizzer,
