@@ -1,7 +1,7 @@
 import type { Scoresheet, TournamentData } from "@/types/data.ts";
-import { queryOptions, useQuery } from "@tanstack/react-query";
+import { queryOptions } from "@tanstack/react-query";
 
-const BASE_URL = "https://pub-6d08eec9bb2b41c1a12ec58fb2943b8d.r2.dev";
+const BASE_URL = "https://bucket.quizstats.org";
 const TOURNAMENT_DATA_URL = `${BASE_URL}/tournamentData.json`;
 
 function getScoresheetDataUrl(scoreSheetId: string): string {

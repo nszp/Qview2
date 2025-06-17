@@ -99,6 +99,9 @@ export const scoresheetRoute = createRoute({
           <Timeline
             bulletSize={24}
             styles={{
+              itemBody: {
+                paddingTop: "4px",
+              },
               itemBullet: {
                 width: "unset",
                 height: "unset",

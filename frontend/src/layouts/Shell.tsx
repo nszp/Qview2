@@ -118,7 +118,7 @@ export const Shell = () => {
           <Outlet />
         </AppShell.Main>
       </AppShell>
-      <TanStackRouterDevtools position="bottom-right" />
+      <TanStackRouterDevtools position="bottom-left" />
     </>
   );
 };
