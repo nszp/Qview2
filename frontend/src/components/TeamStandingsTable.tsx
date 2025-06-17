@@ -21,6 +21,7 @@ export default function TeamStandingsTable({ teams }: { teams: TeamData[] }) {
         marginBottom: "4rem",
       }}
       idAccessor={"name"}
+      pinFirstColumn
     />
   );
 }

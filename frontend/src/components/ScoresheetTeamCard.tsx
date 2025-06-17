@@ -53,16 +53,14 @@ export default function ScoresheetTeamCard({
       </Flex>
       <CardDivider color={color} />
       <Text size="md" fw={600}>
+        {team.place !== 0 &&
+          `${team.place === 1 ? "1st" : team.place === 2 ? "2nd" : "3rd"} - `}
         {team.runningScore.reduceRight((previous, current) => {
           if (previous !== "") return previous;
           return current;
-        }, "")}
+        }, "")}{" "}
+        points
       </Text>
-      {team.place !== 0 && (
-        <Text size="md" fw={700}>
-          {team.place === 1 ? "1st" : team.place === 2 ? "2nd" : "3rd"}
-        </Text>
-      )}
     </Card>
   );
 }

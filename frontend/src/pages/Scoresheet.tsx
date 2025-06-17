@@ -123,8 +123,10 @@ export const scoresheetRoute = createRoute({
           </Text>
 
           <SegmentedControl
+            visibleFrom="sm"
             value={selectedDisplay}
             onChange={setSelectedDisplay}
+            size="md"
             data={[
               { label: "Modern Timeline", value: "timeline" },
               { label: "Legacy Scoresheet", value: "legacy" },
@@ -156,6 +158,18 @@ export const scoresheetRoute = createRoute({
               ))}
             </SimpleGrid>
           )}
+
+          <SegmentedControl
+            hiddenFrom="sm"
+            value={selectedDisplay}
+            onChange={setSelectedDisplay}
+            size="md"
+            data={[
+              { label: "Modern Timeline", value: "timeline" },
+              { label: "Legacy Scoresheet", value: "legacy" },
+            ]}
+            mb="md"
+          />
 
           {selectedDisplay === "timeline" && <ScoresheetTimeline data={data} />}
         </Flex>

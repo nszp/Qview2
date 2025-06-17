@@ -12,6 +12,8 @@ export default function ScoresheetTable({ data }: { data: Scoresheet }) {
         records={getTeamRecords(data.teams[0])}
         columns={scoresheetColumns}
         striped
+        withColumnBorders
+        withTableBorder
         pinFirstColumn
         pinLastColumn
         fz={{ base: "md", sm: "lg" }}
