@@ -1,47 +1,39 @@
 import type { Scoresheet } from "@/types/data";
-import { MRT_Table, useMantineReactTable } from "mantine-react-table";
-import { useMemo } from "react";
-import getScoresheetTableOptions from "@/types/tables/scoresheet.tsx";
+import {
+  getTeamRecords,
+  scoresheetColumns,
+} from "@/types/tables/scoresheet.tsx";
+import { DataTable } from "mantine-datatable";
 
 export default function ScoresheetTable({ data }: { data: Scoresheet }) {
-  const tableOptions = useMemo(() => {
-    return getScoresheetTableOptions(data.teams);
-  }, [data.teams]);
-
-  const table = useMantineReactTable({
-    ...tableOptions,
-    enableColumnActions: false,
-    enableColumnFilters: false,
-    enablePagination: false,
-    enableSorting: false,
-    mantineTableProps: {
-      highlightOnHover: false,
-      striped: "odd",
-      withColumnBorders: true,
-      withRowBorders: true,
-      withTableBorder: true,
-      sx: {
-        tableLayout: "fixed",
-      },
-      styles: {
-        thead: {
-          display: "none",
-        },
-        td: {
-          textAlign: "center",
-          paddingLeft: "0",
-          paddingRight: "0",
-        },
-      },
-    },
-    mantineTableHeadCellProps: {
-      sx: {
-        "> div": {
-          alignItems: "center",
-        },
-      },
-    },
-  });
-
-  return <MRT_Table table={table} />;
+  return (
+    <>
+      <DataTable
+        records={getTeamRecords(data.teams[0])}
+        columns={scoresheetColumns}
+        striped
+        pinFirstColumn
+        pinLastColumn
+        fz={{ base: "md", sm: "lg" }}
+        w="100%"
+        sx={{
+          marginBottom: "4rem",
+        }}
+        idAccessor={"name"}
+      />
+      <DataTable
+        records={getTeamRecords(data.teams[1])}
+        columns={scoresheetColumns}
+        striped
+        pinFirstColumn
+        pinLastColumn
+        fz={{ base: "md", sm: "lg" }}
+        w="100%"
+        sx={{
+          marginBottom: "4rem",
+        }}
+        idAccessor={"name"}
+      />
+    </>
+  );
 }
