@@ -7,6 +7,7 @@ import { Flex, SegmentedControl, Skeleton, Text } from "@mantine/core";
 import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
 import { useState } from "react";
 import ScoresheetTable from "@/components/ScoresheetTable.tsx";
+import { theme } from "@/theme.ts";
 
 export const scoresheetRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -60,7 +61,7 @@ export const scoresheetRoute = createRoute({
                 {data.teams.length === 2 ? (
                   <>
                     <ScoresheetTeamIcon
-                      color={"#FA5252"}
+                      color={theme.colors.red[6]}
                       size={16}
                       mr="2.5px"
                     />
@@ -69,7 +70,7 @@ export const scoresheetRoute = createRoute({
                     </span>
                     &nbsp;vs.&nbsp;
                     <ScoresheetTeamIcon
-                      color={"#40C057"}
+                      color={theme.colors.green[6]}
                       size={16}
                       mr="2.5px"
                     />
@@ -80,7 +81,7 @@ export const scoresheetRoute = createRoute({
                 ) : (
                   <>
                     <ScoresheetTeamIcon
-                      color={"#FA5252"}
+                      color={theme.colors.red[6]}
                       size={16}
                       mr="2.5px"
                     />
@@ -89,7 +90,7 @@ export const scoresheetRoute = createRoute({
                     </span>
                     &nbsp;vs.&nbsp;
                     <ScoresheetTeamIcon
-                      color={"#339AF0"}
+                      color={theme.colors.blue[5]}
                       size={16}
                       mr="2.5px"
                     />
@@ -98,7 +99,7 @@ export const scoresheetRoute = createRoute({
                     </span>
                     &nbsp;vs.&nbsp;
                     <ScoresheetTeamIcon
-                      color={"#40C057"}
+                      color={theme.colors.green[6]}
                       size={16}
                       mr="2.5px"
                     />

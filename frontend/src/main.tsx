@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { theme } from "./theme";
+import { themeOverride } from "./theme";
 
 import "@mantine/core/styles.css";
 
@@ -26,7 +26,7 @@ if (root) {
   createRoot(root).render(
     <StrictMode>
       <MantineProvider
-        theme={theme}
+        theme={themeOverride}
         stylesTransform={emotionTransform}
         defaultColorScheme="dark"
       >
