@@ -1,13 +1,21 @@
 import { scoresheetDataOptions } from "@/api.ts";
-import { queryClient, rootRoute } from "@/rootRoute.ts";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { createRoute, Navigate } from "@tanstack/react-router";
-import ScoresheetTimeline from "@/components/ScoresheetTimeline.tsx";
-import { Flex, SegmentedControl, Skeleton, Text } from "@mantine/core";
-import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
-import { useState } from "react";
 import ScoresheetTable from "@/components/ScoresheetTable.tsx";
+import ScoresheetTeamCard from "@/components/ScoresheetTeamCard.tsx";
+import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
+import ScoresheetTimeline from "@/components/ScoresheetTimeline.tsx";
+import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { theme } from "@/theme.ts";
+import { getTeamColorsForTeamCount } from "@/utils/styleUtils.ts";
+import {
+  Flex,
+  SegmentedControl,
+  SimpleGrid,
+  Skeleton,
+  Text,
+} from "@mantine/core";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { Navigate, createRoute } from "@tanstack/react-router";
+import { useState } from "react";
 
 export const scoresheetRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -31,6 +39,8 @@ export const scoresheetRoute = createRoute({
       data.tournament ??= "Q2024";
       // TODO: remove when data gets updated
     }
+
+    const teamColors = getTeamColorsForTeamCount(data.teams.length);
 
     const [selectedDisplay, setSelectedDisplay] = useState("timeline");
 
@@ -122,8 +132,25 @@ export const scoresheetRoute = createRoute({
             mb="md"
           />
 
+          {data && (
+            <SimpleGrid
+              spacing="md"
+              pt="sm"
+              pb="md"
+              cols={{ base: 1, sm: data.teams.length }}
+            >
+              {data.teams.map((team, index) => (
+                <ScoresheetTeamCard
+                  team={team}
+                  key={Number(index)}
+                  color={teamColors[index]}
+                />
+              ))}
+            </SimpleGrid>
+          )}
+
           {selectedDisplay === "timeline" && <ScoresheetTimeline data={data} />}
-          {selectedDisplay === "legacy" && <ScoresheetTable data={data} />}
+          {/*selectedDisplay === "legacy" && <ScoresheetTable data={data} />*/}
         </Flex>
       </>
     );
