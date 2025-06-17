@@ -59,13 +59,17 @@ export const scoresheetRoute = createRoute({
                 <br />
                 {data.teams.length === 2 ? (
                   <>
-                    <ScoresheetTeamIcon color={"red"} size={16} mr="2.5px" />
+                    <ScoresheetTeamIcon
+                      color={"#FA5252"}
+                      size={16}
+                      mr="2.5px"
+                    />
                     <span style={{ marginLeft: "2.5px" }}>
                       {data.teams[0].name}
                     </span>
                     &nbsp;vs.&nbsp;
                     <ScoresheetTeamIcon
-                      color={"limegreen"}
+                      color={"#40C057"}
                       size={16}
                       mr="2.5px"
                     />
@@ -75,18 +79,26 @@ export const scoresheetRoute = createRoute({
                   </>
                 ) : (
                   <>
-                    <ScoresheetTeamIcon color={"red"} size={16} mr="2.5px" />
+                    <ScoresheetTeamIcon
+                      color={"#FA5252"}
+                      size={16}
+                      mr="2.5px"
+                    />
                     <span style={{ marginLeft: "2.5px" }}>
                       {data.teams[0].name}
                     </span>
                     &nbsp;vs.&nbsp;
-                    <ScoresheetTeamIcon color={"blue"} size={16} mr="2.5px" />
+                    <ScoresheetTeamIcon
+                      color={"#339AF0"}
+                      size={16}
+                      mr="2.5px"
+                    />
                     <span style={{ marginLeft: "2.5px" }}>
                       {data.teams[1].name}
                     </span>
                     &nbsp;vs.&nbsp;
                     <ScoresheetTeamIcon
-                      color={"limegreen"}
+                      color={"#40C057"}
                       size={16}
                       mr="2.5px"
                     />
