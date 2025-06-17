@@ -45,19 +45,23 @@ export default function ScoresheetTeamCard({
         {team.quizzers.map((quizzer) => (
           <Flex justify="space-between" w="100%" key={quizzer.name} gap="xs">
             <Text>{quizzer.name}</Text>
-            <Text ff="inconsolata">
+            <Text ta="center">
               {quizzer.totalCorrect}/{quizzer.totalErrors}
             </Text>
           </Flex>
         ))}
       </Flex>
+      <CardDivider color={color} />
+      <Text size="md" fw={600}>
+        {team.runningScore.reduceRight((previous, current) => {
+          if (previous !== "") return previous;
+          return current;
+        }, "")}
+      </Text>
       {team.place !== 0 && (
-        <>
-          <CardDivider color={color} />
-          <Text size="md" fw={700}>
-            {team.place === 1 ? "1st" : team.place === 2 ? "2nd" : "3rd"}
-          </Text>
-        </>
+        <Text size="md" fw={700}>
+          {team.place === 1 ? "1st" : team.place === 2 ? "2nd" : "3rd"}
+        </Text>
       )}
     </Card>
   );

@@ -1,4 +1,5 @@
 import { scoresheetDataOptions } from "@/api.ts";
+import ScoresheetTable from "@/components/ScoresheetTable.tsx";
 import ScoresheetTeamCard from "@/components/ScoresheetTeamCard.tsx";
 import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
 import ScoresheetTimeline from "@/components/ScoresheetTimeline.tsx";
@@ -13,7 +14,7 @@ import {
   Text,
 } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createRoute, Navigate } from "@tanstack/react-router";
+import { Navigate, createRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 export const scoresheetRoute = createRoute({
@@ -137,6 +138,12 @@ export const scoresheetRoute = createRoute({
               pt="sm"
               pb="md"
               cols={{ base: 1, sm: data.teams.length }}
+              miw="36em"
+              sx={(_, u) => ({
+                [u.smallerThan("sm")]: {
+                  width: "100%",
+                },
+              })}
             >
               {data.teams.map((team, index) => (
                 <ScoresheetTeamCard
@@ -149,8 +156,8 @@ export const scoresheetRoute = createRoute({
           )}
 
           {selectedDisplay === "timeline" && <ScoresheetTimeline data={data} />}
-          {/*selectedDisplay === "legacy" && <ScoresheetTable data={data} />*/}
         </Flex>
+        {selectedDisplay === "legacy" && <ScoresheetTable data={data} />}
       </>
     );
   },
