@@ -3,6 +3,7 @@ import { createRoute, Navigate } from "@tanstack/react-router";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { tournamentDataOptions } from "@/api.ts";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import TeamStandingsTable from "@/components/TeamStandingsTable.tsx";
 
 export const statGroupTeamStandingsRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -45,6 +46,7 @@ export const statGroupTeamStandingsRoute = createRoute({
             Team Standings
           </Text>
         </Flex>
+        <TeamStandingsTable teams={statGroup.teams} />
       </>
     );
   },

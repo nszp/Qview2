@@ -8,7 +8,7 @@ export default function IndividualStandingsTable({
   individuals,
 }: { individuals: IndividualData[] }) {
   const individualsWithPlaces = useMemo(() => {
-    return placesWithTies(individuals);
+    return placesWithTies(individuals, "score", "errors");
   }, [individuals]);
 
   return (

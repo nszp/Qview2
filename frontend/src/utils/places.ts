@@ -1,19 +1,22 @@
 export function placesWithTies<T>(
   input: T[],
-  primaryKey: keyof T = "score", // Sort by this
-  secondaryKey: keyof T = "errors", // Break ties by this after primary key if possible
+  primaryKey: keyof T, // Sort by this
+  secondaryKey: keyof T, // Break ties by this after primary key if possible
   // If two people after 6th place are tied, they should both be 7th place
 ): Array<T & { place: number }> {
   const output: Array<T & { place: number }> = [];
   let currentPlace = 1;
-  let lastValue: T = null;
+  let lastValue: T | null = null;
   let lastPlace = 0;
   for (const item of input) {
     if (
       lastValue === null ||
-      item[primaryKey] < lastValue[primaryKey] ||
-      (item[primaryKey] === lastValue[primaryKey] &&
-        item[secondaryKey] < lastValue[secondaryKey])
+      item[primaryKey] <
+        (lastValue?.[primaryKey] as (typeof item)[typeof primaryKey]) ||
+      (item[primaryKey] ===
+        (lastValue?.[primaryKey] as (typeof item)[typeof primaryKey]) &&
+        item[secondaryKey] <
+          (lastValue?.[secondaryKey] as (typeof item)[typeof secondaryKey]))
     ) {
       currentPlace = output.length + 1; // Update current place
     }
@@ -22,7 +25,7 @@ export function placesWithTies<T>(
     lastPlace = currentPlace;
   }
   // If the last place is not the same as the current place, fill in the last places
-  if (lastPlace < currentPlace) {
+  if (lastPlace < currentPlace && lastValue !== null) {
     for (let i = lastPlace + 1; i <= currentPlace; i++) {
       output.push({ ...lastValue, place: i });
     }
