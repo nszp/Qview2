@@ -8,6 +8,7 @@ import { createRoot } from "react-dom/client";
 import { themeOverride } from "./theme";
 
 import "@mantine/core/styles.css";
+import "mantine-datatable/styles.css";
 
 import { routeTree } from "@/routes.ts";
 import { queryClient } from "@/rootRoute.ts";

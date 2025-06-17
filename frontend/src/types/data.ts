@@ -58,21 +58,16 @@ export interface IndividualRoundData {
 }
 
 export interface IndividualData {
-  according: number;
   averageScore: number;
   bonus: number;
   bonusAttempts: number;
-  context: number;
   correct: number;
   errors: number;
   errors16_5: number;
-  generals: number;
-  memory: number;
   name: string;
   quizzes: IndividualRoundData[];
   rounds: number;
   score: number;
-  special: number;
   team: string;
 }
 

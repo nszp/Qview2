@@ -5,6 +5,7 @@ export const themeOverride = createTheme({
 
   // TODO: remove other fonts when i decide on a font
   // fontFamily: "'Noto Sans', sans-serif",
+  fontFamilyMonospace: "Inconsolata, monospace",
   breakpoints: {
     xxs: "26em",
     xs: "36em",
