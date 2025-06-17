@@ -1,5 +1,5 @@
-import { rootRoute } from "@/rootRoute.ts";
 import * as Pages from "@/pages";
+import { rootRoute } from "@/rootRoute.ts";
 
 export * from "./pages";
 export const routeTree = rootRoute.addChildren([

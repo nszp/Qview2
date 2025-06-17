@@ -1,16 +1,20 @@
 import { scoresheetDataOptions } from "@/api.ts";
-import ScoresheetAdditionalEvents from "@/components/ScoresheetAdditionalEvents.tsx";
+import ScoresheetTeamCard from "@/components/ScoresheetTeamCard.tsx";
 import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
-import ScoresheetTimelineBullet from "@/components/ScoresheetTimelineBullet.tsx";
+import ScoresheetTimeline from "@/components/ScoresheetTimeline.tsx";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
+import { theme } from "@/theme.ts";
+import { getTeamColorsForTeamCount } from "@/utils/styleUtils.ts";
 import {
-  convertScoresheetToQuestionSummaries,
-  eventTypeToPointDifference,
-} from "@/utils/summaryEngine.ts";
-import { Badge, Flex, List, Text, Timeline } from "@mantine/core";
+  Flex,
+  SegmentedControl,
+  SimpleGrid,
+  Skeleton,
+  Text,
+} from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Navigate, createRoute } from "@tanstack/react-router";
-import { type JSX, useMemo } from "react";
+import { createRoute, Navigate } from "@tanstack/react-router";
+import { useState } from "react";
 
 export const scoresheetRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -20,7 +24,7 @@ export const scoresheetRoute = createRoute({
     queryClient.ensureQueryData(scoresheetDataOptions(roundNumber)),
   component: function Scoresheet() {
     const { roundNumber: _roundNumber } = scoresheetRoute.useParams();
-    const { isPending, error, data } = useSuspenseQuery(
+    const { isLoading, error, data } = useSuspenseQuery(
       scoresheetDataOptions(_roundNumber),
     );
 
@@ -30,14 +34,14 @@ export const scoresheetRoute = createRoute({
       return <Navigate to="/" replace />;
     }
 
-    const summaries = useMemo(() => {
-      return data ? convertScoresheetToQuestionSummaries(data) : undefined;
-    }, [data]);
-
     if (data) {
       data.tournament ??= "Q2024";
       // TODO: remove when data gets updated
     }
+
+    const teamColors = getTeamColorsForTeamCount(data.teams.length);
+
+    const [selectedDisplay, setSelectedDisplay] = useState("timeline");
 
     return (
       <>
@@ -51,14 +55,13 @@ export const scoresheetRoute = createRoute({
             },
           })}
         >
-          {data && (
-            // TODO: skeleton this ?
-            <Text size="xl">
+          <Skeleton visible={!data}>
+            <Text size="xl" ta="center">
               {data.room} {data.round}
             </Text>
-          )}
+          </Skeleton>
           <Text size="md" mb="md" c="gray" ta="center">
-            {isPending && " Loading..."}
+            {isLoading && " Loading..."}
             {error && ` Error: ${error.message}`}
             {data && (
               <>
@@ -66,13 +69,17 @@ export const scoresheetRoute = createRoute({
                 <br />
                 {data.teams.length === 2 ? (
                   <>
-                    <ScoresheetTeamIcon color={"red"} size={16} mr="2.5px" />
+                    <ScoresheetTeamIcon
+                      color={theme.colors.red[6]}
+                      size={16}
+                      mr="2.5px"
+                    />
                     <span style={{ marginLeft: "2.5px" }}>
                       {data.teams[0].name}
                     </span>
                     &nbsp;vs.&nbsp;
                     <ScoresheetTeamIcon
-                      color={"limegreen"}
+                      color={theme.colors.green[6]}
                       size={16}
                       mr="2.5px"
                     />
@@ -81,129 +88,68 @@ export const scoresheetRoute = createRoute({
                     </span>
                   </>
                 ) : (
-                  <></>
+                  <>
+                    <ScoresheetTeamIcon
+                      color={theme.colors.red[6]}
+                      size={16}
+                      mr="2.5px"
+                    />
+                    <span style={{ marginLeft: "2.5px" }}>
+                      {data.teams[0].name}
+                    </span>
+                    &nbsp;vs.&nbsp;
+                    <ScoresheetTeamIcon
+                      color={theme.colors.blue[5]}
+                      size={16}
+                      mr="2.5px"
+                    />
+                    <span style={{ marginLeft: "2.5px" }}>
+                      {data.teams[1].name}
+                    </span>
+                    &nbsp;vs.&nbsp;
+                    <ScoresheetTeamIcon
+                      color={theme.colors.green[6]}
+                      size={16}
+                      mr="2.5px"
+                    />
+                    <span style={{ marginLeft: "2.5px" }}>
+                      {data.teams[2].name}
+                    </span>
+                  </>
                 )}
               </>
             )}
           </Text>
 
-          {/*
-        After the above short team list, there should be a card for each team. The team color should be incorporated in some way
-        Header: Team Name - Total Score
-        Body: List of quizzers with their scores in {correct}/{incorrect} format
-        Footer: 1st 2nd or 3rd place
+          <SegmentedControl
+            value={selectedDisplay}
+            onChange={setSelectedDisplay}
+            data={[
+              { label: "Modern Timeline", value: "timeline" },
+              { label: "Legacy Scoresheet", value: "legacy" },
+            ]}
+            mb="md"
+          />
 
-        This card structure is flexible but should contain all of this information
-        */}
+          {data && (
+            <SimpleGrid
+              spacing="md"
+              pt="sm"
+              pb="md"
+              cols={{ base: 1, sm: data.teams.length }}
+            >
+              {data.teams.map((team, index) => (
+                <ScoresheetTeamCard
+                  team={team}
+                  key={Number(index)}
+                  color={teamColors[index]}
+                />
+              ))}
+            </SimpleGrid>
+          )}
 
-          <Timeline
-            bulletSize={24}
-            styles={{
-              itemBody: {
-                paddingTop: "4px",
-              },
-              itemBullet: {
-                width: "unset",
-                height: "unset",
-                border: "unset",
-              },
-            }}
-          >
-            {summaries?.map((summary) => {
-              // Timeline: Bullet becomes a ScoresheetTeamIcon of primary team color with the question number embedded in the middle
-              // Remove active line color, get the color from the primary team when rendering the bullet
-
-              // Title is bold
-              //
-              let title: string | JSX.Element = "";
-              if (
-                summary.questionNumber === 21 &&
-                (summary.type === "correct" || summary.type === "incorrect")
-              ) {
-                // tiebreaker
-                if (summary.type === "correct") {
-                  title = `${summary.primaryQuizzer} won the round for ${summary.primaryTeam.name}!`;
-                } else {
-                  title = `${summary.primaryQuizzer} lost the round for ${summary.primaryTeam.name}.`;
-                }
-              } else if (summary.type === "correct") {
-                title = (
-                  <>
-                    {summary.primaryQuizzer}{" "}
-                    <Badge color="green.8" autoContrast>
-                      Correct
-                    </Badge>
-                  </>
-                ); // primaryQuizzer [correct] (different darker green badge)
-              } else if (summary.type === "incorrect") {
-                title = (
-                  <>
-                    {summary.primaryQuizzer}{" "}
-                    <Badge color="red.8" autoContrast>
-                      Error
-                    </Badge>
-                  </>
-                ); // primaryQuizzer [error] (different darker red badge)
-              } else if (summary.type === "nojump") {
-                title = "No one jumped.";
-              }
-
-              // Timeline item should look like this for an incorrect question:
-              // [secondaryTeamColor Icon] secondaryQuizzer [correct bonus] (same darker green badge)
-              // [secondaryTeamColor Icon] secondaryQuizzer [incorrect bonus] (same darker red badge)
-              // [primaryTeamColor Icon] Third Person [bonus] (different colored badge or something?)
-              // [primaryTeamColor Icon] Quiz Out Without Error [bonus] (same different colored badge or something?)
-              // [primaryTeamColor Icon] Error Out [penalty] (another different colored badge or something?)
-
-              // Under all that we need to display the running scores if they have changed
-
-              return (
-                <Timeline.Item
-                  title={<span style={{ fontWeight: 700 }}>{title}</span>}
-                  key={summary.questionNumber}
-                  bullet={
-                    <ScoresheetTimelineBullet
-                      questionResult={summary.type}
-                      questionNumber={
-                        summary.questionNumber === 21
-                          ? "OT"
-                          : summary.questionNumber
-                      }
-                    />
-                  }
-                >
-                  <List>
-                    {summary.type === "incorrect"
-                      ? summary.bonuses?.map((bonus) => (
-                          <List.Item key={bonus.secondaryQuizzer}>
-                            <ScoresheetTeamIcon
-                              color={bonus.secondaryTeam.color}
-                              size={16}
-                            />
-                            {bonus.secondaryQuizzer}{" "}
-                            {bonus.correct ? (
-                              <Badge color="green.8" autoContrast>
-                                Correct Bonus
-                              </Badge>
-                            ) : (
-                              <Badge color="red.8" autoContrast>
-                                Error Bonus
-                              </Badge>
-                            )}
-                          </List.Item>
-                        ))
-                      : undefined}
-
-                    <ScoresheetAdditionalEvents summary={summary} />
-                  </List>
-                </Timeline.Item>
-              );
-            })}
-          </Timeline>
-          <Text c="gray.7" pt="xl">
-            Powered by the Quiz Summary Engine.
-          </Text>
-          {/* puppy! */}
+          {selectedDisplay === "timeline" && <ScoresheetTimeline data={data} />}
+          {/*selectedDisplay === "legacy" && <ScoresheetTable data={data} />*/}
         </Flex>
       </>
     );

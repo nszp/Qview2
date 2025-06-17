@@ -1,10 +1,11 @@
-import { createTheme } from "@mantine/core";
+import { createTheme, DEFAULT_THEME, mergeMantineTheme } from "@mantine/core";
 
-export const theme = createTheme({
+export const themeOverride = createTheme({
   /* Put your mantine theme override here */
 
   // TODO: remove other fonts when i decide on a font
   // fontFamily: "'Noto Sans', sans-serif",
+  fontFamilyMonospace: "Inconsolata, monospace",
   breakpoints: {
     xxs: "26em",
     xs: "36em",
@@ -26,3 +27,5 @@ export const theme = createTheme({
     },
   },
 });
+
+export const theme = mergeMantineTheme(DEFAULT_THEME, themeOverride);

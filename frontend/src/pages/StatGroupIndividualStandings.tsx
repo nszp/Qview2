@@ -3,6 +3,7 @@ import { createRoute, Navigate } from "@tanstack/react-router";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { tournamentDataOptions } from "@/api.ts";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import IndividualStandingsTable from "@/components/IndividualStandingsTable.tsx";
 
 export const statGroupIndividualStandingsRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -35,16 +36,17 @@ export const statGroupIndividualStandingsRoute = createRoute({
           mb="md"
           direction="column"
           sx={(_, u) => ({
-            [u.smallerThan("sm")]: {
-              width: "100%",
-            },
+            // [u.smallerThan("sm")]: {
+            width: "100%",
+            // },
           })}
         >
           <Text size="xl">{statGroup.name}</Text>
-          <Text size="md" mb="md" c="gray">
+          <Text size="md" c="gray">
             Individual Standings
           </Text>
         </Flex>
+        <IndividualStandingsTable individuals={statGroup.individuals} />
       </>
     );
   },

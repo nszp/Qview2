@@ -1,6 +1,6 @@
 import {
-  type QuestionSummary,
   eventTypeToPointDifference,
+  type QuestionSummary,
 } from "@/utils/summaryEngine.ts";
 import { List } from "@mantine/core";
 import type { JSX } from "react";
@@ -50,9 +50,8 @@ export default function ScoresheetAdditionalEvents({
             return `Second foul or overruled challenge for ${summary.primaryTeam.name}. (${eventPointDifference})`;
           }
           break;
-        default:
-          return `Unknown event type: ${event.type} (${eventPointDifference >= 0 ? "+" : ""}${eventPointDifference})`;
       }
+      return `Unknown event type: ${event.type} (${eventPointDifference >= 0 ? "+" : ""}${eventPointDifference})`;
     })
     .map((eventText, eventIndex) => {
       if (typeof eventText !== "string") return eventText;

@@ -1,13 +1,11 @@
 import {
+  ActionIcon,
   AppShell,
   Burger,
   Group,
-  Skeleton,
   Text,
-  ActionIcon,
   useComputedColorScheme,
   useMantineColorScheme,
-  NavLink,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Outlet, useLocation, useNavigate } from "@tanstack/react-router";
