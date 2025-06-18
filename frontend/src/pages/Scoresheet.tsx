@@ -154,6 +154,9 @@ export const scoresheetRoute = createRoute({
                   team={team}
                   key={Number(index)}
                   color={teamColors[index]}
+                  minTeamHeight={Math.max(
+                    ...data.teams.map((team) => team.quizzers.length),
+                  )}
                 />
               ))}
             </SimpleGrid>

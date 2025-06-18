@@ -4,11 +4,12 @@ import {
   getTeamRecords,
   scoresheetColumns,
 } from "@/types/tables/scoresheet.tsx";
+import { Box } from "@mantine/core";
 import { DataTable } from "mantine-datatable";
 
 export default function ScoresheetTable({ data }: { data: Scoresheet }) {
   return (
-    <>
+    <Box mx="auto" maw="75em">
       <DataTable
         records={getRecords(data)}
         columns={scoresheetColumns}
@@ -19,12 +20,8 @@ export default function ScoresheetTable({ data }: { data: Scoresheet }) {
         pinLastColumn
         noHeader
         fz={{ base: "md", sm: "lg" }}
-        w="100%"
-        sx={{
-          marginBottom: "4rem",
-        }}
         idAccessor={"tableId"}
       />
-    </>
+    </Box>
   );
 }
