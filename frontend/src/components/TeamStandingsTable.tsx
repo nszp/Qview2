@@ -1,5 +1,5 @@
 import { DataTable } from "mantine-datatable";
-import type { IndividualData, TeamData } from "@/types/data.ts";
+import type { TeamData } from "@/types/data.ts";
 import { useMemo } from "react";
 import { placesWithTies } from "@/utils/places.ts";
 import { Text } from "@mantine/core";

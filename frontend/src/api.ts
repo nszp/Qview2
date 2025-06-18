@@ -1,8 +1,13 @@
-import type { Scoresheet, TournamentData } from "@/types/data.ts";
+import type {
+  Scoresheet,
+  TickertapeRoundData,
+  TournamentData,
+} from "@/types/data.ts";
 import { queryOptions } from "@tanstack/react-query";
 
 const BASE_URL = "https://bucket.quizstats.org";
 const TOURNAMENT_DATA_URL = `${BASE_URL}/tournamentData.json`;
+const TICKERTAPE_DATA_URL = `${BASE_URL}/tickertape.json`;
 
 function getScoresheetDataUrl(scoreSheetId: string): string {
   return `${BASE_URL}/scoresheets/scoresheet${scoreSheetId}.json`;
@@ -14,6 +19,14 @@ export async function getTournamentData(): Promise<TournamentData> {
     throw new Error(`Failed to fetch tournament data: ${response.statusText}`);
   }
   return (await response.json()) as Promise<TournamentData>;
+}
+
+export async function getTickertapeData(): Promise<TickertapeRoundData[]> {
+  const response = await fetch(TICKERTAPE_DATA_URL);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch tickertape data: ${response.statusText}`);
+  }
+  return (await response.json()) as Promise<TickertapeRoundData[]>;
 }
 
 export async function getScoresheetData(
@@ -30,6 +43,13 @@ export async function getScoresheetData(
 export const tournamentDataOptions = queryOptions({
   queryKey: ["tournament"],
   queryFn: getTournamentData,
+  refetchOnWindowFocus: false,
+  refetchOnReconnect: false,
+});
+
+export const tickertapeDataOptions = queryOptions({
+  queryKey: ["tickertape"],
+  queryFn: getTickertapeData,
   refetchOnWindowFocus: false,
   refetchOnReconnect: false,
 });

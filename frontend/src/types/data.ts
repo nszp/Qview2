@@ -30,6 +30,9 @@ export interface ScoresheetTeam {
 }
 
 export interface Scoresheet {
+  completed: boolean;
+  inProgress: boolean;
+  question: string;
   tdrri: string;
   division: string;
   room: string;
@@ -38,7 +41,10 @@ export interface Scoresheet {
   teams: Array<ScoresheetTeam>;
 }
 
-export interface TickertapeRoomData {
+export interface TickertapeRoundData {
+  completed: boolean;
+  inProgress: boolean;
+  question: string;
   division: string;
   room: string;
   round: string;
@@ -71,17 +77,13 @@ export interface IndividualData {
   team: string;
 }
 
-export type TeamRoundData = TickertapeRoomData & {
-  completed: boolean;
-};
-
 export interface TeamData {
   averageScore: number;
   losses: number;
   modifiedOlympicPoints: number;
   name: string;
   olympicPoints: number;
-  quizzes: TeamRoundData[];
+  quizzes: TickertapeRoundData[];
   rounds: number;
   totalScore: number;
   wins: number;
