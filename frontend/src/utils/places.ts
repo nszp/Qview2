@@ -1,3 +1,5 @@
+import type { TournamentData } from "@/types/data.ts";
+
 export function placesWithTies<T>(
   input: T[],
   primaryKey: keyof T, // Sort by this
@@ -31,4 +33,8 @@ export function placesWithTies<T>(
     }
   }
   return output;
+}
+
+export function isQ(tournament: TournamentData) {
+  return tournament.tournamentName === `Q${new Date().getFullYear()}`;
 }

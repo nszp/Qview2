@@ -1,16 +1,17 @@
-import { StatGroupCard } from "@/components/StatGroupCard.tsx";
-import { Autocomplete, SimpleGrid, Skeleton } from "@mantine/core";
-import { useEffect, useMemo } from "react";
-import { HomepageSection } from "@/components/HomepageSection.tsx";
-import { createRoute, useRouter } from "@tanstack/react-router";
-import { StatGroupTeamList } from "@/components/StatGroupTeamList.tsx";
 import { tournamentDataOptions } from "@/api.ts";
-import { individualOverviewRoute, teamOverviewRoute } from "@/routes.ts";
+import { HomepageSection } from "@/components/HomepageSection.tsx";
+import { StatGroupCard } from "@/components/StatGroupCard.tsx";
+import { StatGroupTeamList } from "@/components/StatGroupTeamList.tsx";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
+import { individualOverviewRoute, teamOverviewRoute } from "@/routes.ts";
+import { isQ } from "@/utils/places";
+import { Autocomplete, SimpleGrid, Skeleton } from "@mantine/core";
 import {
   useQueryErrorResetBoundary,
   useSuspenseQuery,
 } from "@tanstack/react-query";
+import { createRoute, useRouter } from "@tanstack/react-router";
+import { useEffect, useMemo } from "react";
 
 export const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -63,9 +64,13 @@ export const homeRoute = createRoute({
             spacing="sm"
             verticalSpacing="md"
           >
-            {data?.statGroups.map((division) => (
-              <StatGroupCard statGroup={division} key={division.name} />
-            )) ??
+            {data?.statGroups
+              .filter(
+                (division) => division.name !== division.webName || !isQ(data),
+              )
+              .map((division) => (
+                <StatGroupCard statGroup={division} key={division.name} />
+              )) ??
               new Array(24).fill(undefined).map((_, index) => (
                 <Skeleton radius="md" key={Number(index)}>
                   <StatGroupCard
@@ -141,9 +146,21 @@ export const homeRoute = createRoute({
           </SimpleGrid>
         </HomepageSection>
         <HomepageSection name={"Team Schedules"}>
-          {data?.statGroups.map((statGroup) => (
-            <StatGroupTeamList statGroup={statGroup} key={statGroup.name} />
-          )) ?? <Skeleton height={256} radius="md" mb="md" w="100%" />}
+          {data?.statGroups
+            .filter((statGroup) => {
+              if (!isQ(data)) return true;
+              return (
+                statGroup.webName !== statGroup.name &&
+                !statGroup.name.endsWith("f")
+              );
+            })
+            .map((statGroup) => (
+              <StatGroupTeamList
+                statGroup={statGroup}
+                key={statGroup.name}
+                openByDefault={false}
+              />
+            )) ?? <Skeleton height={256} radius="md" mb="md" w="100%" />}
         </HomepageSection>
       </>
     );

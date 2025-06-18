@@ -356,10 +356,6 @@ export function convertScoresheetToQuestionSummaries(
         }
 
         if (actualBonusPenaltyPoints !== expectedPoints) {
-          console.log(
-            `actual points ${actualBonusPenaltyPoints} != expected points ${expectedPoints} for team ${team.name} (question #${questionNumber})`,
-          );
-
           const difference = actualBonusPenaltyPoints - expectedPoints;
           if (difference < 0) {
             const foulsInQuestion = Math.abs(difference) / 10;

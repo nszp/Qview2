@@ -1,4 +1,8 @@
 import {
+  statGroupIndividualStandingsRoute,
+  statGroupTeamStandingsRoute,
+} from "@/routes.ts";
+import {
   Button,
   Card,
   Flex,
@@ -6,12 +10,8 @@ import {
   Text,
   useComputedColorScheme,
 } from "@mantine/core";
-import type { StatGroupData } from "../types/data.ts";
 import { Link, useNavigate } from "@tanstack/react-router";
-import {
-  statGroupIndividualStandingsRoute,
-  statGroupTeamStandingsRoute,
-} from "@/routes.ts";
+import type { StatGroupData } from "../types/data.ts";
 
 export function StatGroupCard({ statGroup }: { statGroup: StatGroupData }) {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ export function StatGroupCard({ statGroup }: { statGroup: StatGroupData }) {
             mb="xs"
             sx={{ whiteSpace: "nowrap", letterSpacing: "-0.02em" }}
           >
-            {statGroup.name}
+            {statGroup.webName}
           </Text>
           <Text
             size="lg"
@@ -36,7 +36,7 @@ export function StatGroupCard({ statGroup }: { statGroup: StatGroupData }) {
             mb="xs"
             sx={{ whiteSpace: "nowrap", letterSpacing: "-0.04em" }}
           >
-            {statGroup.name}
+            {statGroup.webName}
           </Text>
         </Flex>
       </Card.Section>

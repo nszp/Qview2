@@ -21,7 +21,8 @@ function CardDivider({ color }: { color: string }) {
 export default function ScoresheetTeamCard({
   team,
   color,
-}: { team: ScoresheetTeam; color: string }) {
+  minTeamHeight,
+}: { team: ScoresheetTeam; color: string; minTeamHeight?: number }) {
   return (
     <Card
       shadow="lg"
@@ -41,7 +42,13 @@ export default function ScoresheetTeamCard({
         {team.name}
       </Text>
       <CardDivider color={color} />
-      <Flex justify="center" align="center" w="100%" direction="column">
+      <Flex
+        justify="start"
+        align="center"
+        w="100%"
+        direction="column"
+        h={minTeamHeight ? 25 * minTeamHeight : undefined}
+      >
         {team.quizzers.map((quizzer) => (
           <Flex justify="space-between" w="100%" key={quizzer.name} gap="xs">
             <Text>{quizzer.name}</Text>
@@ -56,9 +63,9 @@ export default function ScoresheetTeamCard({
         {team.place !== 0 &&
           `${team.place === 1 ? "1st" : team.place === 2 ? "2nd" : "3rd"} - `}
         {team.runningScore.reduceRight((previous, current) => {
-          if (previous !== "") return previous;
-          return current;
-        }, "")}{" "}
+          if (previous !== "0") return previous;
+          return current === "" ? "0" : current;
+        }, "0")}{" "}
         points
       </Text>
     </Card>
