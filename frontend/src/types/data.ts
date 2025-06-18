@@ -17,12 +17,18 @@ export interface ScoresheetQuizzer {
   totalCorrect: number;
   totalErrors: number;
   totalFouls: number;
+  originalSeat: number;
 }
 
 export interface ScoresheetTeam {
   name: string;
   quizzersWithCorrectQuestions: number;
   overruledChallenges: number;
+  timeouts: number;
+  totalCorrect: number;
+  totalErrors: number;
+  totalFouls: number;
+  totalScore: number;
   place: number;
   quizzers: Array<ScoresheetQuizzer>;
   bonusOrPenaltyPoints: Array<string>;
