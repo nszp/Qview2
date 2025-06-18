@@ -29,7 +29,7 @@ if (root) {
       <MantineProvider
         theme={themeOverride}
         stylesTransform={emotionTransform}
-        defaultColorScheme="dark"
+        defaultColorScheme="auto"
       >
         <MantineEmotionProvider>
           <QueryClientProvider client={queryClient}>
