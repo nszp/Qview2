@@ -63,7 +63,6 @@ export default function ScoresheetTeamCard({
         {team.place !== 0 &&
           `${team.place === 1 ? "1st" : team.place === 2 ? "2nd" : "3rd"} - `}
         {team.runningScore.reduceRight((previous, current) => {
-          console.log(previous, current, typeof previous, typeof current);
           if (previous !== "0") return previous;
           return current === "" ? "0" : current;
         }, "0")}{" "}
