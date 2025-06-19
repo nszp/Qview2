@@ -4,6 +4,8 @@ import { tickertapeDataOptions, tournamentDataOptions } from "@/api.ts";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import ScheduleTable from "@/components/ScheduleTable.tsx";
 import { useMemo } from "react";
+import { Flex, Text } from "@mantine/core";
+import TeamStandingsTable from "@/components/TeamStandingsTable.tsx";
 
 export const statGroupTeamScheduleRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -60,6 +62,26 @@ export const statGroupTeamScheduleRoute = createRoute({
       });
     }, [team.quizzes, tickertapeData.tickertape]);
 
-    return <ScheduleTable quizzes={quizzes} />;
+    return (
+      <>
+        <Flex
+          justify="center"
+          align="center"
+          mb="md"
+          direction="column"
+          sx={(_, u) => ({
+            [u.smallerThan("sm")]: {
+              width: "100%",
+            },
+          })}
+        >
+          <Text size="xl">{team.name}</Text>
+          <Text size="md" mb="md" c="gray">
+            {statGroup.webName} Schedule
+          </Text>
+        </Flex>
+        <ScheduleTable quizzes={quizzes} />
+      </>
+    );
   },
 });

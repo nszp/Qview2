@@ -41,7 +41,7 @@ export const statGroupIndividualStandingsRoute = createRoute({
             // },
           })}
         >
-          <Text size="xl">{statGroup.name}</Text>
+          <Text size="xl">{statGroup.webName}</Text>
           <Text size="md" c="gray">
             Individual Standings
           </Text>

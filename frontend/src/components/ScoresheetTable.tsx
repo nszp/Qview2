@@ -9,7 +9,7 @@ import { DataTable } from "mantine-datatable";
 
 export default function ScoresheetTable({ data }: { data: Scoresheet }) {
   return (
-    <Box mx="auto" maw="75em">
+    <Box mx="auto" maw="75em" mb="md">
       <DataTable
         records={getRecords(data)}
         columns={scoresheetColumns}

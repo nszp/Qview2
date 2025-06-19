@@ -173,9 +173,8 @@ export const scoresheetRoute = createRoute({
             ]}
             mb="md"
           />
-
-          {selectedDisplay === "timeline" && <ScoresheetTimeline data={data} />}
         </Flex>
+        {selectedDisplay === "timeline" && <ScoresheetTimeline data={data} />}
         {selectedDisplay === "legacy" && <ScoresheetTable data={data} />}
       </>
     );
