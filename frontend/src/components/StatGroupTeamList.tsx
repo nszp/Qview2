@@ -62,9 +62,8 @@ export function StatGroupTeamList({
         mb="sm"
         pb="xs"
         ta="center"
-        w="50%"
         variant="transparent"
-        sx={(theme) => ({
+        sx={(theme, u) => ({
           whiteSpace: "nowrap",
           borderBottomWidth: 1,
           borderBottomStyle: "solid",
@@ -73,6 +72,12 @@ export function StatGroupTeamList({
               ? theme.colors.gray[3]
               : theme.colors.dark[4],
           color: "unset",
+          [u.smallerThan("xs")]: {
+            width: "90%",
+          },
+          [u.largerThan("xs")]: {
+            width: "50%",
+          },
         })}
         onClick={() => setOpen(!open)}
       >

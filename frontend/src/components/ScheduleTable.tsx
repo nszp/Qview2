@@ -42,7 +42,6 @@ export default function ScheduleTable({
             }
             if (quiz.inProgress) {
               // Quiz in progress
-              // TODO: also show stuff for in progress/completed quizzes like livestream and scoresheet
               return (
                 <Text
                   component={Link}
