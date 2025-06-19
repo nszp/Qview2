@@ -4,7 +4,7 @@ import { StatGroupCard } from "@/components/StatGroupCard.tsx";
 import { StatGroupTeamList } from "@/components/StatGroupTeamList.tsx";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { individualOverviewRoute, teamOverviewRoute } from "@/routes.ts";
-import { isQ } from "@/utils/places";
+import { isQ } from "@/utils/utils.ts";
 import { Autocomplete, SimpleGrid, Skeleton } from "@mantine/core";
 import {
   useQueryErrorResetBoundary,
@@ -36,12 +36,20 @@ export const homeRoute = createRoute({
     const teamsList = useMemo(
       () => [
         ...new Set(
-          data?.statGroups.flatMap((statGroup) => {
-            return statGroup.teams.map((team) => team.name);
-          }),
+          data?.statGroups
+            .filter((statGroup) => {
+              if (!isQ(data)) return true;
+              return (
+                statGroup.webName !== statGroup.name &&
+                !statGroup.name.endsWith("f")
+              );
+            })
+            .flatMap((statGroup) => {
+              return statGroup.teams.map((team) => team.name);
+            }),
         ),
       ],
-      [data?.statGroups],
+      [data],
     );
 
     if (error) {

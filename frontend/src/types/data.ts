@@ -36,9 +36,11 @@ export interface ScoresheetTeam {
 }
 
 export interface Scoresheet {
+  generationQueuedAt: string;
+  generationCompletedAt: string;
   completed: boolean;
   inProgress: boolean;
-  question: string;
+  question: number;
   tdrri: string;
   division: string;
   room: string;
@@ -50,13 +52,12 @@ export interface Scoresheet {
 export interface TickertapeRoundData {
   completed: boolean;
   inProgress: boolean;
-  question: string;
+  question: number;
   division: string;
   room: string;
   round: string;
   tdrri: number;
   teams: { name: string; score: number }[];
-  time: number;
   tournament: string;
   livestreamUrl?: string;
 }
@@ -83,13 +84,18 @@ export interface IndividualData {
   team: string;
 }
 
+export interface TeamRoundData extends TickertapeRoundData {
+  time: string;
+  scheduled?: boolean;
+}
+
 export interface TeamData {
   averageScore: number;
   losses: number;
   modifiedOlympicPoints: number;
   name: string;
   olympicPoints: number;
-  quizzes: TickertapeRoundData[];
+  quizzes: TeamRoundData[];
   rounds: number;
   totalScore: number;
   wins: number;
@@ -108,4 +114,10 @@ export interface TournamentData {
   generationCompletedAt: string;
   tournamentName: string;
   updatedEveryMinutes: number;
+}
+
+export interface TickertapeData {
+  generationQueuedAt: string;
+  generationCompletedAt: string;
+  tickertape: TickertapeRoundData[];
 }

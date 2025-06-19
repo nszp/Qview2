@@ -1,7 +1,7 @@
 import { DataTable } from "mantine-datatable";
 import type { TeamData } from "@/types/data.ts";
 import { useMemo } from "react";
-import { placesWithTies } from "@/utils/places.ts";
+import { placesWithTies } from "@/utils/utils.ts";
 import { Text } from "@mantine/core";
 
 export default function TeamStandingsTable({ teams }: { teams: TeamData[] }) {

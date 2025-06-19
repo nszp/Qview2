@@ -1,5 +1,6 @@
 import type {
   Scoresheet,
+  TickertapeData,
   TickertapeRoundData,
   TournamentData,
 } from "@/types/data.ts";
@@ -21,12 +22,12 @@ export async function getTournamentData(): Promise<TournamentData> {
   return (await response.json()) as Promise<TournamentData>;
 }
 
-export async function getTickertapeData(): Promise<TickertapeRoundData[]> {
+export async function getTickertapeData(): Promise<TickertapeData> {
   const response = await fetch(TICKERTAPE_DATA_URL);
   if (!response.ok) {
     throw new Error(`Failed to fetch tickertape data: ${response.statusText}`);
   }
-  return (await response.json()) as Promise<TickertapeRoundData[]>;
+  return (await response.json()) as Promise<TickertapeData>;
 }
 
 export async function getScoresheetData(

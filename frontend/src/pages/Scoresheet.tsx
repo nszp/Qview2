@@ -73,7 +73,7 @@ export const scoresheetRoute = createRoute({
                     <ScoresheetTeamIcon
                       color={theme.colors.red[6]}
                       size={16}
-                      mr="2.5px"
+                      style={{ marginRight: "2.5px" }}
                     />
                     <span style={{ marginLeft: "2.5px" }}>
                       {data.teams[0].name}
@@ -82,7 +82,7 @@ export const scoresheetRoute = createRoute({
                     <ScoresheetTeamIcon
                       color={theme.colors.green[6]}
                       size={16}
-                      mr="2.5px"
+                      style={{ marginRight: "2.5px" }}
                     />
                     <span style={{ marginLeft: "2.5px" }}>
                       {data.teams[1].name}
@@ -93,7 +93,7 @@ export const scoresheetRoute = createRoute({
                     <ScoresheetTeamIcon
                       color={theme.colors.red[6]}
                       size={16}
-                      mr="2.5px"
+                      style={{ marginRight: "2.5px" }}
                     />
                     <span style={{ marginLeft: "2.5px" }}>
                       {data.teams[0].name}
@@ -102,7 +102,7 @@ export const scoresheetRoute = createRoute({
                     <ScoresheetTeamIcon
                       color={theme.colors.blue[5]}
                       size={16}
-                      mr="2.5px"
+                      style={{ marginRight: "2.5px" }}
                     />
                     <span style={{ marginLeft: "2.5px" }}>
                       {data.teams[1].name}
@@ -111,7 +111,7 @@ export const scoresheetRoute = createRoute({
                     <ScoresheetTeamIcon
                       color={theme.colors.green[6]}
                       size={16}
-                      mr="2.5px"
+                      style={{ marginRight: "2.5px" }}
                     />
                     <span style={{ marginLeft: "2.5px" }}>
                       {data.teams[2].name}

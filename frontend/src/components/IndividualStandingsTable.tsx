@@ -1,7 +1,7 @@
 import { DataTable } from "mantine-datatable";
 import type { IndividualData } from "@/types/data.ts";
 import { useMemo } from "react";
-import { placesWithTies } from "@/utils/places.ts";
+import { placesWithTies } from "@/utils/utils.ts";
 import styled from "@emotion/styled";
 import { ExternalLinkIcon } from "lucide-react";
 import { Link } from "@tanstack/react-router";
