@@ -1,4 +1,4 @@
-import { Badge, List, Text, Timeline } from "@mantine/core";
+import { Badge, Box, Flex, List, Text, Timeline } from "@mantine/core";
 import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
 import { type JSX, useMemo } from "react";
 import ScoresheetTimelineBullet from "@/components/ScoresheetTimelineBullet.tsx";
@@ -12,7 +12,14 @@ export default function ScoresheetTimeline({ data }: { data: Scoresheet }) {
   }, [data]);
 
   return (
-    <>
+    <Flex
+      mb="md"
+      justify="center"
+      align="center"
+      direction="column"
+      w="100%"
+      px="xl"
+    >
       {/*
         After the above short team list, there should be a card for each team. The team color should be incorporated in some way
         Header: Team Name - Total Score
@@ -130,6 +137,6 @@ export default function ScoresheetTimeline({ data }: { data: Scoresheet }) {
         Powered by the Quiz Summary Engine.
       </Text>
       {/* puppy! */}
-    </>
+    </Flex>
   );
 }

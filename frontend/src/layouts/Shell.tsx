@@ -47,12 +47,13 @@ export const Shell = () => {
       >
         <AppShell.Header>
           <Group h="100%" px="md">
-            <Burger
-              opened={opened}
-              onClick={toggle}
-              hiddenFrom="sm"
-              size="sm"
-            />
+            {/*<Burger*/}
+            {/*  opened={opened}*/}
+            {/*  onClick={toggle}*/}
+            {/*  hiddenFrom="sm"*/}
+            {/*  size="sm"*/}
+            {/*/>*/}
+            {/* TODO: Finish navbar and re-enable */}
             <Group justify="space-between" sx={{ flex: 1 }}>
               <Text
                 component={Link}

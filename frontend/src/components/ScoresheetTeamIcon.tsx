@@ -3,19 +3,11 @@ import { Circle } from "lucide-react";
 export function ScoresheetTeamIcon({
   color,
   size,
-  mb,
-  mr,
-  mt,
-  ml,
-  m,
+  style,
 }: {
   color: string;
   size: number;
-  mb?: string;
-  mr?: string;
-  mt?: string;
-  ml?: string;
-  m?: string;
+  style?: React.CSSProperties;
 }) {
   return (
     <Circle
@@ -23,14 +15,10 @@ export function ScoresheetTeamIcon({
       fill={color}
       size={size}
       style={{
-        marginBottom: mb,
-        marginRight: mr,
-        marginTop: mt,
-        marginLeft: ml,
-        margin: m,
         position: "relative",
         top: "-2px",
         verticalAlign: "middle",
+        ...(style || {}),
       }}
     />
   );
