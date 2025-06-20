@@ -16,6 +16,7 @@ import { queryClient } from "@/rootRoute.ts";
 const router = createRouter({
   routeTree,
   scrollRestoration: true,
+  scrollToTopSelectors: ["main"],
   context: {
     scrollRefs: [],
   },
