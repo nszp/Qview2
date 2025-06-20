@@ -13,11 +13,12 @@ import "mantine-datatable/styles.css";
 import { routeTree } from "@/routes.ts";
 import { queryClient } from "@/rootRoute.ts";
 
-const root = document.getElementById("root");
-
 const router = createRouter({
   routeTree,
   scrollRestoration: true,
+  context: {
+    scrollRefs: [],
+  },
 });
 
 declare module "@tanstack/react-router" {
@@ -25,6 +26,8 @@ declare module "@tanstack/react-router" {
     router: typeof router;
   }
 }
+
+const root = document.getElementById("root");
 
 if (root) {
   createRoot(root).render(

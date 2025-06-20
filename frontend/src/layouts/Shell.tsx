@@ -4,22 +4,27 @@ import {
   Burger,
   Group,
   NavLink,
-  ScrollArea,
   Skeleton,
   Text,
   useComputedColorScheme,
   useMantineColorScheme,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useDisclosure, useMergedRef } from "@mantine/hooks";
+import { Link, Outlet, useLocation } from "@tanstack/react-router";
+import { type Ref, useEffect, useMemo, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { homeRoute, statGroupIndividualStandingsRoute } from "@/routes.ts";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { tournamentDataOptions } from "@/api.ts";
+import { isQ } from "@/utils/utils.ts";
+import { largerThan, smallerThan } from "@/utils/styleUtils.ts";
+import { ScrollRefsContext } from "@/context.ts";
+import { mergeRefs } from "@/utils/mergeRefs.ts";
 
 export const Shell = () => {
+  const [scrollRefs, setScrollRefs] = useState<Ref<HTMLElement>[]>([]);
+
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
 
@@ -43,6 +48,15 @@ export const Shell = () => {
   const toggleColorScheme = () => {
     setColorScheme(colorScheme === "dark" ? "light" : "dark");
   };
+
+  const statGroups = useMemo(() => {
+    return data?.statGroups.filter((statGroup) => {
+      if (!isQ(data)) return true;
+      return (
+        statGroup.webName !== statGroup.name && !statGroup.name.endsWith("f")
+      );
+    });
+  }, [data]);
 
   return (
     <>
@@ -102,50 +116,85 @@ export const Shell = () => {
             </Group>
           </Group>
         </AppShell.Header>
-        <AppShell.Navbar p="md">
+        <AppShell.Navbar
+          p="md"
+          pt="0"
+          sx={{
+            overflow: "auto",
+          }}
+          zIndex={2000}
+        >
+          <NavLink
+            label="Home"
+            component={Link}
+            to={homeRoute.to}
+            viewTransition={true}
+          />
+          {/*<NavLink*/}
+          {/*  label="Division Standings"*/}
+          {/*  component={Link}*/}
+          {/*  to={homeRoute.to}*/}
+          {/*  viewTransition={true}*/}
+          {/*  hashScrollIntoView=""*/}
+          {/*/>*/}
           {isLoading || error || data?.statGroups.length === 0 ? (
             <Skeleton height={40} mb="xs" />
           ) : (
-            <AppShell.Section grow component={ScrollArea}>
-              {data.statGroups.map((statGroup) => (
+            // <AppShell.Section grow component={ScrollArea} ml="md">
+            statGroups.map((statGroup) => (
+              <NavLink
+                key={statGroup.name}
+                label={statGroup.webName}
+                defaultOpened
+              >
                 <NavLink
-                  key={statGroup.name}
-                  label={statGroup.name}
-                  defaultOpened
-                >
-                  <NavLink
-                    label="Individual Standings"
-                    component={Link}
-                    to={statGroupIndividualStandingsRoute.to}
-                    // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
-                    params={{ statGroupName: statGroup.name }}
-                  />
-                  <NavLink
-                    label="Team Standings"
-                    component={Link}
-                    to={statGroupIndividualStandingsRoute.to}
-                    // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
-                    params={{ statGroupName: statGroup.name }}
-                  />
-                </NavLink>
-              ))}
-            </AppShell.Section>
+                  label="Individual Standings"
+                  component={Link}
+                  to={statGroupIndividualStandingsRoute.to}
+                  // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                  params={{ statGroupName: statGroup.name }}
+                />
+                <NavLink
+                  label="Team Standings"
+                  component={Link}
+                  to={statGroupIndividualStandingsRoute.to}
+                  // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                  params={{ statGroupName: statGroup.name }}
+                />
+              </NavLink>
+            ))
+            // </AppShell.Section>
           )}
         </AppShell.Navbar>
-        <AppShell.Main>
-          {/*<ScrollArea*/}
-          {/*  type={mobileOpened || desktopOpened ? "never" : "auto"}*/}
-          {/*  styles={{*/}
-          {/*    viewport: {*/}
-          {/*      minHeight: "99vh",*/}
-          {/*    },*/}
-          {/*    content: {*/}
-          {/*      minHeight: "99vh",*/}
-          {/*    },*/}
-          {/*  }}*/}
-          {/*>*/}
-          <Outlet />
-          {/*</ScrollArea>*/}
+        <AppShell.Main
+          ref={mergeRefs(scrollRefs)}
+          style={{
+            overflow: mobileOpened ? "hidden" : "scroll",
+          }}
+          sx={(theme, u) => ({
+            paddingTop: "40px",
+            [u.smallerThan("md")]: {
+              height: "calc(100vh - 60px)",
+              marginTop: `calc(60px - ${theme.spacing.md})`,
+            },
+            [`@media ${largerThan(u, "md")} and ${smallerThan(u, "lg")}`]: {
+              height: "calc(100vh - 70px)",
+              marginTop: `calc(70px - ${theme.spacing.md})`,
+            },
+            [u.largerThan("lg")]: {
+              height: "calc(100vh - 80px)",
+              marginTop: `calc(80px - ${theme.spacing.md})`,
+            },
+          })}
+        >
+          <ScrollRefsContext
+            value={{
+              scrollRefs,
+              setScrollRefs,
+            }}
+          >
+            <Outlet />
+          </ScrollRefsContext>
         </AppShell.Main>
       </AppShell>
       <TanStackRouterDevtools position="bottom-left" />

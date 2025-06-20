@@ -12,7 +12,7 @@ import {
   Box,
   Button,
   Flex,
-  ScrollArea,
+  Space,
   SimpleGrid,
   Skeleton,
   useComputedColorScheme,
@@ -23,39 +23,56 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createRoute, useRouter } from "@tanstack/react-router";
-import { useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo } from "react";
+import { ScrollRefsContext } from "@/context.ts";
+
+const scrollIntoViewOptions = {
+  offset: 60,
+  duration: 400,
+};
 
 export const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
   loader: () => queryClient.ensureQueryData(tournamentDataOptions),
   component: function Home() {
+    const { setScrollRefs } = useContext(ScrollRefsContext);
+
     const {
       scrollIntoView: scrollDivisionStandingsIntoView,
       targetRef: targetDivisionStandingsRef,
-    } = useScrollIntoView<HTMLDivElement>({
-      offset: 150,
-      duration: 600,
-    });
-    const { scrollIntoView: scrollSearchIntoView, targetRef: targetSearchRef } =
-      useScrollIntoView<HTMLDivElement>({
-        offset: 150,
-        duration: 600,
-      });
+      scrollableRef: scrollableDivisionStandingsRef,
+    } = useScrollIntoView<HTMLDivElement>(scrollIntoViewOptions);
+    const {
+      scrollIntoView: scrollSearchIntoView,
+      targetRef: targetSearchRef,
+      scrollableRef: scrollableSearchRef,
+    } = useScrollIntoView<HTMLDivElement>(scrollIntoViewOptions);
     const {
       scrollIntoView: scrollTeamSchedulesIntoView,
       targetRef: targetTeamSchedulesRef,
-    } = useScrollIntoView<HTMLDivElement>({
-      offset: 150,
-      duration: 600,
-    });
+      scrollableRef: scrollableTeamSchedulesRef,
+    } = useScrollIntoView<HTMLDivElement>(scrollIntoViewOptions);
     const {
       scrollIntoView: scrollStreamsIntoView,
       targetRef: targetStreamsRef,
-    } = useScrollIntoView<HTMLDivElement>({
-      offset: 150,
-      duration: 600,
-    });
+      scrollableRef: scrollableStreamsRef,
+    } = useScrollIntoView<HTMLDivElement>(scrollIntoViewOptions);
+
+    useEffect(() => {
+      setScrollRefs([
+        scrollableStreamsRef,
+        scrollableTeamSchedulesRef,
+        scrollableSearchRef,
+        scrollableDivisionStandingsRef,
+      ]);
+    }, [
+      scrollableStreamsRef,
+      scrollableTeamSchedulesRef,
+      scrollableSearchRef,
+      scrollableDivisionStandingsRef,
+      setScrollRefs,
+    ]);
 
     const { isPending, error, data } = useSuspenseQuery(tournamentDataOptions);
 
@@ -101,13 +118,9 @@ export const homeRoute = createRoute({
       <>
         <Box
           w="100%"
-          top={{
-            base: 60,
-            md: 70,
-            lg: 80,
-          }}
+          top="-44px"
           bg="var(--mantine-color-body)"
-          mt="-md"
+          mt="-44px"
           style={{
             position: "sticky",
             zIndex: 1000,
@@ -159,6 +172,7 @@ export const homeRoute = createRoute({
           </Flex>
         </Box>
 
+        <Space pt="md"></Space>
         <HomepageSection
           name={"Division Standings"}
           ref={targetDivisionStandingsRef}
