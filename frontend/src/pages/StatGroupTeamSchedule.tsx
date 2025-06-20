@@ -51,8 +51,6 @@ export const statGroupTeamScheduleRoute = createRoute({
           (q) => q.round === quiz.round && q.room === quiz.room,
         );
 
-        console.log(tickertapeRound, quiz);
-
         return tickertapeRound
           ? {
               ...tickertapeRound,

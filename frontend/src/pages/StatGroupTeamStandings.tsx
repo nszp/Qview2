@@ -46,7 +46,9 @@ export const statGroupTeamStandingsRoute = createRoute({
             Team Standings
           </Text>
         </Flex>
-        <TeamStandingsTable teams={statGroup.teams} />
+        <TeamStandingsTable
+          teams={statGroup.teams.filter((team) => team.rounds > 0)}
+        />
       </>
     );
   },

@@ -15,7 +15,10 @@ import { queryClient } from "@/rootRoute.ts";
 
 const root = document.getElementById("root");
 
-const router = createRouter({ routeTree });
+const router = createRouter({
+  routeTree,
+  scrollRestoration: true,
+});
 
 declare module "@tanstack/react-router" {
   interface Register {
