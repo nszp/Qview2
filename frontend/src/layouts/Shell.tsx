@@ -202,6 +202,7 @@ export const Shell = () => {
               "Local Experienced",
               "District Novice",
               "Local Novice",
+              "Decades",
             ].map((outerGroupName) => (
               <NavLink key={outerGroupName} label={outerGroupName}>
                 {statGroups
