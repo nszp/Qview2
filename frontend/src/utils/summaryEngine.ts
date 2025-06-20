@@ -342,12 +342,7 @@ export function convertScoresheetToQuestionSummaries(
     // if the team bonus/penalty doesn't match what's expected AND >= 2 team fouls, assume second foul happened
     // or an overruled challenge could've happened
     for (const [team, expectedPoints] of expectedBonusPenaltyPoints) {
-      const teamFoulCount = team.quizzers.reduce(
-        (previousValue, currentQuizzer) =>
-          previousValue + currentQuizzer.totalFouls,
-        0,
-      );
-      if (teamFoulCount >= 2 || team.overruledChallenges >= 2) {
+      if (team.totalFouls >= 2 || team.overruledChallenges >= 2) {
         let actualBonusPenaltyPoints = Number.parseInt(
           team.bonusOrPenaltyPoints[questionIndex],
         );
