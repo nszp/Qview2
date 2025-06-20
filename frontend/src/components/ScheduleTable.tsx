@@ -1,9 +1,11 @@
-import { DataTable } from "mantine-datatable";
-import type { TeamRoundData } from "@/types/data.ts";
-import { Box, Text } from "@mantine/core";
-import * as dayjs from "dayjs";
-import { getTeamColorsForTeamCount } from "@/utils/styleUtils.ts";
 import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
+import { roomStreamRoute, scoresheetRoute } from "@/pages";
+import { theme } from "@/theme.ts";
+import type { TeamRoundData } from "@/types/data.ts";
+import { getTeamColorsForTeamCount } from "@/utils/styleUtils.ts";
+import { Box, Text } from "@mantine/core";
+import { Link } from "@tanstack/react-router";
+import * as dayjs from "dayjs";
 import {
   CalendarIcon,
   CheckIcon,
@@ -11,9 +13,7 @@ import {
   MonitorPlayIcon,
   SheetIcon,
 } from "lucide-react";
-import { theme } from "@/theme.ts";
-import { Link } from "@tanstack/react-router";
-import { roomStreamRoute, scoresheetRoute } from "@/pages";
+import { DataTable } from "mantine-datatable";
 
 export default function ScheduleTable({
   quizzes,
@@ -116,12 +116,6 @@ export default function ScheduleTable({
             textAlign: "center",
             width: "110px",
             noWrap: true,
-          },
-          {
-            accessor: "round",
-            title: "Round",
-            textAlign: "center",
-            width: "110px",
           },
           {
             accessor: "teams",

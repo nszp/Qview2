@@ -1,11 +1,11 @@
-import { createRoute, Navigate } from "@tanstack/react-router";
-import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { tickertapeDataOptions, tournamentDataOptions } from "@/api.ts";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import ScheduleTable from "@/components/ScheduleTable.tsx";
-import { useMemo } from "react";
-import { Flex, Text } from "@mantine/core";
 import TeamStandingsTable from "@/components/TeamStandingsTable.tsx";
+import { queryClient, rootRoute } from "@/rootRoute.ts";
+import { Flex, Text } from "@mantine/core";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { Navigate, createRoute } from "@tanstack/react-router";
+import { useMemo } from "react";
 
 export const statGroupTeamScheduleRoute = createRoute({
   getParentRoute: () => rootRoute,

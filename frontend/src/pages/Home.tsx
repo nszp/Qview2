@@ -2,6 +2,7 @@ import { tournamentDataOptions } from "@/api.ts";
 import { HomepageSection } from "@/components/HomepageSection.tsx";
 import { StatGroupCard } from "@/components/StatGroupCard.tsx";
 import { StatGroupTeamList } from "@/components/StatGroupTeamList.tsx";
+import StreamCards from "@/components/StreamCards.tsx";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { individualOverviewRoute, teamOverviewRoute } from "@/routes.ts";
 import { theme } from "@/theme.ts";
@@ -273,6 +274,11 @@ export const homeRoute = createRoute({
               />
             )) ?? <Skeleton height={256} radius="md" mb="md" w="100%" />}
         </HomepageSection>
+        {isQ(data) && (
+          <HomepageSection name={"Streams"} ref={targetStreamsRef}>
+            <StreamCards />
+          </HomepageSection>
+        )}
       </>
     );
   },

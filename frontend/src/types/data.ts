@@ -121,3 +121,5 @@ export interface TickertapeData {
   generationCompletedAt: string;
   tickertape: TickertapeRoundData[];
 }
+
+export type StreamRoomType = "Novice" | "Experienced";
