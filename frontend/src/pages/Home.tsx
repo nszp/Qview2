@@ -22,21 +22,27 @@ import {
   useQueryErrorResetBoundary,
   useSuspenseQuery,
 } from "@tanstack/react-query";
-import { createRoute, useRouter } from "@tanstack/react-router";
+import { createRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { useContext, useEffect, useMemo } from "react";
 import { ScrollRefsContext } from "@/context.ts";
+import { scrollIntoViewOptions } from "@/utils/styleUtils.ts";
 
-const scrollIntoViewOptions = {
-  offset: 60,
-  duration: 400,
-};
+interface HomeSearch {
+  section?: string;
+}
 
 export const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
+  validateSearch: (search): HomeSearch => {
+    return {
+      section: (search.section as string) || undefined,
+    };
+  },
   loader: () => queryClient.ensureQueryData(tournamentDataOptions),
   component: function Home() {
     const { setScrollRefs } = useContext(ScrollRefsContext);
+    const { section } = homeRoute.useSearch();
 
     const {
       scrollIntoView: scrollDivisionStandingsIntoView,
@@ -74,9 +80,36 @@ export const homeRoute = createRoute({
       setScrollRefs,
     ]);
 
-    const { isPending, error, data } = useSuspenseQuery(tournamentDataOptions);
-
     const navigate = homeRoute.useNavigate();
+
+    useEffect(() => {
+      if (section === "division-standings") {
+        scrollDivisionStandingsIntoView();
+      } else if (section === "search") {
+        scrollSearchIntoView();
+      } else if (section === "team-schedules") {
+        scrollTeamSchedulesIntoView();
+      } else if (section === "streams") {
+        scrollStreamsIntoView();
+      }
+
+      navigate({
+        to: homeRoute.to,
+        search: {
+          section: undefined, // clear the section from the URL
+        },
+        replace: true,
+      });
+    }, [
+      section,
+      scrollDivisionStandingsIntoView,
+      scrollSearchIntoView,
+      scrollTeamSchedulesIntoView,
+      scrollStreamsIntoView,
+      navigate,
+    ]);
+
+    const { isPending, error, data } = useSuspenseQuery(tournamentDataOptions);
 
     const colorScheme = useComputedColorScheme("light");
 
@@ -174,7 +207,7 @@ export const homeRoute = createRoute({
 
         <Space pt="md"></Space>
         <HomepageSection
-          name={"Division Standings"}
+          name="Division Standings"
           ref={targetDivisionStandingsRef}
         >
           <SimpleGrid
@@ -211,7 +244,7 @@ export const homeRoute = createRoute({
               ))}
           </SimpleGrid>
         </HomepageSection>
-        <HomepageSection name={"Search"} ref={targetSearchRef}>
+        <HomepageSection name="Search" ref={targetSearchRef}>
           <SimpleGrid cols={{ base: 1, sm: 2 }} w="100%">
             <Skeleton visible={isPending}>
               <Autocomplete
@@ -271,7 +304,7 @@ export const homeRoute = createRoute({
             </Skeleton>
           </SimpleGrid>
         </HomepageSection>
-        <HomepageSection name={"Team Schedules"} ref={targetTeamSchedulesRef}>
+        <HomepageSection name="Team Schedules" ref={targetTeamSchedulesRef}>
           {data?.statGroups
             .filter((statGroup) => {
               if (!isQ(data)) return true;
@@ -289,7 +322,7 @@ export const homeRoute = createRoute({
             )) ?? <Skeleton height={256} radius="md" mb="md" w="100%" />}
         </HomepageSection>
         {isQ(data) && (
-          <HomepageSection name={"Streams"} ref={targetStreamsRef}>
+          <HomepageSection name="Streams" ref={targetStreamsRef}>
             <StreamCards />
           </HomepageSection>
         )}

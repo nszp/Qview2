@@ -26,3 +26,8 @@ export function getTeamColorsForTeamCount(teamCount: number) {
     ? [theme.colors.red[6], theme.colors.green[6]]
     : [theme.colors.red[6], theme.colors.blue[5], theme.colors.green[6]];
 }
+
+export const scrollIntoViewOptions = {
+  offset: 60,
+  duration: 400,
+};
