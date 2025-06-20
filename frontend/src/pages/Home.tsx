@@ -4,8 +4,19 @@ import { StatGroupCard } from "@/components/StatGroupCard.tsx";
 import { StatGroupTeamList } from "@/components/StatGroupTeamList.tsx";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { individualOverviewRoute, teamOverviewRoute } from "@/routes.ts";
+import { theme } from "@/theme.ts";
 import { isQ } from "@/utils/utils.ts";
-import { Autocomplete, SimpleGrid, Skeleton } from "@mantine/core";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  Flex,
+  ScrollArea,
+  SimpleGrid,
+  Skeleton,
+  useComputedColorScheme,
+} from "@mantine/core";
+import { useScrollIntoView } from "@mantine/hooks";
 import {
   useQueryErrorResetBoundary,
   useSuspenseQuery,
@@ -18,9 +29,38 @@ export const homeRoute = createRoute({
   path: "/",
   loader: () => queryClient.ensureQueryData(tournamentDataOptions),
   component: function Home() {
+    const {
+      scrollIntoView: scrollDivisionStandingsIntoView,
+      targetRef: targetDivisionStandingsRef,
+    } = useScrollIntoView<HTMLDivElement>({
+      offset: 150,
+      duration: 600,
+    });
+    const { scrollIntoView: scrollSearchIntoView, targetRef: targetSearchRef } =
+      useScrollIntoView<HTMLDivElement>({
+        offset: 150,
+        duration: 600,
+      });
+    const {
+      scrollIntoView: scrollTeamSchedulesIntoView,
+      targetRef: targetTeamSchedulesRef,
+    } = useScrollIntoView<HTMLDivElement>({
+      offset: 150,
+      duration: 600,
+    });
+    const {
+      scrollIntoView: scrollStreamsIntoView,
+      targetRef: targetStreamsRef,
+    } = useScrollIntoView<HTMLDivElement>({
+      offset: 150,
+      duration: 600,
+    });
+
     const { isPending, error, data } = useSuspenseQuery(tournamentDataOptions);
 
     const navigate = homeRoute.useNavigate();
+
+    const colorScheme = useComputedColorScheme("light");
 
     const individualsList = useMemo(
       () => [
@@ -58,7 +98,70 @@ export const homeRoute = createRoute({
 
     return (
       <>
-        <HomepageSection name={"Division Standings"}>
+        <Box
+          w="100%"
+          top={{
+            base: 60,
+            md: 70,
+            lg: 80,
+          }}
+          bg="var(--mantine-color-body)"
+          mt="-md"
+          style={{
+            position: "sticky",
+            zIndex: 1000,
+            borderBottomWidth: 1,
+            borderBottomStyle: "solid",
+            borderBottomColor:
+              colorScheme === "light"
+                ? theme.colors.gray[3]
+                : theme.colors.dark[4],
+          }}
+        >
+          <Flex
+            justify="center"
+            direction="row"
+            align="center"
+            w="100%"
+            gap={{
+              base: "xs",
+              xs: "md",
+              sm: "lg",
+              md: "xl",
+            }}
+            py="sm"
+          >
+            {(
+              [
+                ["Standings", scrollDivisionStandingsIntoView, false],
+                ["Search", scrollSearchIntoView, true],
+                ["Schedules", scrollTeamSchedulesIntoView, false],
+                isQ(data)
+                  ? ["Streams", scrollStreamsIntoView, true]
+                  : undefined,
+              ] as [string, () => void, boolean][]
+            ).map(([name, scrollIntoView, visibleOnMobile]) => (
+              <Button
+                onClick={() => scrollIntoView()}
+                key={name}
+                miw="fit-content"
+                variant="subtle"
+                size="compact-md"
+                visibleFrom={visibleOnMobile ? undefined : "xs"}
+                style={{
+                  color: "unset",
+                }}
+              >
+                {name}
+              </Button>
+            ))}
+          </Flex>
+        </Box>
+
+        <HomepageSection
+          name={"Division Standings"}
+          ref={targetDivisionStandingsRef}
+        >
           <SimpleGrid
             cols={{
               base: 1,
@@ -93,7 +196,7 @@ export const homeRoute = createRoute({
               ))}
           </SimpleGrid>
         </HomepageSection>
-        <HomepageSection name={"Search"}>
+        <HomepageSection name={"Search"} ref={targetSearchRef}>
           <SimpleGrid cols={{ base: 1, sm: 2 }} w="100%">
             <Skeleton visible={isPending}>
               <Autocomplete
@@ -153,7 +256,7 @@ export const homeRoute = createRoute({
             </Skeleton>
           </SimpleGrid>
         </HomepageSection>
-        <HomepageSection name={"Team Schedules"}>
+        <HomepageSection name={"Team Schedules"} ref={targetTeamSchedulesRef}>
           {data?.statGroups
             .filter((statGroup) => {
               if (!isQ(data)) return true;
