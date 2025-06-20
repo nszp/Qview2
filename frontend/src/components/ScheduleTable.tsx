@@ -21,7 +21,7 @@ export default function ScheduleTable({
   quizzes: TeamRoundData[];
 }) {
   return (
-    <Box mb="md">
+    <Box mb="md" mih="50vh">
       <DataTable
         columns={[
           {
@@ -30,7 +30,6 @@ export default function ScheduleTable({
             textAlign: "center",
             width: "50px",
             render: (quiz) => {
-              console.log(quiz);
               if (!quiz.completed && !quiz.inProgress) {
                 // Scheduled quiz
                 return (
@@ -177,6 +176,7 @@ export default function ScheduleTable({
         withRowBorders
         fz={{ base: "md", sm: "lg" }}
         w="100%"
+        minHeight={150}
         idAccessor="round"
         pinFirstColumn
         emptyState={<Text>No scheduled quizzes yet.</Text>}

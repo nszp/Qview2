@@ -3,6 +3,9 @@ import {
   AppShell,
   Burger,
   Group,
+  NavLink,
+  ScrollArea,
+  Skeleton,
   Text,
   useComputedColorScheme,
   useMantineColorScheme,
@@ -12,17 +15,24 @@ import { Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { homeRoute } from "@/routes.ts";
+import { homeRoute, statGroupIndividualStandingsRoute } from "@/routes.ts";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { tournamentDataOptions } from "@/api.ts";
 
 export const Shell = () => {
-  const [opened, { toggle }] = useDisclosure();
-  const navigate = useNavigate();
+  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
+
   const location = useLocation();
+
+  const { isLoading, error, data } = useSuspenseQuery(tournamentDataOptions);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: i don't want to
   useEffect(() => {
-    if (opened) {
-      toggle();
+    if (mobileOpened) {
+      toggleMobile();
+    } else if (desktopOpened) {
+      toggleDesktop();
     }
   }, [location.pathname]);
 
@@ -41,18 +51,24 @@ export const Shell = () => {
         navbar={{
           width: 300,
           breakpoint: "sm",
-          collapsed: { desktop: true, mobile: !opened },
+          collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
         }}
         padding="md"
       >
         <AppShell.Header>
           <Group h="100%" px="md">
-            {/*<Burger*/}
-            {/*  opened={opened}*/}
-            {/*  onClick={toggle}*/}
-            {/*  hiddenFrom="sm"*/}
-            {/*  size="sm"*/}
-            {/*/>*/}
+            <Burger
+              opened={mobileOpened}
+              onClick={toggleMobile}
+              hiddenFrom="sm"
+              size="sm"
+            />
+            <Burger
+              opened={desktopOpened}
+              onClick={toggleDesktop}
+              visibleFrom="sm"
+              size="sm"
+            />
             {/* TODO: Finish navbar and re-enable */}
             <Group justify="space-between" sx={{ flex: 1 }}>
               <Text
@@ -87,33 +103,49 @@ export const Shell = () => {
           </Group>
         </AppShell.Header>
         <AppShell.Navbar p="md">
-          {/*{data.divisions.length === 0 ? (*/}
-          {/*  <Skeleton height={40} mb="xs" />*/}
-          {/*) : (*/}
-          {/*  data.divisions.map((division) => (*/}
-          {/*    <NavLink key={division.name} label={division.name} defaultOpened>*/}
-          {/*      <NavLink*/}
-          {/*        label="Individual Standings"*/}
-          {/*        onClick={() =>*/}
-          {/*          navigate(*/}
-          {/*            `/stats/division/${encodeURIComponent(division.name)}/individual`,*/}
-          {/*          )*/}
-          {/*        }*/}
-          {/*      />*/}
-          {/*      <NavLink*/}
-          {/*        label="Team Standings"*/}
-          {/*        onClick={() =>*/}
-          {/*          navigate(*/}
-          {/*            `/stats/division/${encodeURIComponent(division.name)}/team`,*/}
-          {/*          )*/}
-          {/*        }*/}
-          {/*      />*/}
-          {/*    </NavLink>*/}
-          {/*  ))*/}
-          {/*)}*/}
+          {isLoading || error || data?.statGroups.length === 0 ? (
+            <Skeleton height={40} mb="xs" />
+          ) : (
+            <AppShell.Section grow component={ScrollArea}>
+              {data.statGroups.map((statGroup) => (
+                <NavLink
+                  key={statGroup.name}
+                  label={statGroup.name}
+                  defaultOpened
+                >
+                  <NavLink
+                    label="Individual Standings"
+                    component={Link}
+                    to={statGroupIndividualStandingsRoute.to}
+                    // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                    params={{ statGroupName: statGroup.name }}
+                  />
+                  <NavLink
+                    label="Team Standings"
+                    component={Link}
+                    to={statGroupIndividualStandingsRoute.to}
+                    // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                    params={{ statGroupName: statGroup.name }}
+                  />
+                </NavLink>
+              ))}
+            </AppShell.Section>
+          )}
         </AppShell.Navbar>
         <AppShell.Main>
+          {/*<ScrollArea*/}
+          {/*  type={mobileOpened || desktopOpened ? "never" : "auto"}*/}
+          {/*  styles={{*/}
+          {/*    viewport: {*/}
+          {/*      minHeight: "99vh",*/}
+          {/*    },*/}
+          {/*    content: {*/}
+          {/*      minHeight: "99vh",*/}
+          {/*    },*/}
+          {/*  }}*/}
+          {/*>*/}
           <Outlet />
+          {/*</ScrollArea>*/}
         </AppShell.Main>
       </AppShell>
       <TanStackRouterDevtools position="bottom-left" />

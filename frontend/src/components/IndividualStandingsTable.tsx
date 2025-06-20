@@ -19,7 +19,7 @@ export default function IndividualStandingsTable({
   }, [individuals]);
 
   return (
-    <Box mb="md">
+    <Box mb="md" mih="50vh">
       <DataTable
         columns={[
           {
@@ -86,6 +86,7 @@ export default function IndividualStandingsTable({
         withRowBorders
         fz={{ base: "md", sm: "lg" }}
         w="100%"
+        minHeight={150}
         idAccessor={"name"}
         pinFirstColumn
         emptyState={

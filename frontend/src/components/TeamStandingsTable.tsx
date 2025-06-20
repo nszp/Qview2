@@ -69,6 +69,7 @@ export default function TeamStandingsTable({ teams }: { teams: TeamData[] }) {
         w="100%"
         idAccessor={"name"}
         pinFirstColumn
+        minHeight={150}
         emptyState={
           <Text>No standings yet. Check back after the first round!</Text>
         }
