@@ -9,7 +9,7 @@ import {
   useComputedColorScheme,
   useMantineColorScheme,
 } from "@mantine/core";
-import { useDisclosure, useMergedRef } from "@mantine/hooks";
+import { useDisclosure, mergeRefs } from "@mantine/hooks";
 import { Link, Outlet, useLocation } from "@tanstack/react-router";
 import { type Ref, useEffect, useMemo, useState } from "react";
 import { Moon, Sun } from "lucide-react";
@@ -20,7 +20,6 @@ import { tournamentDataOptions } from "@/api.ts";
 import { isQ } from "@/utils/utils.ts";
 import { largerThan, smallerThan } from "@/utils/styleUtils.ts";
 import { ScrollRefsContext } from "@/context.ts";
-import { mergeRefs } from "@/utils/mergeRefs.ts";
 
 export const Shell = () => {
   const [scrollRefs, setScrollRefs] = useState<Ref<HTMLElement>[]>([]);
@@ -167,11 +166,11 @@ export const Shell = () => {
           )}
         </AppShell.Navbar>
         <AppShell.Main
-          ref={mergeRefs(scrollRefs)}
-          style={{
-            overflow: mobileOpened ? "hidden" : "scroll",
-          }}
+          ref={mergeRefs(...scrollRefs)}
+          style={{}}
           sx={(theme, u) => ({
+            overflow: mobileOpened ? "hidden" : "scroll",
+            paddingBottom: "3rem",
             paddingTop: "40px",
             [u.smallerThan("md")]: {
               height: "calc(100vh - 60px)",

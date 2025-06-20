@@ -66,7 +66,7 @@ export default function StreamCards() {
 
   return (["Experienced", "Novice"] as StreamRoomType[]).map((roomCategory) => (
     <HomepageCollapsable
-      openByDefault={false}
+      openByDefault={true}
       title={roomCategory}
       key={roomCategory}
     >
@@ -80,7 +80,6 @@ export default function StreamCards() {
 
 function StreamCardGroup({
   roomsList,
-  roomCategory,
 }: { roomsList: string[]; roomCategory: StreamRoomType }) {
   return (
     <SimpleGrid
