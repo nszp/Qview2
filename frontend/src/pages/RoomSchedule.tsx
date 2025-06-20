@@ -5,7 +5,7 @@ import type { TeamRoundData } from "@/types/data.ts";
 import { Flex, Text } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createRoute } from "@tanstack/react-router";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 export const roomScheduleRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -18,6 +18,7 @@ export const roomScheduleRoute = createRoute({
   },
   component: function RoomSchedule() {
     const { roomName } = roomScheduleRoute.useParams();
+    const [showRoundColumn, setShowRoundColumn] = useState(false);
 
     const { isLoading, error, data } = useSuspenseQuery(tournamentDataOptions);
     const {
@@ -60,9 +61,9 @@ export const roomScheduleRoute = createRoute({
 
           return tickertapeRound
             ? {
-                ...tickertapeRound,
-                time: quiz.time,
-              }
+              ...tickertapeRound,
+              time: quiz.time,
+            }
             : quiz;
         });
     }, [data, tickertapeData, roomName]);
@@ -81,11 +82,11 @@ export const roomScheduleRoute = createRoute({
           })}
         >
           <Text size="xl">{quizzes[0].room}</Text>
-          <Text size="md" mb="md" c="gray">
+          <Text size="md" mb="md" c="gray" onClick={() => setShowRoundColumn(!showRoundColumn)}>
             {quizzes[0].room} Schedule
           </Text>
         </Flex>
-        <ScheduleTable quizzes={quizzes} />
+        <ScheduleTable quizzes={quizzes} showRoundColumn={showRoundColumn} />
       </>
     );
   },

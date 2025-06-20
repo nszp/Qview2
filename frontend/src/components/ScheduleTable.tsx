@@ -17,8 +17,10 @@ import { DataTable } from "mantine-datatable";
 
 export default function ScheduleTable({
   quizzes,
+  showRoundColumn = false,
 }: {
   quizzes: TeamRoundData[];
+  showRoundColumn?: boolean;
 }) {
   return (
     <Box mb="md" mih="50vh">
@@ -163,6 +165,14 @@ export default function ScheduleTable({
                 ),
               );
             },
+          },
+          {
+            accessor: "round",
+            title: "Round",
+            textAlign: "center",
+            width: "110px",
+            hidden: !showRoundColumn,
+
           },
         ]}
         records={quizzes.filter((quiz) => quiz.teams.length > 1)}

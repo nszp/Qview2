@@ -4,7 +4,7 @@ import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { Flex, Text } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createRoute, Navigate } from "@tanstack/react-router";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 export const statGroupTeamScheduleRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -17,6 +17,7 @@ export const statGroupTeamScheduleRoute = createRoute({
   },
   component: function StatGroupTeamSchedule() {
     const { statGroupName, teamName } = statGroupTeamScheduleRoute.useParams();
+    const [showRoundColumn, setShowRoundColumn] = useState(false);
 
     const { isLoading, error, data } = useSuspenseQuery(tournamentDataOptions);
     const {
@@ -52,9 +53,9 @@ export const statGroupTeamScheduleRoute = createRoute({
 
         return tickertapeRound
           ? {
-              ...tickertapeRound,
-              time: quiz.time,
-            }
+            ...tickertapeRound,
+            time: quiz.time,
+          }
           : quiz;
       });
     }, [team.quizzes, tickertapeData.tickertape]);
@@ -73,11 +74,11 @@ export const statGroupTeamScheduleRoute = createRoute({
           })}
         >
           <Text size="xl">{team.name}</Text>
-          <Text size="md" mb="md" c="gray">
+          <Text size="md" mb="md" c="gray" onClick={() => setShowRoundColumn(!showRoundColumn)}>
             {statGroup.webName} Schedule
           </Text>
         </Flex>
-        <ScheduleTable quizzes={quizzes} />
+        <ScheduleTable quizzes={quizzes} showRoundColumn={showRoundColumn} />
       </>
     );
   },
