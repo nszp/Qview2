@@ -1,4 +1,4 @@
-import { Flex, type PolymorphicRef, Text } from "@mantine/core";
+import { Flex, Text } from "@mantine/core";
 import type * as React from "react";
 import type { Ref } from "react";
 

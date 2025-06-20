@@ -36,6 +36,8 @@ export function placesWithTies<T>(
 }
 
 export function isQ(tournament: TournamentData) {
-  return tournament.tournamentName === `Q${new Date().getFullYear()}` ||
-    tournament.tournamentName === `Q${new Date().getFullYear() - 1}`;
+  return (
+    tournament.tournamentName === `Q${new Date().getFullYear()}` ||
+    tournament.tournamentName === `Q${new Date().getFullYear() - 1}`
+  );
 }

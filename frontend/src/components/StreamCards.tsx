@@ -1,17 +1,7 @@
 import { tickertapeDataOptions, tournamentDataOptions } from "@/api";
 import HomepageCollapsable from "@/components/HomepageCollapsable.tsx";
-import {
-  roomScheduleRoute,
-  roomStreamRoute,
-  statGroupIndividualStandingsRoute,
-  statGroupTeamStandingsRoute,
-} from "@/pages";
-import type {
-  StatGroupData,
-  StreamRoomType,
-  TickertapeData,
-  TournamentData,
-} from "@/types/data.ts";
+import { roomScheduleRoute, roomStreamRoute } from "@/pages";
+import type { StreamRoomType } from "@/types/data.ts";
 import { isQ } from "@/utils/utils.ts";
 import {
   Button,
@@ -23,7 +13,7 @@ import {
   useComputedColorScheme,
 } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 
 export default function StreamCards() {

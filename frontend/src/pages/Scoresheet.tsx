@@ -14,7 +14,7 @@ import {
   Text,
 } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Navigate, createRoute } from "@tanstack/react-router";
+import { createRoute, Navigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 export const scoresheetRoute = createRoute({

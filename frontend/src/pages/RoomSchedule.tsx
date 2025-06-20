@@ -1,10 +1,10 @@
 import { tickertapeDataOptions, tournamentDataOptions } from "@/api.ts";
 import ScheduleTable from "@/components/ScheduleTable.tsx";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
-import type { StreamRoomType, TeamRoundData } from "@/types/data.ts";
+import type { TeamRoundData } from "@/types/data.ts";
 import { Flex, Text } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Navigate, createRoute } from "@tanstack/react-router";
+import { createRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 
 export const roomScheduleRoute = createRoute({

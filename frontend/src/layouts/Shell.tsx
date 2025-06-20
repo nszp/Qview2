@@ -9,7 +9,7 @@ import {
   useComputedColorScheme,
   useMantineColorScheme,
 } from "@mantine/core";
-import { useDisclosure, mergeRefs } from "@mantine/hooks";
+import { mergeRefs, useDisclosure } from "@mantine/hooks";
 import { Link, Outlet, useLocation } from "@tanstack/react-router";
 import { type Ref, useEffect, useMemo, useState } from "react";
 import { Moon, Sun } from "lucide-react";

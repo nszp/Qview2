@@ -1,4 +1,4 @@
-import { Badge, Box, Flex, List, Text, Timeline } from "@mantine/core";
+import { Badge, Flex, List, Text, Timeline } from "@mantine/core";
 import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
 import { type JSX, useMemo } from "react";
 import ScoresheetTimelineBullet from "@/components/ScoresheetTimelineBullet.tsx";

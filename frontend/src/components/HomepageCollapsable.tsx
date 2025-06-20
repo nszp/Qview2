@@ -1,15 +1,7 @@
-import { statGroupTeamScheduleRoute } from "@/pages";
-import {
-  Button,
-  Collapse,
-  Paper,
-  SimpleGrid,
-  Text,
-  useComputedColorScheme,
-} from "@mantine/core";
+import { Button, Collapse, useComputedColorScheme } from "@mantine/core";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { useState } from "react";
 import type * as React from "react";
+import { useState } from "react";
 
 export default function HomepageCollapsable({
   openByDefault,

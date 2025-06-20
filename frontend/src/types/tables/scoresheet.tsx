@@ -1,8 +1,7 @@
 import { theme } from "@/theme.ts";
-import type { IndividualData, Scoresheet, ScoresheetTeam } from "@/types/data";
+import type { Scoresheet, ScoresheetTeam } from "@/types/data";
 import { Box, Flex, Text, Tooltip } from "@mantine/core";
 import type { DataTableColumn } from "mantine-datatable";
-import type { MRT_ColumnDef } from "mantine-react-table";
 
 const correctScoresheetColor = theme.colors.green[8];
 const errorScoresheetColor = theme.colors.red[9];

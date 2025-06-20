@@ -1,7 +1,6 @@
 import type {
   Scoresheet,
   TickertapeData,
-  TickertapeRoundData,
   TournamentData,
 } from "@/types/data.ts";
 import { queryOptions } from "@tanstack/react-query";
