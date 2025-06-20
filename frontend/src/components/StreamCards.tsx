@@ -6,12 +6,11 @@ import {
   statGroupIndividualStandingsRoute,
   statGroupTeamStandingsRoute,
 } from "@/pages";
-import {
-  RoomType,
-  type StatGroupData,
-  type StreamRoomType,
-  type TickertapeData,
-  type TournamentData,
+import type {
+  StatGroupData,
+  StreamRoomType,
+  TickertapeData,
+  TournamentData,
 } from "@/types/data.ts";
 import { isQ } from "@/utils/utils.ts";
 import {
