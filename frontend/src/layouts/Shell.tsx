@@ -3,11 +3,10 @@ import { ScrollRefsContext } from "@/context.ts";
 import {
   homeRoute,
   statGroupIndividualStandingsRoute,
+  statGroupTeamScheduleRoute,
   statGroupTeamStandingsRoute,
   tickertapeRoute,
 } from "@/routes.ts";
-import { largerThan, smallerThan } from "@/utils/styleUtils.ts";
-import { isQ } from "@/utils/utils.ts";
 import {
   ActionIcon,
   AppShell,
@@ -21,21 +20,12 @@ import {
 } from "@mantine/core";
 import { mergeRefs, useDisclosure } from "@mantine/hooks";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
+import { Link, Outlet, useLocation } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { Moon, Sun } from "lucide-react";
-import { type Ref, useEffect, useMemo, useState } from "react";
-import {
-  homeRoute,
-  statGroupIndividualStandingsRoute,
-  statGroupTeamScheduleRoute,
-  statGroupTeamStandingsRoute,
-} from "@/routes.ts";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { tournamentDataOptions } from "@/api.ts";
+import { type Ref, useEffect, useState } from "react";
 import { isQ } from "@/utils/utils.ts";
 import { largerThan, smallerThan } from "@/utils/styleUtils.ts";
-import { ScrollRefsContext } from "@/context.ts";
 
 export const Shell = () => {
   const [scrollRefs, setScrollRefs] = useState<Ref<HTMLElement>[]>([]);
@@ -93,7 +83,6 @@ export const Shell = () => {
               visibleFrom="sm"
               size="sm"
             />
-            {/* TODO: Finish navbar and re-enable */}
             <Group justify="space-between" sx={{ flex: 1 }}>
               <Text
                 component={Link}
