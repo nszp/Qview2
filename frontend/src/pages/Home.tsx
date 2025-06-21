@@ -1,11 +1,14 @@
 import { tournamentDataOptions } from "@/api.ts";
+import HomepageCollapsable from "@/components/homepage/HomepageCollapsable.tsx";
 import { HomepageSection } from "@/components/homepage/HomepageSection.tsx";
 import { StatGroupCard } from "@/components/homepage/StatGroupCard.tsx";
 import { StatGroupTeamList } from "@/components/homepage/StatGroupTeamList.tsx";
 import StreamCards from "@/components/homepage/StreamCards.tsx";
+import { ScrollRefsContext } from "@/context.ts";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { individualOverviewRoute, teamOverviewRoute } from "@/routes.ts";
 import { theme } from "@/theme.ts";
+import { scrollIntoViewOptions } from "@/utils/styleUtils.ts";
 import { isQ } from "@/utils/utils.ts";
 import {
   Autocomplete,
@@ -23,10 +26,8 @@ import {
   useSuspenseQuery,
 } from "@tanstack/react-query";
 import { createRoute, useNavigate, useRouter } from "@tanstack/react-router";
+import { usePostHog } from "posthog-js/react";
 import { useContext, useEffect, useMemo } from "react";
-import { ScrollRefsContext } from "@/context.ts";
-import { scrollIntoViewOptions } from "@/utils/styleUtils.ts";
-import HomepageCollapsable from "@/components/homepage/HomepageCollapsable.tsx";
 
 interface HomeSearch {
   section?: string;
@@ -381,10 +382,15 @@ export const homeRoute = createRoute({
   errorComponent: function HomeError({ error, reset }) {
     const router = useRouter();
     const queryErrorResetBoundary = useQueryErrorResetBoundary();
+    const posthog = usePostHog();
 
     useEffect(() => {
       queryErrorResetBoundary.reset();
     }, [queryErrorResetBoundary]);
+
+    useEffect(() => {
+      posthog.captureException(error);
+    }, [error, posthog]);
 
     // TODO: make this Mantine
     // TODO: Link preloading on this page

@@ -201,7 +201,6 @@ export default function ScheduleTable({
         withRowBorders
         fz={{ base: "md", sm: "lg" }}
         w="100%"
-        minHeight={150}
         idAccessor="round"
         pinFirstColumn
         emptyState={<Text>No scheduled quizzes yet.</Text>}

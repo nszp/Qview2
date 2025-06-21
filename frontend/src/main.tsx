@@ -1,8 +1,10 @@
+import { PostHogProvider } from "posthog-js/react";
+
 import { MantineProvider } from "@mantine/core";
-import { emotionTransform, MantineEmotionProvider } from "@mantine/emotion";
+import { MantineEmotionProvider, emotionTransform } from "@mantine/emotion";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { createRouter, RouterProvider } from "@tanstack/react-router";
+// import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { themeOverride } from "./theme";
@@ -11,7 +13,14 @@ import "@mantine/core/styles.css";
 import "mantine-datatable/styles.css";
 
 import { routeTree } from "@/routes.ts";
+
+// Biome is bad (for some reason the order of these imports matters)
+
 import { queryClient } from "@/rootRoute.ts";
+
+const options = {
+  api_host: import.meta.env.VITE_POSTHOG_HOST,
+};
 
 const router = createRouter({
   routeTree,
@@ -33,18 +42,23 @@ const root = document.getElementById("root");
 if (root) {
   createRoot(root).render(
     <StrictMode>
-      <MantineProvider
-        theme={themeOverride}
-        stylesTransform={emotionTransform}
-        defaultColorScheme="auto"
+      <PostHogProvider
+        apiKey={import.meta.env.VITE_POSTHOG_KEY as string}
+        options={options}
       >
-        <MantineEmotionProvider>
-          <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
-            {/*<ReactQueryDevtools initialIsOpen={false} />*/}
-          </QueryClientProvider>
-        </MantineEmotionProvider>
-      </MantineProvider>
+        <MantineProvider
+          theme={themeOverride}
+          stylesTransform={emotionTransform}
+          defaultColorScheme="auto"
+        >
+          <MantineEmotionProvider>
+            <QueryClientProvider client={queryClient}>
+              <RouterProvider router={router} />
+              {/*<ReactQueryDevtools initialIsOpen={false} />*/}
+            </QueryClientProvider>
+          </MantineEmotionProvider>
+        </MantineProvider>
+      </PostHogProvider>
     </StrictMode>,
   );
 }

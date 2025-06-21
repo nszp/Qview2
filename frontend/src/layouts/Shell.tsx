@@ -352,6 +352,9 @@ export const Shell = () => {
             }}
           >
             <Outlet />
+            <Text ta="center" pb="sm">
+              Developed by QView Quiz Technologies Development Working Group.
+            </Text>
           </ScrollRefsContext>
         </AppShell.Main>
       </AppShell>
