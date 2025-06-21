@@ -1,7 +1,16 @@
 import { Button, Collapse, useComputedColorScheme } from "@mantine/core";
-import { ChevronDown, ChevronRight } from "lucide-react";
 import type * as React from "react";
 import { useState } from "react";
+import styled from "@emotion/styled";
+import { ChevronRightIcon } from "lucide-react";
+
+const ExpandChevronIcon = styled(ChevronRightIcon)({
+  transition: "transform 0.2s ease-in-out",
+  transformOrigin: "center",
+  "&[data-rotate='true']": {
+    transform: "rotate(90deg)",
+  },
+});
 
 export default function HomepageCollapsable({
   openByDefault,
@@ -41,8 +50,7 @@ export default function HomepageCollapsable({
         onClick={() => setOpen(!open)}
       >
         {title}
-        {open ? <ChevronDown /> : <ChevronRight />}
-        {/* TODO: make it a transition or something  */}
+        <ExpandChevronIcon data-rotate={open} />
       </Button>
       <Collapse in={open} w="100%">
         {children}

@@ -26,6 +26,7 @@ import { createRoute, useNavigate, useRouter } from "@tanstack/react-router";
 import { useContext, useEffect, useMemo } from "react";
 import { ScrollRefsContext } from "@/context.ts";
 import { scrollIntoViewOptions } from "@/utils/styleUtils.ts";
+import HomepageCollapsable from "@/components/homepage/HomepageCollapsable.tsx";
 
 interface HomeSearch {
   section?: string;
@@ -223,13 +224,7 @@ export const homeRoute = createRoute({
             spacing="sm"
             verticalSpacing="md"
           >
-            {data?.statGroups
-              .filter(
-                (division) => division.name !== division.webName || !isQ(data),
-              )
-              .map((division) => (
-                <StatGroupCard statGroup={division} key={division.name} />
-              )) ??
+            {isPending &&
               new Array(24).fill(undefined).map((_, index) => (
                 <Skeleton radius="md" key={Number(index)}>
                   <StatGroupCard
@@ -242,7 +237,61 @@ export const homeRoute = createRoute({
                   />
                 </Skeleton>
               ))}
+            {data &&
+              !isQ(data) &&
+              data.statGroups
+                // .filter(
+                //   (division) => division.name !== division.webName || !isQ(data),
+                // )
+                .map((statGroup) => (
+                  <StatGroupCard statGroup={statGroup} key={statGroup.name} />
+                ))}
           </SimpleGrid>
+          {data &&
+            isQ(data) &&
+            ["Field", "District", "Local", "Decades"]
+              .filter((outerGroupName) =>
+                data.statGroups.some(
+                  (statGroup) =>
+                    statGroup.webName.startsWith(outerGroupName) &&
+                    statGroup.name !== statGroup.webName,
+                ),
+              )
+              .map((outerGroupName) => (
+                <HomepageCollapsable
+                  title={outerGroupName}
+                  key={outerGroupName}
+                  openByDefault={true}
+                >
+                  <SimpleGrid
+                    cols={{
+                      base: 1,
+                      xs: data ? Math.min(2, data.statGroups.length) : 2,
+                      lg: data ? Math.min(3, data.statGroups.length) : 3,
+                      xl: data ? Math.min(4, data.statGroups.length) : 4,
+                    }}
+                    sx={{
+                      width: "100%",
+                    }}
+                    spacing="sm"
+                    verticalSpacing="md"
+                    mb="md"
+                  >
+                    {data.statGroups
+                      .filter(
+                        (statGroup) =>
+                          statGroup.name !== statGroup.webName &&
+                          statGroup.webName.startsWith(outerGroupName),
+                      )
+                      .map((statGroup) => (
+                        <StatGroupCard
+                          key={statGroup.name}
+                          statGroup={statGroup}
+                        />
+                      ))}
+                  </SimpleGrid>
+                </HomepageCollapsable>
+              ))}
         </HomepageSection>
         <HomepageSection name="Search" ref={targetSearchRef}>
           <SimpleGrid cols={{ base: 1, sm: 2 }} w="100%">

@@ -30,7 +30,7 @@ export default function StreamCards() {
       Experienced: new Set<string>(),
     };
     if (!data || !tickertape) return roomsList;
-    const listOfAllRooms = new Set<string>();
+    const listOfAllRooms = new Set<string>(); // allocate an empty set to test that the browser is modern enough (we don't want people on old browsers to use this website)
     for (const quiz of data.statGroups
       .flatMap((statGroup) => statGroup.teams)
       .flatMap((team) => team.quizzes)) {

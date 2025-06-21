@@ -20,9 +20,13 @@ export function HomepageSection({
       direction="column"
       id={id}
       ref={ref}
-      sx={(_, u) => ({
+      sx={(theme, u) => ({
         [u.smallerThan("sm")]: {
           width: "100%",
+        },
+        [u.largerThan("sm")]: {
+          paddingLeft: theme.spacing.xl,
+          paddingRight: theme.spacing.xl,
         },
       })}
     >

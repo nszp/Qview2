@@ -25,6 +25,16 @@ export const themeOverride = createTheme({
         root: { ":active": { transform: "none" } },
       },
     },
+    NavLink: {
+      styles: {
+        root: {
+          paddingTop: "0.2rem",
+          paddingBottom: "0.2rem",
+          paddingLeft: "0.5rem",
+          paddingRight: "0.5rem",
+        },
+      },
+    },
   },
 });
 

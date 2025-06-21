@@ -17,6 +17,7 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import {
   homeRoute,
   statGroupIndividualStandingsRoute,
+  statGroupTeamScheduleRoute,
   statGroupTeamStandingsRoute,
 } from "@/routes.ts";
 import { useSuspenseQuery } from "@tanstack/react-query";
@@ -56,14 +57,14 @@ export const Shell = () => {
     setColorScheme(colorScheme === "dark" ? "light" : "dark");
   };
 
-  const statGroups = useMemo(() => {
-    return data?.statGroups.filter((statGroup) => {
-      if (!isQ(data)) return true;
-      return (
-        statGroup.webName !== statGroup.name && !statGroup.name.endsWith("f")
-      );
-    });
-  }, [data]);
+  // const statGroups = useMemo(() => {
+  //   return data?.statGroups.filter((statGroup) => {
+  //     if (!isQ(data)) return true;
+  //     return (
+  //       statGroup.webName !== statGroup.name && !statGroup.name.endsWith("f")
+  //     );
+  //   });
+  // }, [data]);
 
   return (
     <>
@@ -194,8 +195,8 @@ export const Shell = () => {
               }
             }}
           />
-          <Text size="xs" fw={600} pl="sm" mt="10px" c="dimmed">
-            Division Standings
+          <Text size="xs" fw={600} pl="0.5rem" mt="10px" c="dimmed">
+            Divisions
           </Text>
           {isLoading || error || data?.statGroups.length === 0 ? (
             <Skeleton height={40} mb="xs" />
@@ -207,34 +208,81 @@ export const Shell = () => {
               "District Novice",
               "Local Novice",
               "Decades",
-            ].map((outerGroupName) => (
-              <NavLink key={outerGroupName} label={outerGroupName}>
-                {statGroups
-                  .filter((statGroup) =>
-                    statGroup.webName.startsWith(outerGroupName),
-                  )
-                  .map((statGroup) => (
-                    <NavLink key={statGroup.name} label={statGroup.webName}>
-                      <NavLink
-                        label="Individual Standings"
-                        component={Link}
-                        to={statGroupIndividualStandingsRoute.to}
-                        // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
-                        params={{ statGroupName: statGroup.name }}
-                      />
-                      <NavLink
-                        label="Team Standings"
-                        component={Link}
-                        to={statGroupTeamStandingsRoute.to}
-                        // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
-                        params={{ statGroupName: statGroup.name }}
-                      />
-                    </NavLink>
-                  ))}
-              </NavLink>
-            ))
+            ]
+              .filter((outerGroupName) =>
+                data.statGroups.some(
+                  (statGroup) =>
+                    statGroup.webName.startsWith(outerGroupName) &&
+                    statGroup.name !== statGroup.webName,
+                ),
+              )
+              .map((outerGroupName) => (
+                <NavLink key={outerGroupName} label={outerGroupName}>
+                  {data.statGroups
+                    .filter((statGroup) =>
+                      statGroup.webName.startsWith(outerGroupName),
+                    )
+                    .map((statGroup) =>
+                      statGroup.webName.endsWith("Individuals") ? (
+                        <NavLink
+                          key={statGroup.name}
+                          label="Individual Standings"
+                          component={Link}
+                          to={statGroupIndividualStandingsRoute.to}
+                          // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                          params={{ statGroupName: statGroup.name }}
+                          viewTransition={true}
+                        />
+                      ) : (
+                        <NavLink
+                          key={statGroup.name}
+                          label={
+                            outerGroupName === "Field"
+                              ? statGroup.webName
+                              : statGroup.webName.replace(
+                                  `${outerGroupName} `,
+                                  "",
+                                )
+                          }
+                        >
+                          <NavLink
+                            label="Individual Standings"
+                            component={Link}
+                            to={statGroupIndividualStandingsRoute.to}
+                            // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                            params={{ statGroupName: statGroup.name }}
+                          />
+                          <NavLink
+                            label="Team Standings"
+                            component={Link}
+                            to={statGroupTeamStandingsRoute.to}
+                            // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                            params={{ statGroupName: statGroup.name }}
+                          />
+                          {!statGroup.name.endsWith("f") && (
+                            <NavLink label="Team Schedules">
+                              {statGroup.teams.map((team) => (
+                                <NavLink
+                                  key={team.name}
+                                  label={team.name}
+                                  component={Link}
+                                  to={statGroupTeamScheduleRoute.to}
+                                  params={{
+                                    // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                                    statGroupName: statGroup.name,
+                                    teamName: team.name,
+                                  }}
+                                />
+                              ))}
+                            </NavLink>
+                          )}
+                        </NavLink>
+                      ),
+                    )}
+                </NavLink>
+              ))
           ) : (
-            statGroups.map((statGroup) => (
+            data.statGroups.map((statGroup) => (
               <NavLink key={statGroup.name} label={statGroup.webName}>
                 <NavLink
                   label="Individual Standings"
