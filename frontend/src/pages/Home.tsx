@@ -215,7 +215,7 @@ export const homeRoute = createRoute({
               base: 1,
               xs: data ? Math.min(2, data.statGroups.length) : 2,
               lg: data ? Math.min(4, data.statGroups.length) : 4,
-              xl: data ? Math.min(6, data.statGroups.length) : 6,
+              xl: data ? Math.min(5, data.statGroups.length) : 5,
             }}
             sx={{
               width: "100%",
