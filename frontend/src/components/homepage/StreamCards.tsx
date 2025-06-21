@@ -1,5 +1,5 @@
-import { tickertapeDataOptions, tournamentDataOptions } from "@/api";
-import HomepageCollapsable from "@/components/HomepageCollapsable.tsx";
+import { tickertapeDataOptions, tournamentDataOptions } from "@/api.ts";
+import HomepageCollapsable from "@/components/homepage/HomepageCollapsable.tsx";
 import { roomScheduleRoute, roomStreamRoute } from "@/pages";
 import type { StreamRoomType } from "@/types/data.ts";
 import { isQ } from "@/utils/utils.ts";

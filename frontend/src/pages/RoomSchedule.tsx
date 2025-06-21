@@ -1,5 +1,5 @@
 import { tickertapeDataOptions, tournamentDataOptions } from "@/api.ts";
-import ScheduleTable from "@/components/ScheduleTable.tsx";
+import ScheduleTable from "@/components/schedules/ScheduleTable.tsx";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
 import type { TeamRoundData } from "@/types/data.ts";
 import { Flex, Text } from "@mantine/core";

@@ -1,4 +1,4 @@
-import type { Scoresheet } from "@/types/data";
+import type { Scoresheet } from "@/types/data.ts";
 import { getRecords, scoresheetColumns } from "@/types/tables/scoresheet.tsx";
 import { Box } from "@mantine/core";
 import { DataTable } from "mantine-datatable";

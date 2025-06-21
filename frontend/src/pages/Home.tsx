@@ -1,8 +1,8 @@
 import { tournamentDataOptions } from "@/api.ts";
-import { HomepageSection } from "@/components/HomepageSection.tsx";
-import { StatGroupCard } from "@/components/StatGroupCard.tsx";
-import { StatGroupTeamList } from "@/components/StatGroupTeamList.tsx";
-import StreamCards from "@/components/StreamCards.tsx";
+import { HomepageSection } from "@/components/homepage/HomepageSection.tsx";
+import { StatGroupCard } from "@/components/homepage/StatGroupCard.tsx";
+import { StatGroupTeamList } from "@/components/homepage/StatGroupTeamList.tsx";
+import StreamCards from "@/components/homepage/StreamCards.tsx";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { individualOverviewRoute, teamOverviewRoute } from "@/routes.ts";
 import { theme } from "@/theme.ts";

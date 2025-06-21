@@ -1,8 +1,8 @@
 import { scoresheetDataOptions } from "@/api.ts";
-import ScoresheetTable from "@/components/ScoresheetTable.tsx";
-import ScoresheetTeamCard from "@/components/ScoresheetTeamCard.tsx";
-import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
-import ScoresheetTimeline from "@/components/ScoresheetTimeline.tsx";
+import ScoresheetTable from "@/components/scoresheets/ScoresheetTable.tsx";
+import ScoresheetTeamCard from "@/components/scoresheets/ScoresheetTeamCard.tsx";
+import { ScoresheetTeamIcon } from "@/components/scoresheets/ScoresheetTeamIcon.tsx";
+import ScoresheetTimeline from "@/components/scoresheets/ScoresheetTimeline.tsx";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { theme } from "@/theme.ts";
 import { getTeamColorsForTeamCount } from "@/utils/styleUtils.ts";

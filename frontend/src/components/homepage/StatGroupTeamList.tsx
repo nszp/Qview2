@@ -1,11 +1,11 @@
-import HomepageCollapsable from "@/components/HomepageCollapsable.tsx";
+import HomepageCollapsable from "@/components/homepage/HomepageCollapsable.tsx";
 import { statGroupTeamScheduleRoute } from "@/routes.ts";
 import { largerThan, smallerThan } from "@/utils/styleUtils.ts";
 import { Paper, SimpleGrid, Text, useComputedColorScheme } from "@mantine/core";
 import { createStyles } from "@mantine/emotion";
 import { useNavigate } from "@tanstack/react-router";
 import { useMemo } from "react";
-import type { StatGroupData } from "../types/data.ts";
+import type { StatGroupData } from "../../types/data.ts";
 
 const useStyles = createStyles((_theme, _, u) => ({
   teamListText: {

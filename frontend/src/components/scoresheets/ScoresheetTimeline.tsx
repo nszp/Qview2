@@ -1,8 +1,8 @@
 import { Badge, Flex, List, Text, Timeline } from "@mantine/core";
-import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
+import { ScoresheetTeamIcon } from "@/components/scoresheets/ScoresheetTeamIcon.tsx";
 import { type JSX, useMemo } from "react";
-import ScoresheetTimelineBullet from "@/components/ScoresheetTimelineBullet.tsx";
-import ScoresheetAdditionalEvents from "@/components/ScoresheetAdditionalEvents.tsx";
+import ScoresheetTimelineBullet from "@/components/scoresheets/ScoresheetTimelineBullet.tsx";
+import ScoresheetAdditionalEvents from "@/components/scoresheets/ScoresheetAdditionalEvents.tsx";
 import type { Scoresheet } from "@/types/data.ts";
 import { convertScoresheetToQuestionSummaries } from "@/utils/summaryEngine.ts";
 

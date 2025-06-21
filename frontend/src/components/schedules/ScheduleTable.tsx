@@ -1,4 +1,4 @@
-import { ScoresheetTeamIcon } from "@/components/ScoresheetTeamIcon.tsx";
+import { ScoresheetTeamIcon } from "@/components/scoresheets/ScoresheetTeamIcon.tsx";
 import { roomStreamRoute, scoresheetRoute } from "@/pages";
 import { theme } from "@/theme.ts";
 import type { TeamRoundData } from "@/types/data.ts";

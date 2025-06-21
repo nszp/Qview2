@@ -11,7 +11,7 @@ import {
   useComputedColorScheme,
 } from "@mantine/core";
 import { Link, useNavigate } from "@tanstack/react-router";
-import type { StatGroupData } from "../types/data.ts";
+import type { StatGroupData } from "../../types/data.ts";
 
 export function StatGroupCard({ statGroup }: { statGroup: StatGroupData }) {
   const navigate = useNavigate();

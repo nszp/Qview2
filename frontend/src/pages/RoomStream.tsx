@@ -2,7 +2,7 @@ import { createRoute } from "@tanstack/react-router";
 import { rootRoute } from "@/rootRoute.ts";
 import { useRef } from "react";
 import { Flex, Text } from "@mantine/core";
-import VideoJS from "@/components/VideoJS.tsx";
+import VideoJS from "@/components/streams/VideoJS.tsx";
 import type Player from "video.js/dist/types/player";
 
 export const roomStreamRoute = createRoute({
