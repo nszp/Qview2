@@ -1,3 +1,13 @@
+import { tournamentDataOptions } from "@/api.ts";
+import { ScrollRefsContext } from "@/context.ts";
+import {
+  homeRoute,
+  statGroupIndividualStandingsRoute,
+  statGroupTeamStandingsRoute,
+  tickertapeRoute,
+} from "@/routes.ts";
+import { largerThan, smallerThan } from "@/utils/styleUtils.ts";
+import { isQ } from "@/utils/utils.ts";
 import {
   ActionIcon,
   AppShell,
@@ -10,10 +20,11 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { mergeRefs, useDisclosure } from "@mantine/hooks";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
-import { type Ref, useEffect, useMemo, useState } from "react";
-import { Moon, Sun } from "lucide-react";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { Moon, Sun } from "lucide-react";
+import { type Ref, useEffect, useMemo, useState } from "react";
 import {
   homeRoute,
   statGroupIndividualStandingsRoute,
@@ -56,15 +67,6 @@ export const Shell = () => {
   const toggleColorScheme = () => {
     setColorScheme(colorScheme === "dark" ? "light" : "dark");
   };
-
-  // const statGroups = useMemo(() => {
-  //   return data?.statGroups.filter((statGroup) => {
-  //     if (!isQ(data)) return true;
-  //     return (
-  //       statGroup.webName !== statGroup.name && !statGroup.name.endsWith("f")
-  //     );
-  //   });
-  // }, [data]);
 
   return (
     <>
@@ -194,6 +196,11 @@ export const Shell = () => {
                 toggle();
               }
             }}
+          />
+          <NavLink
+            label="Rounds in Progress"
+            component={Link}
+            to={tickertapeRoute.to}
           />
           <Text size="xs" fw={600} pl="0.5rem" mt="10px" c="dimmed">
             Divisions
