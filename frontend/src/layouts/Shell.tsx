@@ -132,11 +132,12 @@ export const Shell = () => {
           zIndex={2000}
         >
           <NavLink
-            label="Division Standings"
+            label="Home"
             active={false}
             component={Link}
             to={homeRoute.to}
             viewTransition={true}
+            resetScroll={true}
             // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
             search={{ section: "division-standings" }}
             // TODO: make this a dropdown that goes to the correct group of stat groups
@@ -152,6 +153,7 @@ export const Shell = () => {
             component={Link}
             to={homeRoute.to}
             viewTransition={true}
+            resetScroll={true}
             // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
             search={{ section: "search" }}
             onClick={() => {
@@ -166,6 +168,7 @@ export const Shell = () => {
             component={Link}
             to={homeRoute.to}
             viewTransition={true}
+            resetScroll={true}
             // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
             search={{ section: "team-schedules" }}
             // TODO: make this a dropdown that goes to the correct group of stat groups
@@ -181,6 +184,7 @@ export const Shell = () => {
             component={Link}
             to={homeRoute.to}
             viewTransition={true}
+            resetScroll={true}
             // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
             search={{ section: "streams" }}
             // TODO: make this a dropdown that goes to the correct group of streams
