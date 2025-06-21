@@ -26,6 +26,7 @@ const router = createRouter({
   routeTree,
   scrollRestoration: true,
   scrollToTopSelectors: ["main"],
+  defaultViewTransition: true,
   context: {
     scrollRefs: [],
   },
