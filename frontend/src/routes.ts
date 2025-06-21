@@ -13,4 +13,5 @@ export const routeTree = rootRoute.addChildren([
   Pages.roomStreamRoute,
   Pages.scoresheetRoute,
   Pages.tickertapeRoute,
+  Pages.aboutRoute,
 ]);

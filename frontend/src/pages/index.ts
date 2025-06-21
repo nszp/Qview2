@@ -8,3 +8,4 @@ export * from "./RoomStream.tsx";
 export * from "./TeamOverview.tsx";
 export * from "./Scoresheet.tsx";
 export * from "./Tickertape.tsx";
+export * from "./About.tsx";

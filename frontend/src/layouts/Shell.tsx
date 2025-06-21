@@ -109,21 +109,22 @@ export const Shell = () => {
                 Q2025 Stats
               </Text>
               <Group gap={0}>
-                <Flex ta="center" direction="column" gap={0} mr="md">
-                  <Text span c="dimmed" size="xs" p="0" mb="-0.2rem">
-                    calculated on
+                {/*<Flex ta="center" direction="row" gap="xs" mr="md">*/}
+                {/* TODO: make this a nvabar footer instead or something */}
+                <Text span size="sm" p="0" mr="md">
+                  <Text span c="dimmed" size="sm" p="0">
+                    as of{" "}
                   </Text>
-                  <Text span size="sm" p="0">
-                    {timestampDate.format("hh:mma")}
-                    {timestampDate.isToday()
-                      ? " today"
-                      : timestampDate.isYesterday()
-                        ? " yesterday"
-                        : timestampDate.week() === dayjs().week()
-                          ? timestampDate.format(" dddd")
-                          : timestampDate.format(" MMM D")}
-                  </Text>
-                </Flex>
+                  {timestampDate.format(" hh:mma")}
+                  {timestampDate.isToday()
+                    ? " today"
+                    : timestampDate.isYesterday()
+                      ? " yesterday"
+                      : timestampDate.week() === dayjs().week()
+                        ? timestampDate.format(" dddd")
+                        : timestampDate.format(" MMM D")}
+                </Text>
+                {/*</Flex>*/}
                 <ActionIcon
                   variant="transparent"
                   aria-label="Change color scheme"

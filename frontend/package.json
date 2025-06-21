@@ -63,6 +63,7 @@
       "@mantine/hooks": "^8.0.0",
       "@mantine/dates": "^8.0.0",
       "vite": "npm:rolldown-vite@latest"
-    }
+    },
+    "neverBuiltDependencies": []
   }
 }
