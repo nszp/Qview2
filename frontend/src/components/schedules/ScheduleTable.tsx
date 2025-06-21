@@ -15,13 +15,27 @@ import {
 } from "lucide-react";
 import { DataTable } from "mantine-datatable";
 
+type Props = {
+  showRoundColumn?: boolean;
+  showCurrentQuestionColumn?: boolean;
+} & (QuizWithTime | QuizWithoutTime);
+
+type QuizWithTime = {
+  quizzes: TeamRoundData[];
+  includeTime?: true;
+};
+
+type QuizWithoutTime = {
+  quizzes: (Omit<TeamRoundData, "time"> & { time?: string })[];
+  includeTime: false;
+};
+
 export default function ScheduleTable({
   quizzes,
   showRoundColumn = false,
-}: {
-  quizzes: TeamRoundData[];
-  showRoundColumn?: boolean;
-}) {
+  includeTime = true,
+  showCurrentQuestionColumn = false,
+}: Props) {
   return (
     <Box mb="md" mih="50vh">
       <DataTable
@@ -107,9 +121,10 @@ export default function ScheduleTable({
             textAlign: "center",
             width: "250px",
             noWrap: true,
+            hidden: !includeTime,
             render: (quiz) =>
               dayjs
-                .unix(Number.parseInt(quiz.time))
+                .unix(Number.parseInt(quiz.time ?? ""))
                 .format("ddd hh:mmA (MM/DD/YY)"),
           },
           {
@@ -118,6 +133,13 @@ export default function ScheduleTable({
             textAlign: "center",
             width: "110px",
             noWrap: true,
+          },
+          {
+            hidden: !showCurrentQuestionColumn,
+            accessor: "question",
+            title: "Question",
+            textAlign: "center",
+            width: "100px",
           },
           {
             accessor: "teams",
@@ -172,7 +194,6 @@ export default function ScheduleTable({
             textAlign: "center",
             width: "110px",
             hidden: !showRoundColumn,
-
           },
         ]}
         records={quizzes.filter((quiz) => quiz.teams.length > 1)}
