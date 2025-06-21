@@ -1,15 +1,20 @@
 import { tournamentDataOptions } from "@/api.ts";
 import { ScrollRefsContext } from "@/context.ts";
 import {
+  aboutRoute,
   homeRoute,
   statGroupIndividualStandingsRoute,
   statGroupTeamScheduleRoute,
   statGroupTeamStandingsRoute,
   tickertapeRoute,
 } from "@/routes.ts";
+import { largerThan, smallerThan } from "@/utils/styleUtils.ts";
+import { isQ } from "@/utils/utils.ts";
 import {
   ActionIcon,
+  Anchor,
   AppShell,
+  Box,
   Burger,
   Flex,
   Group,
@@ -23,14 +28,12 @@ import { mergeRefs, useDisclosure } from "@mantine/hooks";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, Outlet, useLocation } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-import { Moon, Sun } from "lucide-react";
-import { type Ref, useEffect, useState } from "react";
-import { isQ } from "@/utils/utils.ts";
-import { largerThan, smallerThan } from "@/utils/styleUtils.ts";
 import dayjs from "dayjs";
 import isToday from "dayjs/plugin/isToday.js";
 import isYesterday from "dayjs/plugin/isYesterday.js";
 import weekOfYear from "dayjs/plugin/weekOfYear.js";
+import { Moon, Sun } from "lucide-react";
+import { type Ref, useEffect, useState } from "react";
 
 dayjs.extend(isToday);
 dayjs.extend(isYesterday);
@@ -217,6 +220,7 @@ export const Shell = () => {
             label="Rounds in Progress"
             component={Link}
             to={tickertapeRoute.to}
+            viewTransition={true}
           />
           <Text size="xs" fw={600} pl="0.5rem" mt="10px" c="dimmed">
             Divisions
@@ -330,7 +334,7 @@ export const Shell = () => {
           style={{}}
           sx={(theme, u) => ({
             overflow: mobileOpened ? "hidden" : "scroll",
-            paddingBottom: "3rem",
+            paddingBottom: "4rem",
             paddingTop: "40px",
             [u.smallerThan("md")]: {
               height: "calc(100vh - 60px)",
@@ -353,9 +357,16 @@ export const Shell = () => {
             }}
           >
             <Outlet />
-            <Text ta="center" pb="sm">
-              Developed by QView Quiz Technologies Development Working Group.
-            </Text>
+            <Flex justify="center" mb="md">
+              <Anchor
+                ta="center"
+                underline="hover"
+                component={Link}
+                to={aboutRoute.to}
+              >
+                Developed by QView Quiz Technologies Development Working Group.
+              </Anchor>
+            </Flex>
           </ScrollRefsContext>
         </AppShell.Main>
       </AppShell>

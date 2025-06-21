@@ -1,11 +1,19 @@
-import { createRoute } from "@tanstack/react-router";
 import { rootRoute } from "@/rootRoute.ts";
-import { Text } from "@mantine/core";
+import { Button, Text } from "@mantine/core";
+import { createRoute } from "@tanstack/react-router";
+import { usePostHog } from "posthog-js/react";
 
 export const aboutRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/about",
   component: function About() {
-    return <Text>saige very good at writing reactact..</Text>;
+    const posthog = usePostHog();
+
+    return (
+      <>
+        <Text>hi</Text>
+        <Button id="feedback-button">Send Feedback</Button>
+      </>
+    );
   },
 });
