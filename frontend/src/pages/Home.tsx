@@ -94,14 +94,6 @@ export const homeRoute = createRoute({
       } else if (section === "streams") {
         scrollStreamsIntoView();
       }
-
-      navigate({
-        to: homeRoute.to,
-        search: {
-          section: undefined, // clear the section from the URL
-        },
-        replace: true,
-      });
     }, [
       section,
       scrollDivisionStandingsIntoView,
@@ -390,6 +382,7 @@ export const homeRoute = createRoute({
 
     useEffect(() => {
       posthog.captureException(error);
+      console.error(error);
     }, [error, posthog]);
 
     // TODO: make this Mantine

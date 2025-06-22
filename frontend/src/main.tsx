@@ -4,7 +4,11 @@ import { MantineProvider } from "@mantine/core";
 import { MantineEmotionProvider, emotionTransform } from "@mantine/emotion";
 import { QueryClientProvider } from "@tanstack/react-query";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
+import {
+  RouterProvider,
+  createRouteMask,
+  createRouter,
+} from "@tanstack/react-router";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { themeOverride } from "./theme";
@@ -24,8 +28,16 @@ const options: Partial<PostHogConfig> = {
   defaults: "2025-05-24",
 };
 
+const homeScrollMask = createRouteMask({
+  routeTree,
+  from: "/",
+  to: "/",
+  search: () => undefined,
+});
+
 const router = createRouter({
   routeTree,
+  routeMasks: [homeScrollMask],
   scrollRestoration: true,
   scrollToTopSelectors: ["main"],
   defaultViewTransition: true,
