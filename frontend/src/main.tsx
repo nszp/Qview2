@@ -17,9 +17,11 @@ import { routeTree } from "@/routes.ts";
 // Biome is bad (for some reason the order of these imports matters)
 
 import { queryClient } from "@/rootRoute.ts";
+import type { PostHogConfig } from "posthog-js";
 
-const options = {
+const options: Partial<PostHogConfig> = {
   api_host: import.meta.env.VITE_POSTHOG_HOST,
+  defaults: "2025-05-24",
 };
 
 const router = createRouter({
