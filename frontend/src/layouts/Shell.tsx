@@ -14,11 +14,11 @@ import {
   ActionIcon,
   Anchor,
   AppShell,
-  Box,
   Burger,
   Flex,
   Group,
   NavLink,
+  ScrollArea,
   Skeleton,
   Text,
   useComputedColorScheme,
@@ -47,7 +47,9 @@ export const Shell = () => {
 
   const location = useLocation();
 
-  const { isLoading, error, data } = useSuspenseQuery(tournamentDataOptions);
+  const { isPending, isFetching, error, data } = useSuspenseQuery(
+    tournamentDataOptions,
+  );
 
   const toggle = () => {
     if (mobileOpened) {
@@ -59,7 +61,9 @@ export const Shell = () => {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: i don't want to
   useEffect(() => {
-    toggle();
+    if (mobileOpened) {
+      toggleMobile();
+    }
   }, [location.pathname]);
 
   const { setColorScheme } = useMantineColorScheme();
@@ -115,22 +119,6 @@ export const Shell = () => {
                 Q2025 Stats
               </Text>
               <Group gap={0}>
-                {/*<Flex ta="center" direction="row" gap="xs" mr="md">*/}
-                {/* TODO: make this a nvabar footer instead or something */}
-                <Text span size="sm" p="0" mr="md">
-                  <Text span c="dimmed" size="sm" p="0">
-                    as of{" "}
-                  </Text>
-                  {timestampDate.format(" hh:mma")}
-                  {timestampDate.isToday()
-                    ? " today"
-                    : timestampDate.isYesterday()
-                      ? " yesterday"
-                      : timestampDate.week() === dayjs().week()
-                        ? timestampDate.format(" dddd")
-                        : timestampDate.format(" MMM D")}
-                </Text>
-                {/*</Flex>*/}
                 <ActionIcon
                   variant="transparent"
                   aria-label="Change color scheme"
@@ -148,189 +136,222 @@ export const Shell = () => {
             </Group>
           </Group>
         </AppShell.Header>
-        <AppShell.Navbar
-          p="md"
-          pt="0"
-          sx={{
-            overflow: "auto",
-          }}
-          zIndex={2000}
-        >
-          <NavLink
-            label="Home"
-            active={false}
-            component={Link}
-            to={homeRoute.to}
-            viewTransition={true}
-            resetScroll={true}
-            // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
-            search={{ section: "division-standings" }}
-            // TODO: make this a dropdown that goes to the correct group of stat groups
-            onClick={() => {
-              if (location.pathname === homeRoute.path) {
-                toggle();
-              }
-            }}
-          />
-          <NavLink
-            label="Search Individuals and Teams"
-            active={false}
-            component={Link}
-            to={homeRoute.to}
-            viewTransition={true}
-            resetScroll={true}
-            // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
-            search={{ section: "search" }}
-            onClick={() => {
-              if (location.pathname === homeRoute.path) {
-                toggle();
-              }
-            }}
-          />
-          <NavLink
-            label="Team Schedules"
-            active={false}
-            component={Link}
-            to={homeRoute.to}
-            viewTransition={true}
-            resetScroll={true}
-            // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
-            search={{ section: "team-schedules" }}
-            // TODO: make this a dropdown that goes to the correct group of stat groups
-            onClick={() => {
-              if (location.pathname === homeRoute.path) {
-                toggle();
-              }
-            }}
-          />
-          <NavLink
-            label="Room Schedules and Livestreams"
-            active={false}
-            component={Link}
-            to={homeRoute.to}
-            viewTransition={true}
-            resetScroll={true}
-            // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
-            search={{ section: "streams" }}
-            // TODO: make this a dropdown that goes to the correct group of streams
-            onClick={() => {
-              if (location.pathname === homeRoute.path) {
-                toggle();
-              }
-            }}
-          />
-          <NavLink
-            label="Rounds in Progress"
-            component={Link}
-            to={tickertapeRoute.to}
-            viewTransition={true}
-          />
-          <Text size="xs" fw={600} pl="0.5rem" mt="10px" c="dimmed">
-            Divisions
-          </Text>
-          {isLoading || error || data?.statGroups.length === 0 ? (
-            <Skeleton height={40} mb="xs" />
-          ) : isQ(data) ? (
-            [
-              "Field",
-              "District Experienced",
-              "Local Experienced",
-              "District Novice",
-              "Local Novice",
-              "Decades",
-            ]
-              .filter((outerGroupName) =>
-                data.statGroups.some(
-                  (statGroup) =>
-                    statGroup.webName.startsWith(outerGroupName) &&
-                    statGroup.name !== statGroup.webName,
-                ),
-              )
-              .map((outerGroupName) => (
-                <NavLink key={outerGroupName} label={outerGroupName}>
-                  {data.statGroups
-                    .filter((statGroup) =>
-                      statGroup.webName.startsWith(outerGroupName),
-                    )
-                    .map((statGroup) =>
-                      statGroup.webName.endsWith("Individuals") ? (
-                        <NavLink
-                          key={statGroup.name}
-                          label="Individual Standings"
-                          component={Link}
-                          to={statGroupIndividualStandingsRoute.to}
-                          // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
-                          params={{ statGroupName: statGroup.name }}
-                          viewTransition={true}
-                        />
-                      ) : (
-                        <NavLink
-                          key={statGroup.name}
-                          label={
-                            outerGroupName === "Field"
-                              ? statGroup.webName
-                              : statGroup.webName.replace(
-                                  `${outerGroupName} `,
-                                  "",
-                                )
-                          }
-                        >
+        <AppShell.Navbar pl="md" pt="md" p="0" zIndex={2000}>
+          <AppShell.Section grow component={ScrollArea} pr="md">
+            <NavLink
+              label="Home"
+              active={false}
+              component={Link}
+              to={homeRoute.to}
+              viewTransition={true}
+              resetScroll={true}
+              // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+              search={{ section: "division-standings" }}
+              // TODO: make this a dropdown that goes to the correct group of stat groups
+              onClick={() => {
+                if (location.pathname === homeRoute.path) {
+                  toggleMobile();
+                }
+              }}
+            />
+            <NavLink
+              label="Search Individuals and Teams"
+              active={false}
+              component={Link}
+              to={homeRoute.to}
+              viewTransition={true}
+              resetScroll={true}
+              // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+              search={{ section: "search" }}
+              onClick={() => {
+                if (location.pathname === homeRoute.path) {
+                  toggleMobile();
+                }
+              }}
+            />
+            <NavLink
+              label="Team Schedules"
+              active={false}
+              component={Link}
+              to={homeRoute.to}
+              viewTransition={true}
+              resetScroll={true}
+              // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+              search={{ section: "team-schedules" }}
+              // TODO: make this a dropdown that goes to the correct group of stat groups
+              onClick={() => {
+                if (location.pathname === homeRoute.path) {
+                  toggleMobile();
+                }
+              }}
+            />
+            <NavLink
+              label="Room Schedules and Livestreams"
+              active={false}
+              component={Link}
+              to={homeRoute.to}
+              viewTransition={true}
+              resetScroll={true}
+              // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+              search={{ section: "streams" }}
+              // TODO: make this a dropdown that goes to the correct group of streams
+              onClick={() => {
+                if (location.pathname === homeRoute.path) {
+                  toggleMobile();
+                }
+              }}
+            />
+            <NavLink
+              label="Rounds in Progress"
+              component={Link}
+              to={tickertapeRoute.to}
+            />
+            <Text size="xs" fw={600} pl="0.5rem" mt="10px" c="dimmed">
+              Divisions
+            </Text>
+            {isPending || error || data?.statGroups.length === 0 ? (
+              <Skeleton height={40} mb="xs" />
+            ) : isQ(data) ? (
+              [
+                "Field",
+                "District Experienced",
+                "Local Experienced",
+                "District Novice",
+                "Local Novice",
+                "Decades",
+              ]
+                .filter((outerGroupName) =>
+                  data.statGroups.some(
+                    (statGroup) =>
+                      statGroup.webName.startsWith(outerGroupName) &&
+                      statGroup.name !== statGroup.webName,
+                  ),
+                )
+                .map((outerGroupName) => (
+                  <NavLink key={outerGroupName} label={outerGroupName}>
+                    {data.statGroups
+                      .filter((statGroup) =>
+                        statGroup.webName.startsWith(outerGroupName),
+                      )
+                      .map((statGroup) =>
+                        statGroup.webName.endsWith("Individuals") ? (
                           <NavLink
+                            key={statGroup.name}
                             label="Individual Standings"
                             component={Link}
                             to={statGroupIndividualStandingsRoute.to}
                             // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
                             params={{ statGroupName: statGroup.name }}
+                            viewTransition={true}
                           />
+                        ) : (
                           <NavLink
-                            label="Team Standings"
-                            component={Link}
-                            to={statGroupTeamStandingsRoute.to}
-                            // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
-                            params={{ statGroupName: statGroup.name }}
-                          />
-                          {!statGroup.name.endsWith("f") && (
-                            <NavLink label="Team Schedules">
-                              {statGroup.teams.map((team) => (
-                                <NavLink
-                                  key={team.name}
-                                  label={team.name}
-                                  component={Link}
-                                  to={statGroupTeamScheduleRoute.to}
-                                  params={{
-                                    // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
-                                    statGroupName: statGroup.name,
-                                    teamName: team.name,
-                                  }}
-                                />
-                              ))}
-                            </NavLink>
-                          )}
-                        </NavLink>
-                      ),
-                    )}
+                            key={statGroup.name}
+                            label={
+                              outerGroupName === "Field"
+                                ? statGroup.webName
+                                : statGroup.webName.replace(
+                                    `${outerGroupName} `,
+                                    "",
+                                  )
+                            }
+                          >
+                            <NavLink
+                              label="Individual Standings"
+                              component={Link}
+                              to={statGroupIndividualStandingsRoute.to}
+                              // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                              params={{ statGroupName: statGroup.name }}
+                            />
+                            <NavLink
+                              label="Team Standings"
+                              component={Link}
+                              to={statGroupTeamStandingsRoute.to}
+                              // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                              params={{ statGroupName: statGroup.name }}
+                            />
+                            {!statGroup.name.endsWith("f") && (
+                              <NavLink label="Team Schedules">
+                                {statGroup.teams.map((team) => (
+                                  <NavLink
+                                    key={team.name}
+                                    label={team.name}
+                                    component={Link}
+                                    to={statGroupTeamScheduleRoute.to}
+                                    params={{
+                                      // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                                      statGroupName: statGroup.name,
+                                      teamName: team.name,
+                                    }}
+                                  />
+                                ))}
+                              </NavLink>
+                            )}
+                          </NavLink>
+                        ),
+                      )}
+                  </NavLink>
+                ))
+            ) : (
+              data.statGroups.map((statGroup) => (
+                <NavLink key={statGroup.name} label={statGroup.webName}>
+                  <NavLink
+                    label="Individual Standings"
+                    component={Link}
+                    to={statGroupIndividualStandingsRoute.to}
+                    // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                    params={{ statGroupName: statGroup.name }}
+                  />
+                  <NavLink
+                    label="Team Standings"
+                    component={Link}
+                    to={statGroupTeamStandingsRoute.to}
+                    // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                    params={{ statGroupName: statGroup.name }}
+                  />
                 </NavLink>
               ))
-          ) : (
-            data.statGroups.map((statGroup) => (
-              <NavLink key={statGroup.name} label={statGroup.webName}>
-                <NavLink
-                  label="Individual Standings"
-                  component={Link}
-                  to={statGroupIndividualStandingsRoute.to}
-                  // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
-                  params={{ statGroupName: statGroup.name }}
-                />
-                <NavLink
-                  label="Team Standings"
-                  component={Link}
-                  to={statGroupTeamStandingsRoute.to}
-                  // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
-                  params={{ statGroupName: statGroup.name }}
-                />
-              </NavLink>
-            ))
-          )}
+            )}
+          </AppShell.Section>
+          <AppShell.Section
+            style={{
+              position: "fixed",
+              width: "var(--app-shell-navbar-width)",
+              marginLeft: "calc(var(--mantine-spacing-md) * -1)",
+              bottom: 0,
+              borderRight: "1px solid var(--app-shell-border-color)",
+              borderTop: "1px solid var(--app-shell-border-color)",
+              backgroundColor: "var(--mantine-color-body)",
+              paddingTop: "0.5rem",
+              paddingLeft: "var(--mantine-spacing-md)",
+              paddingRight: "var(--mantine-spacing-md)",
+              paddingBottom: "0.5rem",
+              textAlign: "center",
+              cursor: "pointer",
+            }}
+          >
+            <Text span size="sm">
+              {isFetching ? (
+                <Text span c="dimmed" size="sm">
+                  Updating...
+                </Text>
+              ) : (
+                <>
+                  <Text span c="dimmed" size="sm">
+                    Updated at{" "}
+                  </Text>
+                  {timestampDate.format(" hh:mma")}
+                  {timestampDate.isToday()
+                    ? " today"
+                    : timestampDate.isYesterday()
+                      ? " yesterday"
+                      : timestampDate.week() === dayjs().week()
+                        ? timestampDate.format(" dddd")
+                        : timestampDate.format(" MMM D")}
+                </>
+              )}
+            </Text>
+          </AppShell.Section>
         </AppShell.Navbar>
         <AppShell.Main
           ref={mergeRefs(...scrollRefs)}
@@ -364,20 +385,21 @@ export const Shell = () => {
             }}
           >
             <Outlet />
-            <Flex justify="center" mb="md">
-              <Anchor
-                ta="center"
-                underline="hover"
-                component={Link}
-                to={aboutRoute.to}
-              >
-                Developed by QView Quiz Technologies Development Working Group.
-              </Anchor>
-            </Flex>
+            {/* TODO: re-add after finishing about page */}
+            {/*<Flex justify="center" mb="md">*/}
+            {/*  <Anchor*/}
+            {/*    ta="center"*/}
+            {/*    underline="hover"*/}
+            {/*    component={Link}*/}
+            {/*    to={aboutRoute.to}*/}
+            {/*  >*/}
+            {/*    Developed by QView Quiz Technologies Development Working Group.*/}
+            {/*  </Anchor>*/}
+            {/*</Flex>*/}
           </ScrollRefsContext>
         </AppShell.Main>
       </AppShell>
-      <TanStackRouterDevtools position="bottom-left" />
+      {/*<TanStackRouterDevtools position="bottom-left" />*/}
     </>
   );
 };
