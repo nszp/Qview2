@@ -32,7 +32,11 @@ child.on("close", (code) => {
   if (!urlMatch) {
     throw new Error("Could not find deployed URL in wrangler output.");
   }
-  deployed_url = urlMatch[0].endsWith("/") ? urlMatch[0] : `${urlMatch[0]}/`;
+  deployed_url = urlMatch[0]
+    .replace(/^(https?:\/\/)[^.]+\./, "$1")
+    .endsWith("/")
+    ? urlMatch[0].replace(/^(https?:\/\/)[^\.]+\./, "$1")
+    : `${urlMatch[0].replace(/^(https?:\/\/)[^.]+\./, "$1")}/`;
 
   // Read the contents of the index.html file
   const indexPath = "dist/index.html";
