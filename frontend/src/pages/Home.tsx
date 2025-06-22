@@ -42,6 +42,13 @@ export const homeRoute = createRoute({
     };
   },
   loader: () => queryClient.ensureQueryData(tournamentDataOptions),
+  head: () => ({
+    meta: [
+      {
+        title: "Q2025 Stats",
+      },
+    ],
+  }),
   component: function Home() {
     const { setScrollRefs } = useContext(ScrollRefsContext);
     const { section } = homeRoute.useSearch();
