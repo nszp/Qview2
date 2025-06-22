@@ -20,14 +20,14 @@ export const roomStreamRoute = createRoute({
       responsive: true,
       liveui: true,
       sources: [
-         {
-          src: `http://video.q2025.org:8080/hls/${roomName}.m3u8`,
+        {
+          src: `http://video.q2025.org:8080/hls/${roomName.replace(/ /g, "")}.m3u8`,
           type: "application/x-mpegURL",
-        }
+        },
         //{
         //  src: "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8",
-      //type: "application/x-mpegURL",
-       // },
+        //type: "application/x-mpegURL",
+        // },
       ],
     };
 

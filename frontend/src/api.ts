@@ -5,7 +5,21 @@ import type {
 } from "@/types/data.ts";
 import { queryOptions } from "@tanstack/react-query";
 
-const BASE_URL = "https://bucket.quizstats.org";
+declare global {
+  interface Window {
+    publicDataUrl?: string;
+  }
+}
+
+let BASE_URL = "https://bucket.quizstats.org";
+if (
+  typeof window.publicDataUrl === "string" &&
+  window.publicDataUrl !== "" &&
+  window.publicDataUrl !== "<!PUBLIC_BUCKET_URL>"
+) {
+  BASE_URL = window.publicDataUrl;
+}
+
 const TOURNAMENT_DATA_URL = `${BASE_URL}/tournamentData.json`;
 const TICKERTAPE_DATA_URL = `${BASE_URL}/tickertape.json`;
 
