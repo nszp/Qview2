@@ -100,7 +100,6 @@ export const homeRoute = createRoute({
       scrollSearchIntoView,
       scrollTeamSchedulesIntoView,
       scrollStreamsIntoView,
-      navigate,
     ]);
 
     const { isPending, error, data } = useSuspenseQuery(tournamentDataOptions);
@@ -150,7 +149,7 @@ export const homeRoute = createRoute({
           mt="-44px"
           style={{
             position: "sticky",
-            zIndex: 1000,
+            zIndex: 50, // the navbar is 100
             borderBottomWidth: 1,
             borderBottomStyle: "solid",
             borderBottomColor:
