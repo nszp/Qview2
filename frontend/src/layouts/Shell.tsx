@@ -26,7 +26,7 @@ import {
 } from "@mantine/core";
 import { mergeRefs, useDisclosure } from "@mantine/hooks";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Link, Outlet, useLocation } from "@tanstack/react-router";
+import { HeadContent, Link, Outlet, useLocation } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import dayjs from "dayjs";
 import isToday from "dayjs/plugin/isToday.js";
@@ -74,6 +74,7 @@ export const Shell = () => {
 
   return (
     <>
+      <HeadContent />
       <AppShell
         header={{ height: { base: 60, md: 70, lg: 80 } }}
         navbar={{
@@ -336,19 +337,23 @@ export const Shell = () => {
           style={{}}
           sx={(theme, u) => ({
             overflow: mobileOpened ? "hidden" : "scroll",
-            paddingBottom: "4rem",
-            paddingTop: "40px",
+            overflowX: "auto", // allow horizontal scroll but don't have the gutter unless needed
+            paddingBottom: theme.spacing.md,
+            paddingTop: theme.spacing.lg,
             [u.smallerThan("md")]: {
-              height: "calc(100vh - 60px)",
-              marginTop: `calc(60px - ${theme.spacing.md})`,
+              height: "calc(100dvh - 60px)",
+              minHeight: "calc(100dvh - 60px)",
+              marginTop: "60px",
             },
             [`@media ${largerThan(u, "md")} and ${smallerThan(u, "lg")}`]: {
-              height: "calc(100vh - 70px)",
-              marginTop: `calc(70px - ${theme.spacing.md})`,
+              height: "calc(100dvh - 70px)",
+              minHeight: "calc(100dvh - 70px)",
+              marginTop: "70px",
             },
             [u.largerThan("lg")]: {
-              height: "calc(100vh - 80px)",
-              marginTop: `calc(80px - ${theme.spacing.md})`,
+              height: "calc(100dvh - 80px)",
+              minHeight: "calc(100dvh - 80px)",
+              marginTop: "80px",
             },
           })}
         >

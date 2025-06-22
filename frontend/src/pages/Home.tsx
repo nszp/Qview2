@@ -144,9 +144,9 @@ export const homeRoute = createRoute({
       <>
         <Box
           w="100%"
-          top="-44px"
+          top="-20px" // change this and `mt` together
           bg="var(--mantine-color-body)"
-          mt="-44px"
+          mt="-20px" // offsets the padding of the container
           style={{
             position: "sticky",
             zIndex: 50, // the navbar is 100
