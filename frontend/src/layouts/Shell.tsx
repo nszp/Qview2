@@ -90,12 +90,14 @@ export const Shell = () => {
               onClick={toggleMobile}
               hiddenFrom="sm"
               size="sm"
+              aria-label="Toggle navigation"
             />
             <Burger
               opened={desktopOpened}
               onClick={toggleDesktop}
               visibleFrom="sm"
               size="sm"
+              aria-label="Toggle navigation"
             />
             <Group justify="space-between" sx={{ flex: 1 }}>
               <Text
