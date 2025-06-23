@@ -2,6 +2,7 @@ export * from "./Home.tsx";
 export * from "./StatGroupIndividualStandings.tsx";
 export * from "./StatGroupTeamStandings.tsx";
 export * from "./StatGroupTeamSchedule.tsx";
+export * from "./IndividualRoundSummary.tsx";
 export * from "./IndividualOverview.tsx";
 export * from "./RoomSchedule.tsx";
 export * from "./RoomStream.tsx";

@@ -4,6 +4,7 @@ import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { Flex, Text } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { Navigate, createRoute } from "@tanstack/react-router";
+import { useMemo } from "react";
 
 export const statGroupIndividualStandingsRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -28,6 +29,14 @@ export const statGroupIndividualStandingsRoute = createRoute({
       return <Navigate to="/" replace />;
     }
 
+    const individualsWithScheduledRounds = useMemo(() => {
+      return statGroup.individuals.map((i) => ({
+        ...i,
+        scheduledRounds:
+          statGroup.teams.find((t) => t.name === i.team)?.quizzes.length || 0,
+      }));
+    }, [statGroup]);
+
     return (
       <>
         <Flex
@@ -46,7 +55,10 @@ export const statGroupIndividualStandingsRoute = createRoute({
             Individual Standings
           </Text>
         </Flex>
-        <IndividualStandingsTable individuals={statGroup.individuals} />
+        <IndividualStandingsTable
+          individuals={individualsWithScheduledRounds}
+          statGroupName={statGroup.name}
+        />
       </>
     );
   },

@@ -8,6 +8,7 @@ export const routeTree = rootRoute.addChildren([
   Pages.statGroupTeamStandingsRoute,
   Pages.individualOverviewRoute,
   Pages.teamOverviewRoute,
+  Pages.individualRoundSummaryRoute,
   Pages.statGroupTeamScheduleRoute,
   Pages.roomScheduleRoute,
   Pages.roomStreamRoute,
