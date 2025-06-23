@@ -14,7 +14,7 @@ export default function VideoJS({
   options: any;
   onReady?: (player: Player) => void;
 }) {
-  const videoRef = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
   const playerRef = useRef<Player>(null);
 
   useEffect(() => {
@@ -23,6 +23,7 @@ export default function VideoJS({
       // Defer initialization to ensure the element is in the DOM
       setTimeout(() => {
         if (videoRef.current && !disposed) {
+          console.log(videoRef.current, videoRef.current.parentElement);
           const player = videojs(videoRef.current, options, () => {
             // @ts-ignore boo
             player.mobileUi();
