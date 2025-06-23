@@ -1,9 +1,12 @@
-import VideoJS from "@/components/streams/VideoJS.tsx";
 import { rootRoute } from "@/rootRoute.ts";
-import { Flex, Text } from "@mantine/core";
+import styled from "@emotion/styled";
+import { Flex, Skeleton, Text } from "@mantine/core";
 import { createRoute } from "@tanstack/react-router";
-import { useRef } from "react";
+import { Suspense, useEffect, useRef } from "react";
+import * as React from "react";
 import type Player from "video.js/dist/types/player";
+
+const VideoJS = React.lazy(() => import("@/components/streams/VideoJS.tsx"));
 
 export const roomStreamRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -16,7 +19,7 @@ export const roomStreamRoute = createRoute({
     const videoJsOptions = {
       autoplay: false,
       controls: true,
-      fluid: true,
+      fill: true,
       responsive: true,
       liveui: true,
       sources: [
@@ -62,7 +65,23 @@ export const roomStreamRoute = createRoute({
             Livestream
           </Text>
         </Flex>
-        <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+
+        <Suspense
+          fallback={
+            <Skeleton
+              style={{
+                height: "auto",
+                maxHeight: "calc(100lvh - 200px)",
+                minHeight: "100px",
+                margin: "0 auto",
+                aspectRatio: "16/9",
+                width: "auto",
+              }}
+            />
+          }
+        >
+          <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
+        </Suspense>
       </>
     );
   },
