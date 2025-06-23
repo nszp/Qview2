@@ -443,7 +443,7 @@ export const homeRoute = createRoute({
           </Flex>
         </Skeleton>
 
-        <Space pt="md"></Space>
+        <Space pt="md" />
         <HomepageSection name="Division Standings">
           <SimpleGrid
             cols={{
