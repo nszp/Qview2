@@ -1,12 +1,11 @@
 import { scoresheetDataOptions, tickertapeDataOptions } from "@/api.ts";
-import ScoresheetTimeline from "@/components/scoresheets/ScoresheetTimeline.tsx";
-import { queryClient, rootRoute } from "@/rootRoute.tsx";
-import styled from "@emotion/styled";
-import { Flex, Skeleton, Text } from "@mantine/core";
+import ScoresheetPage from "@/components/scoresheets/ScoresheetPage.tsx";
+import { queryClient, rootRoute } from "@/rootRoute.ts";
+import { Flex, Skeleton, Space, Text } from "@mantine/core";
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { createRoute } from "@tanstack/react-router";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as React from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import type Player from "video.js/dist/types/player";
 
 const VideoJS = React.lazy(() => import("@/components/streams/VideoJS.tsx"));
@@ -131,6 +130,9 @@ export const roomStreamRoute = createRoute({
           <VideoJS options={videoJsOptions} />
         </Suspense>
 
+        <Space mb="md" />
+        {/* space below video/skeleton */}
+
         {tickertapeData && !roundTdrri && (
           <Text size="md" mb="md" c="gray" ta="center">
             No in progress round found for this room.
@@ -143,12 +145,16 @@ export const roomStreamRoute = createRoute({
         )}
         {scoresheetData && (
           <>
+            <Text size="xl" fw={600} py="md" ta="center">
+              Scoresheet
+            </Text>
             <Text size="md" mb="md" c="gray" ta="center">
-              Scoresheet updated{" "}
+              updated{" "}
               {currentTime - Number.parseInt(scoresheetData.generationQueuedAt)}{" "}
               seconds ago
             </Text>
-            <ScoresheetTimeline data={scoresheetData} />
+
+            <ScoresheetPage data={scoresheetData} />
           </>
         )}
       </>

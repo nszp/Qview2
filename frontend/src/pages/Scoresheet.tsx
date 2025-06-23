@@ -1,21 +1,8 @@
 import { scoresheetDataOptions } from "@/api.ts";
-import ScoresheetTable from "@/components/scoresheets/ScoresheetTable.tsx";
-import ScoresheetTeamCard from "@/components/scoresheets/ScoresheetTeamCard.tsx";
-import { ScoresheetTeamIcon } from "@/components/scoresheets/ScoresheetTeamIcon.tsx";
-import ScoresheetTimeline from "@/components/scoresheets/ScoresheetTimeline.tsx";
+import ScoresheetPage from "@/components/scoresheets/ScoresheetPage.tsx";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
-import { theme } from "@/theme.ts";
-import { getTeamColorsForTeamCount } from "@/utils/styleUtils.ts";
-import {
-  Flex,
-  SegmentedControl,
-  SimpleGrid,
-  Skeleton,
-  Text,
-} from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { createRoute, Navigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { Navigate, createRoute } from "@tanstack/react-router";
 
 export const scoresheetRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -25,9 +12,7 @@ export const scoresheetRoute = createRoute({
     queryClient.ensureQueryData(scoresheetDataOptions(roundNumber)),
   component: function Scoresheet() {
     const { roundNumber: _roundNumber } = scoresheetRoute.useParams();
-    const { isLoading, error, data } = useSuspenseQuery(
-      scoresheetDataOptions(_roundNumber),
-    );
+    const { data } = useSuspenseQuery(scoresheetDataOptions(_roundNumber));
 
     const roundNumber = Number.parseInt(_roundNumber || "");
 
@@ -40,143 +25,6 @@ export const scoresheetRoute = createRoute({
       // TODO: remove when data gets updated
     }
 
-    const teamColors = getTeamColorsForTeamCount(data.teams.length);
-
-    const [selectedDisplay, setSelectedDisplay] = useState("timeline");
-
-    return (
-      <>
-        <Flex
-          justify="center"
-          align="center"
-          direction="column"
-          sx={(_, u) => ({
-            [u.smallerThan("sm")]: {
-              width: "100%",
-            },
-          })}
-        >
-          <Skeleton visible={!data}>
-            <Text size="xl" ta="center">
-              {data.room} {data.round}
-            </Text>
-          </Skeleton>
-          <Text size="md" mb="md" c="gray" ta="center">
-            {isLoading && " Loading..."}
-            {error && ` Error: ${error.message}`}
-            {data && (
-              <>
-                {data.tournament} {data.division}
-                <br />
-                {data.teams.length === 2 ? (
-                  <>
-                    <ScoresheetTeamIcon
-                      color={theme.colors.red[6]}
-                      size={16}
-                      style={{ marginRight: "2.5px" }}
-                    />
-                    <span style={{ marginLeft: "2.5px" }}>
-                      {data.teams[0].name}
-                    </span>
-                    &nbsp;vs.&nbsp;
-                    <ScoresheetTeamIcon
-                      color={theme.colors.green[6]}
-                      size={16}
-                      style={{ marginRight: "2.5px" }}
-                    />
-                    <span style={{ marginLeft: "2.5px" }}>
-                      {data.teams[1].name}
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    <ScoresheetTeamIcon
-                      color={theme.colors.red[6]}
-                      size={16}
-                      style={{ marginRight: "2.5px" }}
-                    />
-                    <span style={{ marginLeft: "2.5px" }}>
-                      {data.teams[0].name}
-                    </span>
-                    &nbsp;vs.&nbsp;
-                    <ScoresheetTeamIcon
-                      color={theme.colors.blue[5]}
-                      size={16}
-                      style={{ marginRight: "2.5px" }}
-                    />
-                    <span style={{ marginLeft: "2.5px" }}>
-                      {data.teams[1].name}
-                    </span>
-                    &nbsp;vs.&nbsp;
-                    <ScoresheetTeamIcon
-                      color={theme.colors.green[6]}
-                      size={16}
-                      style={{ marginRight: "2.5px" }}
-                    />
-                    <span style={{ marginLeft: "2.5px" }}>
-                      {data.teams[2].name}
-                    </span>
-                  </>
-                )}
-              </>
-            )}
-          </Text>
-
-          <SegmentedControl
-            visibleFrom="sm"
-            value={selectedDisplay}
-            onChange={setSelectedDisplay}
-            size="md"
-            data={[
-              { label: "Modern Timeline", value: "timeline" },
-              { label: "Legacy Scoresheet", value: "legacy" },
-            ]}
-            mb="md"
-          />
-
-          {data && (
-            <SimpleGrid
-              spacing="md"
-              pt="sm"
-              pb="md"
-              cols={{ base: 1, sm: data.teams.length }}
-              sx={(_, u) => ({
-                [u.smallerThan("sm")]: {
-                  width: "100%",
-                },
-                [u.largerThan("sm")]: {
-                  minWidth: "36em",
-                },
-              })}
-            >
-              {data.teams.map((team, index) => (
-                <ScoresheetTeamCard
-                  team={team}
-                  key={Number(index)}
-                  color={teamColors[index]}
-                  minTeamHeight={Math.max(
-                    ...data.teams.map((team) => team.quizzers.length),
-                  )}
-                />
-              ))}
-            </SimpleGrid>
-          )}
-
-          <SegmentedControl
-            hiddenFrom="sm"
-            value={selectedDisplay}
-            onChange={setSelectedDisplay}
-            size="md"
-            data={[
-              { label: "Modern Timeline", value: "timeline" },
-              { label: "Legacy Scoresheet", value: "legacy" },
-            ]}
-            mb="md"
-          />
-        </Flex>
-        {selectedDisplay === "timeline" && <ScoresheetTimeline data={data} />}
-        {selectedDisplay === "legacy" && <ScoresheetTable data={data} />}
-      </>
-    );
+    return <ScoresheetPage data={data} />;
   },
 });

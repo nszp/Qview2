@@ -1,8 +1,8 @@
-import { Flex, Text } from "@mantine/core";
 import { tournamentDataOptions } from "@/api.ts";
-import { createRoute } from "@tanstack/react-router";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
+import { Flex, Text } from "@mantine/core";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import { createRoute } from "@tanstack/react-router";
 
 export const teamOverviewRoute = createRoute({
   getParentRoute: () => rootRoute,

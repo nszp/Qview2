@@ -1,7 +1,7 @@
-import { tickertapeDataOptions, tournamentDataOptions } from "@/api.ts";
+import { tickertapeDataOptions } from "@/api.ts";
 import HomepageCollapsable from "@/components/homepage/HomepageCollapsable.tsx";
 import { roomScheduleRoute, roomStreamRoute } from "@/pages";
-import type { StreamRoomType } from "@/types/data.ts";
+import type { StreamRoomType, TournamentData } from "@/types/data.ts";
 import { isQ } from "@/utils/utils.ts";
 import {
   Button,
@@ -16,10 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useMemo } from "react";
 
-export default function StreamCards() {
-  const { data, isPending: isPendingTournament } = useQuery(
-    tournamentDataOptions,
-  );
+export default function StreamCards({ data }: { data: TournamentData }) {
   const { data: tickertape, isPending: isPendingTickertape } = useQuery(
     tickertapeDataOptions,
   );
@@ -43,7 +40,7 @@ export default function StreamCards() {
     return roomsList;
   }, [data, tickertape]);
 
-  if (!data || !tickertape)
+  if (!tickertape)
     // tournamentData should always be loaded, but tickertape probably hasn't been loaded yet
     return new Array(2).fill(undefined, 0, 2).map((_, index) => (
       <Skeleton key={Number(index)} w="50%" mb="sm">

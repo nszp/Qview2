@@ -61,9 +61,9 @@ export const roomScheduleRoute = createRoute({
 
           return tickertapeRound
             ? {
-              ...tickertapeRound,
-              time: quiz.time,
-            }
+                ...tickertapeRound,
+                time: quiz.time,
+              }
             : quiz;
         });
     }, [data, tickertapeData, roomName]);
@@ -82,7 +82,12 @@ export const roomScheduleRoute = createRoute({
           })}
         >
           <Text size="xl">{quizzes[0].room}</Text>
-          <Text size="md" mb="md" c="gray" onClick={() => setShowRoundColumn(!showRoundColumn)}>
+          <Text
+            size="md"
+            mb="md"
+            c="gray"
+            onClick={() => setShowRoundColumn(!showRoundColumn)}
+          >
             {quizzes[0].room} Schedule
           </Text>
         </Flex>
