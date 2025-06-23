@@ -11,6 +11,7 @@ import { theme } from "@/theme.ts";
 import { scrollIntoViewOptions } from "@/utils/styleUtils.ts";
 import { isQ } from "@/utils/utils.ts";
 import {
+  Anchor,
   Autocomplete,
   Box,
   Button,
@@ -20,7 +21,6 @@ import {
   Space,
   Text,
   useComputedColorScheme,
-  Anchor,
 } from "@mantine/core";
 import { useScrollIntoView } from "@mantine/hooks";
 import {
@@ -209,11 +209,27 @@ export const homeRoute = createRoute({
 
         <Space pt="md" />
 
-        <Flex justify="center" align="center" direction="column" style={{margin: "0 auto", borderRadius: "1.25rem"}} w="100%" maw="500px" bg="blue" p="lg" gap="md">
+        <Flex
+          justify="center"
+          align="center"
+          direction="column"
+          style={{ margin: "0 auto", borderRadius: "1.25rem" }}
+          w="100%"
+          maw="500px"
+          bg="blue"
+          p="lg"
+          gap="md"
+        >
           <Text fz="lg" c="white">
-          This is a redesigned website for Q2025.
+            This is a redesigned website for Q2025.
           </Text>
-          <Anchor href="https://stats.q2025.org/statindex.html" c="white" underline="always">Go back to the old website</Anchor>
+          <Anchor
+            href="https://stats.q2025.org/statindex.html"
+            c="white"
+            underline="always"
+          >
+            Go back to the old website
+          </Anchor>
         </Flex>
 
         <HomepageSection
