@@ -1,9 +1,9 @@
-import { Flex, Text } from "@mantine/core";
-import { createRoute, Navigate } from "@tanstack/react-router";
-import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { tournamentDataOptions } from "@/api.ts";
-import { useSuspenseQuery } from "@tanstack/react-query";
 import TeamStandingsTable from "@/components/standings/TeamStandingsTable.tsx";
+import { queryClient, rootRoute } from "@/rootRoute.ts";
+import { Flex, Text } from "@mantine/core";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { Navigate, createRoute } from "@tanstack/react-router";
 
 export const statGroupTeamStandingsRoute = createRoute({
   getParentRoute: () => rootRoute,

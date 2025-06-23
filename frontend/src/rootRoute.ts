@@ -1,4 +1,5 @@
 import * as Layouts from "@/layouts";
+import { Loader } from "@mantine/core";
 import { QueryClient } from "@tanstack/react-query";
 import { createRootRoute } from "@tanstack/react-router";
 

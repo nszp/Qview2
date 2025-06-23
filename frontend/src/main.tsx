@@ -1,6 +1,6 @@
 import { PostHogProvider } from "posthog-js/react";
 
-import { MantineProvider } from "@mantine/core";
+import { Flex, Loader, MantineProvider } from "@mantine/core";
 import { MantineEmotionProvider, emotionTransform } from "@mantine/emotion";
 import { QueryClientProvider } from "@tanstack/react-query";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -23,6 +23,8 @@ import { routeTree } from "@/routes.ts";
 import { queryClient } from "@/rootRoute.ts";
 import type { PostHogConfig } from "posthog-js";
 
+import * as Layouts from "@/layouts/index.ts";
+
 const options: Partial<PostHogConfig> = {
   api_host: import.meta.env.VITE_POSTHOG_HOST,
   defaults: "2025-05-24",
@@ -44,6 +46,12 @@ const router = createRouter({
   context: {
     scrollRefs: [],
   },
+  defaultPendingComponent: () => (
+    <Flex w="100%" h="100%" justify="center" align="center">
+      <Loader color="blue" size="xl" />
+    </Flex>
+  ),
+  defaultPendingMs: 400,
 });
 
 declare module "@tanstack/react-router" {

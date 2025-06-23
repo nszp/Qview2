@@ -109,19 +109,19 @@ export const homeRoute = createRoute({
       scrollStreamsIntoView,
     ]);
 
-    const { isPending, error, data } = useSuspenseQuery(tournamentDataOptions);
+    const { error, data } = useSuspenseQuery(tournamentDataOptions);
 
     const colorScheme = useComputedColorScheme("light");
 
     const individualsList = useMemo(
       () => [
         ...new Set(
-          data?.statGroups.flatMap((statGroup) => {
+          data.statGroups.flatMap((statGroup) => {
             return statGroup.individuals.map((individual) => individual.name);
           }),
         ),
       ],
-      [data?.statGroups],
+      [data.statGroups],
     );
 
     const teamsList = useMemo(
@@ -223,31 +223,12 @@ export const homeRoute = createRoute({
             spacing="sm"
             verticalSpacing="md"
           >
-            {isPending &&
-              new Array(24).fill(undefined).map((_, index) => (
-                <Skeleton radius="md" key={Number(index)}>
-                  <StatGroupCard
-                    statGroup={{
-                      name: "Loading...", // placeholder so that the skeleton has the same height as a standard card
-                      webName: "Loading...",
-                      individuals: [],
-                      teams: [],
-                    }}
-                  />
-                </Skeleton>
+            {!isQ(data) &&
+              data.statGroups.map((statGroup) => (
+                <StatGroupCard statGroup={statGroup} key={statGroup.name} />
               ))}
-            {data &&
-              !isQ(data) &&
-              data.statGroups
-                // .filter(
-                //   (division) => division.name !== division.webName || !isQ(data),
-                // )
-                .map((statGroup) => (
-                  <StatGroupCard statGroup={statGroup} key={statGroup.name} />
-                ))}
           </SimpleGrid>
-          {data &&
-            isQ(data) &&
+          {isQ(data) &&
             ["Field", "District", "Local", "Decades"]
               .filter((outerGroupName) =>
                 data.statGroups.some(
@@ -294,66 +275,62 @@ export const homeRoute = createRoute({
         </HomepageSection>
         <HomepageSection name="Search" ref={targetSearchRef}>
           <SimpleGrid cols={{ base: 1, sm: 2 }} w="100%">
-            <Skeleton visible={isPending}>
-              <Autocomplete
-                label="Search Individuals"
-                description="See stats for an individual across all divisions"
-                placeholder="Enter a person's name..."
-                flex="1"
-                data={individualsList}
-                onOptionSubmit={(individual) => {
-                  navigate({
-                    to: individualOverviewRoute.to,
-                    params: {
-                      individualName: individual,
-                    },
-                    viewTransition: true,
-                  });
-                }}
-                styles={{
-                  label: {
-                    textAlign: "center",
-                    width: "100%",
+            <Autocomplete
+              label="Search Individuals"
+              description="See stats for an individual across all divisions"
+              placeholder="Enter a person's name..."
+              flex="1"
+              data={individualsList}
+              onOptionSubmit={(individual) => {
+                navigate({
+                  to: individualOverviewRoute.to,
+                  params: {
+                    individualName: individual,
                   },
-                  description: {
-                    textAlign: "center",
-                    width: "100%",
-                  },
-                }}
-                mb="none"
-              />
-            </Skeleton>
-            <Skeleton visible={isPending}>
-              <Autocomplete
-                label="Search Teams"
-                description="See stats for a team across all divisions"
-                placeholder="Enter a team name..."
-                flex="1"
-                data={teamsList}
-                onOptionSubmit={(team) => {
-                  navigate({
-                    to: teamOverviewRoute.to,
-                    params: { teamName: team },
-                    viewTransition: true,
-                  });
-                }}
-                styles={{
-                  label: {
-                    textAlign: "center",
-                    width: "100%",
-                  },
-                  description: {
-                    textAlign: "center",
-                    width: "100%",
-                  },
-                }}
-                mb="none"
-              />
-            </Skeleton>
+                  viewTransition: true,
+                });
+              }}
+              styles={{
+                label: {
+                  textAlign: "center",
+                  width: "100%",
+                },
+                description: {
+                  textAlign: "center",
+                  width: "100%",
+                },
+              }}
+              mb="none"
+            />
+            <Autocomplete
+              label="Search Teams"
+              description="See stats for a team across all divisions"
+              placeholder="Enter a team name..."
+              flex="1"
+              data={teamsList}
+              onOptionSubmit={(team) => {
+                navigate({
+                  to: teamOverviewRoute.to,
+                  params: { teamName: team },
+                  viewTransition: true,
+                });
+              }}
+              styles={{
+                label: {
+                  textAlign: "center",
+                  width: "100%",
+                },
+                description: {
+                  textAlign: "center",
+                  width: "100%",
+                },
+              }}
+              mb="none"
+            />
           </SimpleGrid>
         </HomepageSection>
         <HomepageSection name="Team Schedules" ref={targetTeamSchedulesRef}>
-          {data?.statGroups
+          {data.statGroups
             .filter((statGroup) => {
               if (!isQ(data)) return true;
               return (
@@ -371,7 +348,7 @@ export const homeRoute = createRoute({
         </HomepageSection>
         {isQ(data) && (
           <HomepageSection name="Streams" ref={targetStreamsRef}>
-            <StreamCards />
+            <StreamCards data={data} />
           </HomepageSection>
         )}
       </>
@@ -407,6 +384,136 @@ export const homeRoute = createRoute({
           Retry
         </button>
       </div>
+    );
+  },
+  pendingComponent: () => {
+    const colorScheme = useComputedColorScheme("light");
+
+    return (
+      <>
+        <Skeleton
+          w="100%"
+          top="-20px" // change this and `mt` together
+          bg="var(--mantine-color-body)"
+          mt="-20px" // offsets the padding of the container
+          style={{
+            position: "sticky",
+            zIndex: 50, // the navbar is 100
+            borderBottomWidth: 1,
+            borderBottomStyle: "solid",
+            borderBottomColor:
+              colorScheme === "light"
+                ? theme.colors.gray[3]
+                : theme.colors.dark[4],
+          }}
+        >
+          <Flex
+            justify="center"
+            direction="row"
+            align="center"
+            w="100%"
+            gap={{
+              base: "xs",
+              xs: "md",
+              sm: "lg",
+              md: "xl",
+            }}
+            py="sm"
+          >
+            <Button
+              miw="fit-content"
+              variant="subtle"
+              size="compact-md"
+              style={{
+                color: "unset",
+              }}
+            >
+              this text should never be seen (puppy)
+            </Button>
+          </Flex>
+        </Skeleton>
+
+        <Space pt="md"></Space>
+        <HomepageSection name="Division Standings">
+          <SimpleGrid
+            cols={{
+              base: 1,
+              xs: 2,
+              lg: 3,
+              xl: 4,
+            }}
+            sx={{
+              width: "100%",
+            }}
+            spacing="sm"
+            verticalSpacing="md"
+          >
+            {new Array(24).fill(undefined).map((_, index) => (
+              <Skeleton radius="md" key={Number(index)}>
+                <StatGroupCard
+                  statGroup={{
+                    name: "Loading...", // placeholder so that the skeleton has the same height as a standard card
+                    webName: "Loading...",
+                    individuals: [],
+                    teams: [],
+                  }}
+                />
+              </Skeleton>
+            ))}
+          </SimpleGrid>
+        </HomepageSection>
+
+        <HomepageSection name="Search">
+          <SimpleGrid cols={{ base: 1, sm: 2 }} w="100%">
+            <Skeleton radius="md">
+              <Autocomplete
+                label="Search Individuals"
+                description="See stats for an individual across all divisions"
+                placeholder="Enter a person's name..."
+                flex="1"
+                styles={{
+                  label: {
+                    textAlign: "center",
+                    width: "100%",
+                  },
+                  description: {
+                    textAlign: "center",
+                    width: "100%",
+                  },
+                }}
+                mb="none"
+              />
+            </Skeleton>
+            <Skeleton radius="md">
+              <Autocomplete
+                label="Search Teams"
+                description="See stats for a team across all divisions"
+                placeholder="Enter a team name..."
+                flex="1"
+                styles={{
+                  label: {
+                    textAlign: "center",
+                    width: "100%",
+                  },
+                  description: {
+                    textAlign: "center",
+                    width: "100%",
+                  },
+                }}
+                mb="none"
+              />
+            </Skeleton>
+          </SimpleGrid>
+        </HomepageSection>
+
+        <HomepageSection name="Team Schedules">
+          <Skeleton w="100%" h="300px" />
+        </HomepageSection>
+
+        <HomepageSection name="Streams">
+          <Skeleton w="100%" h="400px" />
+        </HomepageSection>
+      </>
     );
   },
 });
