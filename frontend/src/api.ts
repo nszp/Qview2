@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-let BASE_URL = "https://bucket.quizstats.org";
+let BASE_URL = "https://bucket-dev.quizstats.org";
 if (
   typeof window.publicDataUrl === "string" &&
   window.publicDataUrl !== "" &&
