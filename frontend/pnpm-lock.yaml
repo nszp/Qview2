@@ -86,9 +86,6 @@ importers:
       mantine-react-table:
         specifier: 2.0.0-beta.9
         version: 2.0.0-beta.9(@mantine/core@8.0.0(@mantine/hooks@8.0.0(react@19.1.0))(@types/react@19.1.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@mantine/dates@8.0.0(@mantine/core@8.0.0(@mantine/hooks@8.0.0(react@19.1.0))(@types/react@19.1.3)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@mantine/hooks@8.0.0(react@19.1.0))(dayjs@1.11.13)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(@mantine/hooks@8.0.0(react@19.1.0))(@tabler/icons-react@3.34.0(react@19.1.0))(clsx@2.1.1)(dayjs@1.11.13)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      mediaelement:
-        specifier: ^7.0.7
-        version: 7.0.7
       posthog-js:
         specifier: ^1.255.1
         version: 1.255.1
@@ -1549,9 +1546,6 @@ packages:
   mdurl@2.0.0:
     resolution: {integrity: sha512-Lf+9+2r+Tdp5wXDXC4PcIBjTDtq4UKjCPMQhKIuzpJNW0b96kVqSwW0bT7FhRSfmAiFYgP+SCRvdrDozfh0U5w==}
 
-  mediaelement@7.0.7:
-    resolution: {integrity: sha512-NstTSj21B5ow+ZmINIFkpzXrgpwLf5SMHD0bIihIfPIQZ8U4z4YsAlreJMqfukU9TmdusIGki1M7V9ILlZkYEA==}
-
   merge2@1.4.1:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
@@ -1947,10 +1941,6 @@ packages:
   supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
-
-  svg4everybody@2.1.9:
-    resolution: {integrity: sha512-AS9WORVV/vk520ZHxGTlQzyDBizp/h6WyAYUbKhze/kwvQr43DwJpkIIPBomsUyKqN7N+h1deF92N9PmW+o+9A==}
-    engines: {node: '>=0.8.0'}
 
   tabbable@6.2.0:
     resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
@@ -3419,11 +3409,6 @@ snapshots:
 
   mdurl@2.0.0: {}
 
-  mediaelement@7.0.7:
-    dependencies:
-      global: 4.4.0
-      svg4everybody: 2.1.9
-
   merge2@1.4.1: {}
 
   micromatch@4.0.8:
@@ -3844,8 +3829,6 @@ snapshots:
       postcss: 8.5.3
 
   supports-preserve-symlinks-flag@1.0.0: {}
-
-  svg4everybody@2.1.9: {}
 
   tabbable@6.2.0: {}
 
