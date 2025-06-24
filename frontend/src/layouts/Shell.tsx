@@ -43,7 +43,7 @@ export const Shell = () => {
   const [scrollRefs, setScrollRefs] = useState<Ref<HTMLElement>[]>([]);
 
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
-  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
+  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure();
 
   const location = useLocation();
 
