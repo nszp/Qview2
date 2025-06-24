@@ -6,7 +6,11 @@ import { StatGroupTeamList } from "@/components/homepage/StatGroupTeamList.tsx";
 import StreamCards from "@/components/homepage/StreamCards.tsx";
 import { ScrollRefsContext } from "@/context.ts";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
-import { individualOverviewRoute, teamOverviewRoute } from "@/routes.ts";
+import {
+  individualOverviewRoute,
+  teamOverviewRoute,
+  tickertapeRoute,
+} from "@/routes.ts";
 import { theme } from "@/theme.ts";
 import { scrollIntoViewOptions } from "@/utils/styleUtils.ts";
 import { isQ } from "@/utils/utils.ts";
@@ -181,11 +185,20 @@ export const homeRoute = createRoute({
             {(
               [
                 ["Standings", scrollDivisionStandingsIntoView, false],
-                ["Search", scrollSearchIntoView, true],
+                // ["Search", scrollSearchIntoView, true],
                 ["Schedules", scrollTeamSchedulesIntoView, false],
                 isQ(data)
                   ? ["Streams", scrollStreamsIntoView, true]
                   : undefined,
+                [
+                  "Rounds in Progresss",
+                  () => {
+                    navigate({
+                      to: tickertapeRoute.to,
+                      viewTransition: true,
+                    });
+                  },
+                ],
               ] as [string, () => void, boolean][]
             ).map(([name, scrollIntoView, visibleOnMobile]) => (
               <Button
@@ -463,48 +476,48 @@ export const homeRoute = createRoute({
           </SimpleGrid>
         </HomepageSection>
 
-        <HomepageSection name="Search">
-          <SimpleGrid cols={{ base: 1, sm: 2 }} w="100%">
-            <Skeleton radius="md">
-              <Autocomplete
-                label="Search Individuals"
-                description="See stats for an individual across all divisions"
-                placeholder="Enter a person's name..."
-                flex="1"
-                styles={{
-                  label: {
-                    textAlign: "center",
-                    width: "100%",
-                  },
-                  description: {
-                    textAlign: "center",
-                    width: "100%",
-                  },
-                }}
-                mb="none"
-              />
-            </Skeleton>
-            <Skeleton radius="md">
-              <Autocomplete
-                label="Search Teams"
-                description="See stats for a team across all divisions"
-                placeholder="Enter a team name..."
-                flex="1"
-                styles={{
-                  label: {
-                    textAlign: "center",
-                    width: "100%",
-                  },
-                  description: {
-                    textAlign: "center",
-                    width: "100%",
-                  },
-                }}
-                mb="none"
-              />
-            </Skeleton>
-          </SimpleGrid>
-        </HomepageSection>
+        {/*<HomepageSection name="Search">*/}
+        {/*  <SimpleGrid cols={{ base: 1, sm: 2 }} w="100%">*/}
+        {/*    <Skeleton radius="md">*/}
+        {/*      <Autocomplete*/}
+        {/*        label="Search Individuals"*/}
+        {/*        description="See stats for an individual across all divisions"*/}
+        {/*        placeholder="Enter a person's name..."*/}
+        {/*        flex="1"*/}
+        {/*        styles={{*/}
+        {/*          label: {*/}
+        {/*            textAlign: "center",*/}
+        {/*            width: "100%",*/}
+        {/*          },*/}
+        {/*          description: {*/}
+        {/*            textAlign: "center",*/}
+        {/*            width: "100%",*/}
+        {/*          },*/}
+        {/*        }}*/}
+        {/*        mb="none"*/}
+        {/*      />*/}
+        {/*    </Skeleton>*/}
+        {/*    <Skeleton radius="md">*/}
+        {/*      <Autocomplete*/}
+        {/*        label="Search Teams"*/}
+        {/*        description="See stats for a team across all divisions"*/}
+        {/*        placeholder="Enter a team name..."*/}
+        {/*        flex="1"*/}
+        {/*        styles={{*/}
+        {/*          label: {*/}
+        {/*            textAlign: "center",*/}
+        {/*            width: "100%",*/}
+        {/*          },*/}
+        {/*          description: {*/}
+        {/*            textAlign: "center",*/}
+        {/*            width: "100%",*/}
+        {/*          },*/}
+        {/*        }}*/}
+        {/*        mb="none"*/}
+        {/*      />*/}
+        {/*    </Skeleton>*/}
+        {/*  </SimpleGrid>*/}
+        {/*</HomepageSection>*/}
 
         <HomepageSection name="Team Schedules">
           <Skeleton w="100%" h="300px" />

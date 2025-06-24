@@ -32,6 +32,83 @@ export const roomStreamRoute = createRoute({
       },
     ],
   }),
+  errorComponent: function RoomStreamError() {
+    const { roomName } = roomStreamRoute.useParams();
+
+    const playerRef = useRef<Player>(null);
+
+    const videoJsOptions = useMemo(
+      () => ({
+        autoplay: false,
+        controls: true,
+        fill: true,
+        responsive: true,
+        liveui: true,
+        sources: [
+          {
+            src: `https://video.quizstats.org/hls/${roomName.replace(/ /g, "")}.m3u8`,
+            type: "application/x-mpegURL",
+          },
+          //{
+          //  src: "https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_fmp4/master.m3u8",
+          //type: "application/x-mpegURL",
+          // },
+        ],
+      }),
+      [roomName],
+    );
+
+    const handlePlayerReady = (player: Player) => {
+      playerRef.current = player;
+
+      // You can handle player events here, for example:
+      // player.on('waiting', () => {
+      //   videojs.log('player is waiting');
+      // });
+      //
+      // player.on('dispose', () => {
+      //   videojs.log('player will dispose');
+      // });
+    };
+
+    return (
+      <>
+        <Flex
+          justify="center"
+          align="center"
+          mb="md"
+          direction="column"
+          sx={(_, __) => ({
+            // [u.smallerThan("sm")]: {
+            width: "100%",
+            // },
+          })}
+        >
+          <Text size="xl">{roomName}</Text>
+          <Text size="md" c="gray">
+            Livestream
+          </Text>
+        </Flex>
+
+        <Suspense
+          fallback={
+            <Skeleton
+              style={{
+                height: "auto",
+                maxHeight: "calc(100lvh - 200px)",
+                minHeight: "100px",
+                margin: "0 auto",
+                aspectRatio: "16/9",
+                width: "auto",
+              }}
+            />
+          }
+        >
+          <VideoJS options={videoJsOptions} />
+        </Suspense>
+      </>
+    );
+  },
   component: function RoomStream() {
     const { roomName } = roomStreamRoute.useParams();
     const { isPending: isTickertapePending, data: tickertapeData } =
@@ -41,7 +118,11 @@ export const roomStreamRoute = createRoute({
       (round) => round.room.toLowerCase() === roomName.toLowerCase(),
     )?.tdrri;
 
-    const { isPending: isScoresheetPending, data: scoresheetData } = useQuery({
+    const {
+      isPending: isScoresheetPending,
+      data: scoresheetData,
+      error: scoresheetError,
+    } = useQuery({
       ...scoresheetDataOptions(roundTdrri?.toString() || ""),
       enabled: !isTickertapePending && roundTdrri !== undefined,
     });
@@ -69,7 +150,7 @@ export const roomStreamRoute = createRoute({
         liveui: true,
         sources: [
           {
-            src: `http://video.q2025.org:8080/hls/${roomName.replace(/ /g, "")}.m3u8`,
+            src: `https://video.quizstats.org/hls/${roomName.replace(/ /g, "")}.m3u8`,
             type: "application/x-mpegURL",
           },
           //{
@@ -141,6 +222,12 @@ export const roomStreamRoute = createRoute({
         {roundTdrri && isScoresheetPending && (
           <Text size="md" mb="md" c="gray" ta="center">
             Loading scoresheet...
+          </Text>
+        )}
+        {roundTdrri && scoresheetError && (
+          <Text size="md" mb="md" c="red" ta="center">
+            There is not yet a scoresheet for this round. Please check back
+            later.
           </Text>
         )}
         {scoresheetData && (
