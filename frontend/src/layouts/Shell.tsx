@@ -156,21 +156,21 @@ export const Shell = () => {
                 }
               }}
             />
-            <NavLink
-              label="Search Individuals and Teams"
-              active={false}
-              component={Link}
-              to={homeRoute.to}
-              viewTransition={true}
-              resetScroll={true}
-              // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
-              search={{ section: "search" }}
-              onClick={() => {
-                if (location.pathname === homeRoute.path) {
-                  toggleMobile();
-                }
-              }}
-            />
+            {/*<NavLink*/}
+            {/*  label="Search Individuals and Teams"*/}
+            {/*  active={false}*/}
+            {/*  component={Link}*/}
+            {/*  to={homeRoute.to}*/}
+            {/*  viewTransition={true}*/}
+            {/*  resetScroll={true}*/}
+            {/*  // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)*/}
+            {/*  search={{ section: "search" }}*/}
+            {/*  onClick={() => {*/}
+            {/*    if (location.pathname === homeRoute.path) {*/}
+            {/*      toggleMobile();*/}
+            {/*    }*/}
+            {/*  }}*/}
+            {/*/>*/}
             <NavLink
               label="Team Schedules"
               active={false}

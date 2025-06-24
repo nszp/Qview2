@@ -201,7 +201,7 @@ export default function ScheduleTable({
         withRowBorders
         fz={{ base: "md", sm: "lg" }}
         w="100%"
-        idAccessor="round"
+        idAccessor={({ round, room }) => `${round}-${room}`}
         pinFirstColumn
         emptyState={<Text>No scheduled quizzes yet.</Text>}
       />
