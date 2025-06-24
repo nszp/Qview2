@@ -21,25 +21,6 @@ export default function StreamCards({ data }: { data: TournamentData }) {
     tickertapeDataOptions,
   );
 
-  const roomsList = useMemo(() => {
-    const roomsList: Record<StreamRoomType, Set<string>> = {
-      Novice: new Set<string>(),
-      Experienced: new Set<string>(),
-    };
-    if (!data || !tickertape) return roomsList;
-    const listOfAllRooms = new Set<string>(); // allocate an empty set to test that the browser is modern enough (we don't want people on old browsers to use this website)
-    for (const quiz of data.statGroups
-      .flatMap((statGroup) => statGroup.teams)
-      .flatMap((team) => team.quizzes)) {
-      if (quiz.division.includes("Novice")) {
-        roomsList.Novice.add(quiz.room);
-      } else if (quiz.division.includes("Experienced")) {
-        roomsList.Experienced.add(quiz.room);
-      }
-    }
-    return roomsList;
-  }, [data, tickertape]);
-
   if (!tickertape)
     // tournamentData should always be loaded, but tickertape probably hasn't been loaded yet
     return new Array(2).fill(undefined, 0, 2).map((_, index) => (
@@ -57,7 +38,7 @@ export default function StreamCards({ data }: { data: TournamentData }) {
       key={roomCategory}
     >
       <StreamCardGroup
-        roomsList={[...roomsList[roomCategory]]}
+        roomsList={data.rooms[roomCategory]}
         roomCategory={roomCategory}
       />
     </HomepageCollapsable>

@@ -35,7 +35,7 @@ export const allStreamsRoute = createRoute({
         return [...roomsList].filter((_, i) => i % 2 === 0);
       }
       return [...roomsList].filter((_, i) => i % 2 !== 0);
-    }, [data]);
+    }, [data, half]);
 
     // useEffect(() => {
     //   setTimeout(() => {
@@ -59,7 +59,13 @@ export const allStreamsRoute = createRoute({
           <Text size="xl">All Room Streams</Text>
         </Flex>
 
-        <SimpleGrid cols={4}>
+        <SimpleGrid
+          cols={4}
+          sx={{
+            width: "100.5%",
+            marginLeft: "-10px",
+          }}
+        >
           {[...roomsList].map((roomName) => (
             <RoomEmbed roomName={roomName} key={roomName} />
           ))}

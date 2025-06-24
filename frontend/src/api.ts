@@ -4,6 +4,7 @@ import type {
   TournamentData,
 } from "@/types/data.ts";
 import { queryOptions } from "@tanstack/react-query";
+import { transformTournamentData } from "@/utils/transforms.ts";
 
 declare global {
   interface Window {
@@ -32,7 +33,8 @@ export async function getTournamentData(): Promise<TournamentData> {
   if (!response.ok) {
     throw new Error(`Failed to fetch tournament data: ${response.statusText}`);
   }
-  return (await response.json()) as Promise<TournamentData>;
+  const data = await response.json();
+  return transformTournamentData(data);
 }
 
 export async function getTickertapeData(): Promise<TickertapeData> {

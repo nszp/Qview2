@@ -208,6 +208,7 @@ export const Shell = () => {
               component={Link}
               to={tickertapeRoute.to}
             />
+            <NavLink label="About QView" component={Link} to={aboutRoute.to} />
             <Text size="xs" fw={600} pl="0.5rem" mt="10px" c="dimmed">
               Divisions
             </Text>

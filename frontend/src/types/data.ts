@@ -108,12 +108,19 @@ export interface StatGroupData {
   webName: string;
 }
 
-export interface TournamentData {
+export interface TournamentDataRaw {
   statGroups: StatGroupData[];
   generationQueuedAt: string;
   generationCompletedAt: string;
   tournamentName: string;
   updatedEveryMinutes: number;
+}
+
+export interface TournamentData extends TournamentDataRaw {
+  rooms: {
+    Novice: string[];
+    Experienced: string[];
+  };
 }
 
 export interface TickertapeData {
