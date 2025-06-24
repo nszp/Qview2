@@ -13,8 +13,6 @@ export const individualOverviewRoute = createRoute({
 
     const { isPending, error, data } = useSuspenseQuery(tournamentDataOptions);
 
-    // const division = data?.divisions.find((d) => d.name === divisionName);
-
     if (isPending) {
       return <p>wait,,,,</p>;
     }
@@ -22,19 +20,6 @@ export const individualOverviewRoute = createRoute({
     if (error) {
       return <p>Error: {error.toString()}</p>;
     }
-
-    // if (!division) {
-    //   return <Navigate to="/" replace />;
-    // }
-
-    // const division = data.divisions.find(
-    //   (d) => d.name === divisionName,
-    // );
-    //
-    // if (!division) {
-    //   navigate("/");
-    //   return null;
-    // }
 
     return (
       <>

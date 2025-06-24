@@ -3,10 +3,10 @@ import { Flex, Text } from "@mantine/core";
 import { tournamentDataOptions } from "@/api.ts";
 import { queryClient, rootRoute } from "@/rootRoute.ts";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
 import IndividualStandingsTable from "@/components/standings/IndividualStandingsTable.tsx";
 import { Undo2Icon } from "lucide-react";
 import { statGroupIndividualStandingsRoute } from "@/pages/StatGroupIndividualStandings.tsx";
+import IndividualRoundsTable from "@/components/standings/IndividualRoundsTable.tsx";
 
 export const individualRoundSummaryRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -67,7 +67,23 @@ export const individualRoundSummaryRoute = createRoute({
             Rounds in {statGroup.webName}
           </Text>
         </Flex>
-        <IndividualStandingsTable individuals={individuals} />
+        <IndividualStandingsTable individuals={individuals} roundSummaryMode />
+        <Flex
+          align="center"
+          mb="md"
+          direction="column"
+          sx={(_, u) => ({
+            [u.smallerThan("sm")]: {
+              width: "100%",
+            },
+          })}
+        >
+          <Text size="xl">Rounds Summary</Text>
+        </Flex>
+        <IndividualRoundsTable
+          individual={individual}
+          teamQuizzes={team?.quizzes ?? []}
+        />
         <Flex
           align="center"
           mb="md"

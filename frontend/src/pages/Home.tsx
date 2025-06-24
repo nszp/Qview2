@@ -242,7 +242,14 @@ export const homeRoute = createRoute({
               ))}
           </SimpleGrid>
           {isQ(data) &&
-            ["Field", "District", "Local", "Decades"]
+            [
+              "Field",
+              "District Experienced",
+              "District Novice",
+              "Local Experienced",
+              "Local Novice",
+              "Decades",
+            ]
               .filter((outerGroupName) =>
                 data.statGroups.some(
                   (statGroup) =>
@@ -256,6 +263,8 @@ export const homeRoute = createRoute({
                   key={outerGroupName}
                   openByDefault={true}
                 >
+                  {/*<Flex justify="center" align="center" w="100%">*/}
+                  {/* TODO: CENTER THIS WHEN < MAX COLS */}
                   <SimpleGrid
                     cols={{
                       base: 1,
@@ -283,6 +292,7 @@ export const homeRoute = createRoute({
                         />
                       ))}
                   </SimpleGrid>
+                  {/*</Flex>*/}
                 </HomepageCollapsable>
               ))}
         </HomepageSection>

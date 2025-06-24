@@ -55,14 +55,7 @@ export default function VideoJS({
         aspectRatio: "16/9",
       }}
     >
-      <div
-        data-vjs-player
-        // style={{
-        //   width: "100%",
-        //   height: "auto",
-        //   maxHeight: "calc(100vh - 300px)",
-        // }}
-      >
+      <div data-vjs-player>
         {/* biome-ignore lint/a11y/useMediaCaption: we don't have captions */}
         <video
           ref={videoRef}

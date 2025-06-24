@@ -15,11 +15,13 @@ const Open = styled(ExternalLinkIcon)({
 export default function IndividualStandingsTable({
   individuals,
   statGroupName,
+  roundSummaryMode,
 }: {
   individuals: (IndividualData & {
     scheduledRounds: number;
   })[];
   statGroupName?: string;
+  roundSummaryMode?: boolean;
 }) {
   const individualsWithPlaces = useMemo(() => {
     return placesWithTies(individuals, "score", "errors");
@@ -60,6 +62,11 @@ export default function IndividualStandingsTable({
       title: "Avg",
       textAlign: "center",
       width: "20%",
+      render: (individual) => {
+        return individual.averageScore.toFixed(1).endsWith(".0")
+          ? individual.averageScore
+          : individual.averageScore.toFixed(1);
+      },
     },
     {
       accessor: "score",
@@ -102,12 +109,17 @@ export default function IndividualStandingsTable({
   }
 
   return (
-    <Box mb="md">
+    <Box
+      mb="md"
+      mx={roundSummaryMode ? "auto" : undefined}
+      maw={roundSummaryMode ? "75em" : undefined}
+    >
       <DataTable
         columns={columns}
         records={individualsWithPlaces}
         striped
         withRowBorders
+        withTableBorder={roundSummaryMode ?? false}
         fz={{ base: "md", sm: "lg" }}
         w="100%"
         minHeight={individuals.length > 0 ? 50 : 100}

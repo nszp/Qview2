@@ -9,29 +9,21 @@ export function placesWithTies<T>(
   const output: Array<T & { place: number }> = [];
   let currentPlace = 1;
   let lastValue: T | null = null;
-  let lastPlace = 0;
+  
   for (const item of input) {
+    // Update place if this is the first item, or if either primary or secondary key differs
     if (
       lastValue === null ||
-      item[primaryKey] <
-        (lastValue?.[primaryKey] as (typeof item)[typeof primaryKey]) ||
-      (item[primaryKey] ===
-        (lastValue?.[primaryKey] as (typeof item)[typeof primaryKey]) &&
-        item[secondaryKey] <
-          (lastValue?.[secondaryKey] as (typeof item)[typeof secondaryKey]))
+      item[primaryKey] !== lastValue?.[primaryKey] ||
+      item[secondaryKey] !== lastValue?.[secondaryKey]
     ) {
       currentPlace = output.length + 1; // Update current place
     }
+    
     output.push({ ...item, place: currentPlace });
     lastValue = item;
-    lastPlace = currentPlace;
   }
-  // If the last place is not the same as the current place, fill in the last places
-  if (lastPlace < currentPlace && lastValue !== null) {
-    for (let i = lastPlace + 1; i <= currentPlace; i++) {
-      output.push({ ...lastValue, place: i });
-    }
-  }
+  
   return output;
 }
 
