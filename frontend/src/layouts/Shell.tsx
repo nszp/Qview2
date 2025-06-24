@@ -25,7 +25,7 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { mergeRefs, useDisclosure } from "@mantine/hooks";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { HeadContent, Link, Outlet, useLocation } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import dayjs from "dayjs";
@@ -47,7 +47,7 @@ export const Shell = () => {
 
   const location = useLocation();
 
-  const { isPending, isFetching, error, data } = useSuspenseQuery(
+  const { isPending, isFetching, error, data } = useQuery(
     tournamentDataOptions,
   );
 
@@ -74,7 +74,9 @@ export const Shell = () => {
     setColorScheme(colorScheme === "dark" ? "light" : "dark");
   };
 
-  const timestampDate = dayjs.unix(Number.parseInt(data.generationQueuedAt));
+  const timestampDate = data
+    ? dayjs.unix(Number.parseInt(data.generationQueuedAt))
+    : undefined;
 
   return (
     <>
@@ -336,19 +338,21 @@ export const Shell = () => {
                   Updating...
                 </Text>
               ) : (
-                <>
-                  <Text span c="dimmed" size="sm">
-                    Updated at{" "}
-                  </Text>
-                  {timestampDate.format(" hh:mma")}
-                  {timestampDate.isToday()
-                    ? " today"
-                    : timestampDate.isYesterday()
-                      ? " yesterday"
-                      : timestampDate.week() === dayjs().week()
-                        ? timestampDate.format(" dddd")
-                        : timestampDate.format(" MMM D")}
-                </>
+                timestampDate && (
+                  <>
+                    <Text span c="dimmed" size="sm">
+                      Updated at{" "}
+                    </Text>
+                    {timestampDate.format(" hh:mma")}
+                    {timestampDate.isToday()
+                      ? " today"
+                      : timestampDate.isYesterday()
+                        ? " yesterday"
+                        : timestampDate.week() === dayjs().week()
+                          ? timestampDate.format(" dddd")
+                          : timestampDate.format(" MMM D")}
+                  </>
+                )
               )}
             </Text>
           </AppShell.Section>
