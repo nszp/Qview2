@@ -3,8 +3,8 @@ import type {
   TickertapeData,
   TournamentData,
 } from "@/types/data.ts";
-import { queryOptions } from "@tanstack/react-query";
 import { transformTournamentData } from "@/utils/transforms.ts";
+import { queryOptions } from "@tanstack/react-query";
 
 declare global {
   interface Window {
@@ -61,6 +61,7 @@ export const tournamentDataOptions = queryOptions({
   queryFn: getTournamentData,
   refetchOnWindowFocus: false,
   refetchOnReconnect: false,
+  refetchInterval: 4 * 60 * 1000, // 4 minutes
 });
 
 export const tickertapeDataOptions = queryOptions({
@@ -68,6 +69,7 @@ export const tickertapeDataOptions = queryOptions({
   queryFn: getTickertapeData,
   refetchOnWindowFocus: false,
   refetchOnReconnect: false,
+  refetchInterval: 60 * 1000, // 1 minute
 });
 
 export const scoresheetDataOptions = (scoreSheetId: string) =>
@@ -76,4 +78,5 @@ export const scoresheetDataOptions = (scoreSheetId: string) =>
     queryFn: () => getScoresheetData(scoreSheetId),
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
+    refetchInterval: 60 * 1000, // 1 minute
   });
