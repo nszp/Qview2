@@ -32,6 +32,11 @@ export default function TeamStandingsTable({ teams }: { teams: TeamData[] }) {
             accessor: "rounds",
             title: "Rounds",
             textAlign: "center",
+            noWrap: true,
+            render: (team) =>
+              team.quizzes.length !== 0
+                ? `${team.rounds} of ${team.quizzes.length}`
+                : team.rounds,
           },
           {
             accessor: "record",
@@ -60,6 +65,11 @@ export default function TeamStandingsTable({ teams }: { teams: TeamData[] }) {
             title: "Avg",
             textAlign: "center",
             width: "20%",
+            render: (team) => {
+              return team.averageScore.toFixed(1).endsWith(".0")
+                ? team.averageScore
+                : team.averageScore.toFixed(1);
+            },
           },
         ]}
         records={teamsWithPlaces}

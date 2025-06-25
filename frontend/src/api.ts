@@ -5,6 +5,10 @@ import type {
 } from "@/types/data.ts";
 import { transformTournamentData } from "@/utils/transforms.ts";
 import { queryOptions } from "@tanstack/react-query";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc.js";
+
+dayjs.extend(utc);
 
 declare global {
   interface Window {
@@ -53,7 +57,13 @@ export async function getScoresheetData(
   if (!response.ok) {
     throw new Error(`Failed to fetch scoresheet data: ${response.statusText}`);
   }
-  return (await response.json()) as Promise<Scoresheet>;
+  const data: Scoresheet = await response.json();
+  const lastModified = dayjs(response.headers.get("last-modified"));
+
+  data.generationQueuedAt = lastModified.unix().toString();
+  data.generationCompletedAt = lastModified.unix().toString();
+
+  return data;
 }
 
 export const tournamentDataOptions = queryOptions({
@@ -78,5 +88,5 @@ export const scoresheetDataOptions = (scoreSheetId: string) =>
     queryFn: () => getScoresheetData(scoreSheetId),
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    refetchInterval: 60 * 1000, // 1 minute
+    refetchInterval: 10 * 1000, // every 10 seconds because scoresheets are generated at odd times
   });

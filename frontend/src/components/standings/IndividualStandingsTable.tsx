@@ -52,6 +52,7 @@ export default function IndividualStandingsTable({
       accessor: "rounds",
       title: "Rounds",
       textAlign: "center",
+      noWrap: true,
       render: (individual) =>
         individual.scheduledRounds !== 0
           ? `${individual.rounds} of ${individual.scheduledRounds}`
