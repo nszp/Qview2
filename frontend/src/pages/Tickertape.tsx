@@ -39,6 +39,15 @@ export const tickertapeRoute = createRoute({
       return <p>Error: {tickertapeError.toString()}</p>;
     }
 
+    const sortedTickertape = useMemo(() => {
+      return [...tickertapeData.tickertape].sort((a, b) => {
+        if (a.inProgress === b.inProgress) {
+          return a.room.localeCompare(b.room);
+        }
+        return a.inProgress ? -1 : 1;
+      });
+    }, [tickertapeData]);
+
     return (
       <>
         <Flex
@@ -63,7 +72,7 @@ export const tickertapeRoute = createRoute({
           </Text>
         </Flex>
         <ScheduleTable
-          quizzes={tickertapeData.tickertape}
+          quizzes={sortedTickertape}
           includeTime={false}
           showCurrentQuestionColumn={true}
           showRoundColumn={showRoundColumn}

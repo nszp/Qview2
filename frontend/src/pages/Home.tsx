@@ -198,6 +198,7 @@ export const homeRoute = createRoute({
                       viewTransition: true,
                     });
                   },
+                  true,
                 ],
               ] as [string, () => void, boolean][]
             ).map(([name, scrollIntoView, visibleOnMobile]) => (
