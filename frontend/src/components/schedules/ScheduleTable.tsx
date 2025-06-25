@@ -125,6 +125,7 @@ export default function ScheduleTable({
             render: (quiz) =>
               dayjs
                 .unix(Number.parseInt(quiz.time ?? ""))
+                .subtract(2, "hour")
                 .format("ddd hh:mmA (MM/DD/YY)"),
           },
           {
