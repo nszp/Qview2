@@ -232,7 +232,9 @@ export const homeRoute = createRoute({
               xl: data ? Math.min(4, data.statGroups.length) : 4,
             }}
             sx={{
-              width: "100%",
+              // maxWidth: "100%",
+              marginLeft: "auto",
+              marginRight: "auto",
             }}
             spacing="sm"
             verticalSpacing="md"

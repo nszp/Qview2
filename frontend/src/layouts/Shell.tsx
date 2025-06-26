@@ -3,6 +3,8 @@ import { ScrollRefsContext } from "@/context.ts";
 import {
   aboutRoute,
   homeRoute,
+  roomScheduleRoute,
+  roomStreamRoute,
   statGroupIndividualStandingsRoute,
   statGroupTeamScheduleRoute,
   statGroupTeamStandingsRoute,
@@ -34,6 +36,7 @@ import isYesterday from "dayjs/plugin/isYesterday.js";
 import weekOfYear from "dayjs/plugin/weekOfYear.js";
 import { Moon, Sun } from "lucide-react";
 import { type Ref, useEffect, useState } from "react";
+import { roomListNumbers } from "@/utils/transforms.ts";
 
 dayjs.extend(isToday);
 dayjs.extend(isYesterday);
@@ -317,6 +320,63 @@ export const Shell = () => {
                 </NavLink>
               ))
             )}
+            <Text size="xs" fw={600} pl="0.5rem" mt="10px" c="dimmed">
+              Rooms
+            </Text>
+            <NavLink label="Experienced Rooms">
+              {isPending || !data ? (
+                <Skeleton height={40} mb="xs" />
+              ) : (
+                data.rooms.Experienced.map((room) => (
+                  <NavLink
+                    key={room}
+                    label={`${room} - #${roomListNumbers[room as keyof typeof roomListNumbers] || ""}`}
+                  >
+                    <NavLink
+                      label="Livestream"
+                      component={Link}
+                      to={roomStreamRoute.to}
+                      // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                      params={{ roomName: room }}
+                    />
+                    <NavLink
+                      label="Schedule"
+                      component={Link}
+                      to={roomScheduleRoute.to}
+                      // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                      params={{ roomName: room }}
+                    />
+                  </NavLink>
+                ))
+              )}
+            </NavLink>
+            <NavLink label="Novice Rooms">
+              {isPending || !data ? (
+                <Skeleton height={40} mb="xs" />
+              ) : (
+                data.rooms.Novice.map((room) => (
+                  <NavLink
+                    key={room}
+                    label={`${room} - #${roomListNumbers[room as keyof typeof roomListNumbers] || ""}`}
+                  >
+                    <NavLink
+                      label="Livestream"
+                      component={Link}
+                      to={roomStreamRoute.to}
+                      // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                      params={{ roomName: room }}
+                    />
+                    <NavLink
+                      label="Schedule"
+                      component={Link}
+                      to={roomScheduleRoute.to}
+                      // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                      params={{ roomName: room }}
+                    />
+                  </NavLink>
+                ))
+              )}
+            </NavLink>
           </AppShell.Section>
           <AppShell.Section
             style={{

@@ -15,6 +15,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { useMemo } from "react";
+import { roomListNumbers } from "@/utils/transforms.ts";
 
 export default function StreamCards({ data }: { data: TournamentData }) {
   const { data: tickertape, isPending: isPendingTickertape } = useQuery(
@@ -83,7 +84,8 @@ export function StreamCard({ room }: { room: string }) {
             mb="xs"
             sx={{ whiteSpace: "nowrap", letterSpacing: "-0.02em" }}
           >
-            {room}
+            {room} - #
+            {roomListNumbers[room as keyof typeof roomListNumbers] || ""}
           </Text>
           <Text
             size="lg"
@@ -91,7 +93,8 @@ export function StreamCard({ room }: { room: string }) {
             mb="xs"
             sx={{ whiteSpace: "nowrap", letterSpacing: "-0.04em" }}
           >
-            {room}
+            {room} - #
+            {roomListNumbers[room as keyof typeof roomListNumbers] || ""}
           </Text>
         </Flex>
       </Card.Section>

@@ -4,6 +4,39 @@ export function transformTournamentData(data: TournamentData) {
   return transformLocalNoviceIndividuals(addRoomList(data));
 }
 
+export const roomListNumbers = {
+  Kresge: 1,
+  LF005: 2,
+  LF006: 3,
+  LF007: 4,
+  RS202: 5,
+  RS208: 6,
+  RS214: 7,
+  RS302: 8,
+  RS300: 9,
+  LF131: 10,
+  LF136: 11,
+  LF142: 12,
+  BA001: 13,
+  BA005: 14,
+  BA007: 15,
+  BA010: 16,
+  BA306: 17,
+  BA307: 18,
+  BA402: 19,
+  BA403: 20,
+  BA411: 21,
+  BA413: 22,
+  WC103: 23,
+  WC104: 24,
+  WC204: 25,
+  WC207: 26,
+  WC301: 27,
+  WC304: 28,
+  WC305: 29,
+  WC306: 30,
+};
+
 function addRoomList<T extends TournamentData>(
   data: T,
 ): T & {
@@ -27,11 +60,28 @@ function addRoomList<T extends TournamentData>(
       roomsList.Experienced.add(quiz.room);
     }
   }
+  const Novice = [...roomsList.Novice];
+  const Experienced = [...roomsList.Experienced];
+
+  Novice.sort((a: string, b: string) => {
+    return (
+      (roomListNumbers[a as keyof typeof roomListNumbers] ?? 100) -
+      (roomListNumbers[b as keyof typeof roomListNumbers] ?? 100)
+    );
+  });
+
+  Experienced.sort((a: string, b: string) => {
+    return (
+      (roomListNumbers[a as keyof typeof roomListNumbers] ?? 100) -
+      (roomListNumbers[b as keyof typeof roomListNumbers] ?? 100)
+    );
+  });
+
   return {
     ...data,
     rooms: {
-      Novice: [...roomsList.Novice],
-      Experienced: [...roomsList.Experienced],
+      Novice,
+      Experienced,
     },
   };
 }
