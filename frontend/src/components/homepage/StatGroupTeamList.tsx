@@ -44,7 +44,9 @@ export function StatGroupTeamList({
   const { classes } = useStyles();
 
   const sortedTeams = useMemo(() => {
-    return [...statGroup.teams].sort((a, b) => a.name.localeCompare(b.name));
+    return [...statGroup.teams]
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .filter((team) => team.name !== "BYE");
   }, [statGroup.teams]);
 
   return (

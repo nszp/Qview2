@@ -30,11 +30,24 @@ export const statGroupIndividualStandingsRoute = createRoute({
     }
 
     const individualsWithScheduledRounds = useMemo(() => {
-      return statGroup.individuals.map((i) => ({
-        ...i,
-        scheduledRounds:
-          statGroup.teams.find((t) => t.name === i.team)?.quizzes.length || 0,
-      }));
+      return statGroup.individuals.map((i) => {
+        const team = statGroup.teams.find((t) => t.name === i.team);
+        if (!team) {
+          return {
+            ...i,
+            scheduledRounds: 0, // If no team found, assume no scheduled rounds
+          };
+        }
+
+        const uniqueQuizzes = new Set(
+          team.quizzes.map((quiz) => `${quiz.round}-${quiz.room}`),
+        );
+
+        return {
+          ...i,
+          scheduledRounds: uniqueQuizzes.size,
+        };
+      });
     }, [statGroup]);
 
     return (

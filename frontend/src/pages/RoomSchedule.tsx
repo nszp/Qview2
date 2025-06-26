@@ -52,7 +52,13 @@ export const roomScheduleRoute = createRoute({
         addedRounds.add(quiz.round);
         quizzes.push(quiz);
       }
-      return quizzes
+
+      console.log("quizzes", quizzes);
+      console.log("addedRounds", addedRounds);
+
+      const currentTime = Math.floor(Date.now() / 1000) - 60 * 30; // Add half an hour
+
+      const sortedQuizzes = quizzes
         .sort((a, b) => Number.parseInt(a.time) - Number.parseInt(b.time))
         .map((quiz) => {
           const tickertapeRound = tickertapeData.tickertape.find(
@@ -63,9 +69,27 @@ export const roomScheduleRoute = createRoute({
             ? {
                 ...tickertapeRound,
                 time: quiz.time,
+                inProgress: tickertapeRound.question <= 20,
+                completed: tickertapeRound.question > 20,
               }
-            : quiz;
+            : {
+                ...quiz,
+                inProgress: false,
+                completed: currentTime >= Number.parseInt(quiz.time),
+              };
         });
+
+      // Set all of the rounds before the first one that is inProgress to completed
+      const firstInProgressIndex = sortedQuizzes.findIndex((q) => q.inProgress);
+      if (firstInProgressIndex === -1) {
+        return sortedQuizzes;
+      }
+      for (let i = 0; i < firstInProgressIndex; i++) {
+        sortedQuizzes[i].completed = true;
+        sortedQuizzes[i].inProgress = false;
+      }
+
+      return sortedQuizzes;
     }, [data, tickertapeData, roomName]);
 
     return (

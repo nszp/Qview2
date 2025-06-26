@@ -297,62 +297,62 @@ export const homeRoute = createRoute({
                 </HomepageCollapsable>
               ))}
         </HomepageSection>
-        <HomepageSection name="Search" ref={targetSearchRef}>
-          <SimpleGrid cols={{ base: 1, sm: 2 }} w="100%">
-            <Autocomplete
-              label="Search Individuals"
-              description="See stats for an individual across all divisions"
-              placeholder="Enter a person's name..."
-              flex="1"
-              data={individualsList}
-              onOptionSubmit={(individual) => {
-                navigate({
-                  to: individualOverviewRoute.to,
-                  params: {
-                    individualName: individual,
-                  },
-                  viewTransition: true,
-                });
-              }}
-              styles={{
-                label: {
-                  textAlign: "center",
-                  width: "100%",
-                },
-                description: {
-                  textAlign: "center",
-                  width: "100%",
-                },
-              }}
-              mb="none"
-            />
-            <Autocomplete
-              label="Search Teams"
-              description="See stats for a team across all divisions"
-              placeholder="Enter a team name..."
-              flex="1"
-              data={teamsList}
-              onOptionSubmit={(team) => {
-                navigate({
-                  to: teamOverviewRoute.to,
-                  params: { teamName: team },
-                  viewTransition: true,
-                });
-              }}
-              styles={{
-                label: {
-                  textAlign: "center",
-                  width: "100%",
-                },
-                description: {
-                  textAlign: "center",
-                  width: "100%",
-                },
-              }}
-              mb="none"
-            />
-          </SimpleGrid>
-        </HomepageSection>
+        {/*<HomepageSection name="Search" ref={targetSearchRef}>*/}
+        {/*  <SimpleGrid cols={{ base: 1, sm: 2 }} w="100%">*/}
+        {/*    <Autocomplete*/}
+        {/*      label="Search Individuals"*/}
+        {/*      description="See stats for an individual across all divisions"*/}
+        {/*      placeholder="Enter a person's name..."*/}
+        {/*      flex="1"*/}
+        {/*      data={individualsList}*/}
+        {/*      onOptionSubmit={(individual) => {*/}
+        {/*        navigate({*/}
+        {/*          to: individualOverviewRoute.to,*/}
+        {/*          params: {*/}
+        {/*            individualName: individual,*/}
+        {/*          },*/}
+        {/*          viewTransition: true,*/}
+        {/*        });*/}
+        {/*      }}*/}
+        {/*      styles={{*/}
+        {/*        label: {*/}
+        {/*          textAlign: "center",*/}
+        {/*          width: "100%",*/}
+        {/*        },*/}
+        {/*        description: {*/}
+        {/*          textAlign: "center",*/}
+        {/*          width: "100%",*/}
+        {/*        },*/}
+        {/*      }}*/}
+        {/*      mb="none"*/}
+        {/*    />*/}
+        {/*    <Autocomplete*/}
+        {/*      label="Search Teams"*/}
+        {/*      description="See stats for a team across all divisions"*/}
+        {/*      placeholder="Enter a team name..."*/}
+        {/*      flex="1"*/}
+        {/*      data={teamsList}*/}
+        {/*      onOptionSubmit={(team) => {*/}
+        {/*        navigate({*/}
+        {/*          to: teamOverviewRoute.to,*/}
+        {/*          params: { teamName: team },*/}
+        {/*          viewTransition: true,*/}
+        {/*        });*/}
+        {/*      }}*/}
+        {/*      styles={{*/}
+        {/*        label: {*/}
+        {/*          textAlign: "center",*/}
+        {/*          width: "100%",*/}
+        {/*        },*/}
+        {/*        description: {*/}
+        {/*          textAlign: "center",*/}
+        {/*          width: "100%",*/}
+        {/*        },*/}
+        {/*      }}*/}
+        {/*      mb="none"*/}
+        {/*    />*/}
+        {/*  </SimpleGrid>*/}
+        {/*</HomepageSection>*/}
         <HomepageSection name="Team Schedules" ref={targetTeamSchedulesRef}>
           {data.statGroups
             .filter((statGroup) => {

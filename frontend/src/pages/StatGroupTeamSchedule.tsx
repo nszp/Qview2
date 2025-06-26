@@ -46,7 +46,18 @@ export const statGroupTeamScheduleRoute = createRoute({
     }
 
     const quizzes = useMemo(() => {
-      return team.quizzes.map((quiz) => {
+      const currentTime = Math.floor(Date.now() / 1000) - 60 * 30; // Add half an hour
+
+      // Deduplicate quizzes by round and room
+      const addedRounds = new Set<string>();
+      const uniqueQuizzes = team.quizzes.filter((quiz) => {
+        const key = `${quiz.round}-${quiz.room}`;
+        if (addedRounds.has(key)) return false;
+        addedRounds.add(key);
+        return true;
+      });
+
+      return uniqueQuizzes.map((quiz) => {
         const tickertapeRound = tickertapeData.tickertape.find(
           (q) => q.round === quiz.round && q.room === quiz.room,
         );
@@ -55,8 +66,14 @@ export const statGroupTeamScheduleRoute = createRoute({
           ? {
               ...tickertapeRound,
               time: quiz.time,
+              inProgress: tickertapeRound.question <= 20,
+              completed: tickertapeRound.question > 20,
             }
-          : quiz;
+          : {
+              ...quiz,
+              inProgress: false,
+              completed: currentTime >= Number.parseInt(quiz.time),
+            };
       });
     }, [team.quizzes, tickertapeData.tickertape]);
 

@@ -122,11 +122,18 @@ export default function ScheduleTable({
             width: "250px",
             noWrap: true,
             hidden: !includeTime,
-            render: (quiz) =>
-              dayjs
+            render: (quiz) => {
+              if (quiz.inProgress) {
+                return "In Progress";
+              }
+              if (quiz.completed) {
+                return "Completed";
+              }
+              return dayjs
                 .unix(Number.parseInt(quiz.time ?? ""))
                 .subtract(2, "hour")
-                .format("ddd hh:mmA (MM/DD/YY)"),
+                .format("ddd hh:mmA (MM/DD/YY)");
+            },
           },
           {
             accessor: "room",
@@ -134,6 +141,12 @@ export default function ScheduleTable({
             textAlign: "center",
             width: "110px",
             noWrap: true,
+            render: (quiz) => {
+              if (quiz.teams.some((team) => team.name === "BYE")) {
+                return "";
+              }
+              return quiz.room;
+            },
           },
           {
             hidden: !showCurrentQuestionColumn,
@@ -148,6 +161,21 @@ export default function ScheduleTable({
             textAlign: "left",
             noWrap: true,
             render: (quiz) => {
+              if (quiz.teams.some((team) => team.name === "BYE")) {
+                return (
+                  <Text span>
+                    <ScoresheetTeamIcon
+                      color={theme.colors.gray[6]}
+                      size={16}
+                      style={{
+                        marginRight: "0.25rem",
+                      }}
+                    />
+                    Bye round
+                  </Text>
+                );
+              }
+
               const winners: string[] = [];
 
               if (quiz.completed) {
@@ -181,7 +209,8 @@ export default function ScheduleTable({
                         }}
                       />
                       {quiz.teams[index].name}
-                      {quiz.question > 0 && ` (${quiz.teams[index].score})`}
+                      {(quiz.inProgress || quiz.completed) &&
+                        ` (${quiz.teams[index].score})`}
                     </Text>
                     {index < quiz.teams.length - 1 ? " vs. " : ""}
                   </Text>

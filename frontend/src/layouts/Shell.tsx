@@ -275,19 +275,21 @@ export const Shell = () => {
                             />
                             {!statGroup.name.endsWith("f") && (
                               <NavLink label="Team Schedules">
-                                {statGroup.teams.map((team) => (
-                                  <NavLink
-                                    key={team.name}
-                                    label={team.name}
-                                    component={Link}
-                                    to={statGroupTeamScheduleRoute.to}
-                                    params={{
-                                      // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
-                                      statGroupName: statGroup.name,
-                                      teamName: team.name,
-                                    }}
-                                  />
-                                ))}
+                                {statGroup.teams
+                                  .filter((team) => team.name !== "BYE")
+                                  .map((team) => (
+                                    <NavLink
+                                      key={team.name}
+                                      label={team.name}
+                                      component={Link}
+                                      to={statGroupTeamScheduleRoute.to}
+                                      params={{
+                                        // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                                        statGroupName: statGroup.name,
+                                        teamName: team.name,
+                                      }}
+                                    />
+                                  ))}
                               </NavLink>
                             )}
                           </NavLink>
