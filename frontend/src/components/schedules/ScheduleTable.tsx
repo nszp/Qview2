@@ -225,6 +225,7 @@ export default function ScheduleTable({
                   marginRight: "0.25rem",
                 }}
               />
+              {winners.includes(team.name) && "🏆 "}
               {primaryTeamName === team.name && (
                 <Text span fw={winners.includes(team.name) ? 700 : 500}>
                   {team.name}
@@ -306,6 +307,7 @@ export default function ScheduleTable({
                   marginRight: "0.25rem",
                 }}
               />
+              {winners.includes(team.name) && "🏆 "}
               {primaryTeamName === team.name && (
                 <Text span fw={winners.includes(team.name) ? 700 : 500}>
                   {team.name}
@@ -396,6 +398,7 @@ export default function ScheduleTable({
                     marginRight: "0.25rem",
                   }}
                 />
+                {winners.includes(team.name) && "🏆 "}
                 {primaryTeamName === team.name && (
                   <Text span fw={winners.includes(team.name) ? 700 : 500}>
                     {team.name}
