@@ -35,7 +35,11 @@ export default function TeamStandingsTable({ teams }: { teams: TeamData[] }) {
             noWrap: true,
             render: (team) =>
               team.quizzes.length !== 0
-                ? `${team.rounds} of ${team.quizzes.length}`
+                ? `${team.rounds} of ${
+                    new Set(
+                      team.quizzes.map((quiz) => `${quiz.round}-${quiz.room}`),
+                    ).size
+                  }`
                 : team.rounds,
           },
           {
@@ -79,7 +83,7 @@ export default function TeamStandingsTable({ teams }: { teams: TeamData[] }) {
         w="100%"
         idAccessor={"name"}
         pinFirstColumn
-        minHeight={150}
+        minHeight={teams.length > 0 ? 50 : 100}
         emptyState={
           <Text>No standings yet. Check back after the first round!</Text>
         }

@@ -46,7 +46,7 @@ export const statGroupTeamScheduleRoute = createRoute({
     }
 
     const quizzes = useMemo(() => {
-      const currentTime = Math.floor(Date.now() / 1000) - 60 * 30; // Add half an hour
+      const currentTime = Math.floor(Date.now() / 1000);
 
       // Deduplicate quizzes by round and room
       const addedRounds = new Set<string>();

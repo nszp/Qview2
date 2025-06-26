@@ -56,7 +56,7 @@ export const roomScheduleRoute = createRoute({
       console.log("quizzes", quizzes);
       console.log("addedRounds", addedRounds);
 
-      const currentTime = Math.floor(Date.now() / 1000) - 60 * 30; // Add half an hour
+      const currentTime = Math.floor(Date.now() / 1000);
 
       const sortedQuizzes = quizzes
         .sort((a, b) => Number.parseInt(a.time) - Number.parseInt(b.time))
