@@ -32,11 +32,11 @@ export const tickertapeRoute = createRoute({
     }
 
     if (error) {
-      return <p>Error: {error.toString()}</p>;
+      return <p>Error: { error.toString() }</p>;
     }
 
     if (tickertapeError) {
-      return <p>Error: {tickertapeError.toString()}</p>;
+      return <p>Error: { tickertapeError.toString() }</p>;
     }
 
     const sortedTickertape = useMemo(() => {
@@ -45,8 +45,15 @@ export const tickertapeRoute = createRoute({
           return a.room.localeCompare(b.room);
         }
         return a.inProgress ? -1 : 1;
-      });
+      }).map((round => ({
+        ...round,
+        statGroupName: data.statGroups.find(
+          (sg) => sg.teams.some((team) => team.quizzes.some((quiz) => quiz.round === round.round && quiz.room === round.room)),
+        )?.webName,
+      })));
     }, [tickertapeData]);
+
+    console.log(sortedTickertape)
 
     return (
       <>
@@ -55,27 +62,27 @@ export const tickertapeRoute = createRoute({
           align="center"
           mb="md"
           direction="column"
-          sx={(_, u) => ({
+          sx={ (_, u) => ({
             [u.smallerThan("sm")]: {
               width: "100%",
             },
-          })}
+          }) }
         >
           <Text size="xl">Happening Now</Text>
           <Text
             size="md"
             mb="md"
             c="gray"
-            onClick={() => setShowRoundColumn(!showRoundColumn)}
+            onClick={ () => setShowRoundColumn(!showRoundColumn) }
           >
             Rounds in Progress
           </Text>
         </Flex>
         <ScheduleTable
-          quizzes={sortedTickertape}
-          includeTime={false}
-          showCurrentQuestionColumn={true}
-          showRoundColumn={showRoundColumn}
+          quizzes={ sortedTickertape }
+          includeTime={ false }
+          showCurrentQuestionColumn={ true }
+          showRoundColumn={ showRoundColumn }
         />
       </>
     );

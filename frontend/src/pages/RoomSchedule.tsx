@@ -76,6 +76,7 @@ export const roomScheduleRoute = createRoute({
                 time: quiz.time,
                 inProgress: tickertapeRound.question <= 20,
                 completed: tickertapeRound.question > 20,
+                statGroupName: quiz.statGroupName,
               }
             : {
                 ...quiz,

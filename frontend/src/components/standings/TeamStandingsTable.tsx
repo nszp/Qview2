@@ -3,8 +3,10 @@ import type { TeamData } from "@/types/data.ts";
 import { useMemo } from "react";
 import { placesWithTies } from "@/utils/utils.ts";
 import { Box, Text } from "@mantine/core";
+import { Link } from "@tanstack/react-router";
+import { statGroupTeamScheduleRoute } from "@/pages";
 
-export default function TeamStandingsTable({ teams }: { teams: TeamData[] }) {
+export default function TeamStandingsTable({ teams, statGroupName }: { teams: TeamData[], statGroupName?: string }) {
   const teamsWithPlaces = useMemo(() => {
     return placesWithTies(teams, "wins", "modifiedOlympicPoints");
   }, [teams]);
@@ -12,14 +14,14 @@ export default function TeamStandingsTable({ teams }: { teams: TeamData[] }) {
   return (
     <Box mb="md">
       <DataTable
-        columns={[
+        columns={ [
           {
             accessor: "place",
             title: "#",
             textAlign: "center",
             width: "5%",
             render: (team) => {
-              return <strong>{team.place}</strong>;
+              return <strong>{ team.place }</strong>;
             },
           },
           {
@@ -27,6 +29,22 @@ export default function TeamStandingsTable({ teams }: { teams: TeamData[] }) {
             title: "Name",
             textAlign: "left",
             noWrap: true,
+            render: (team) => (
+              statGroupName ?
+                (<Text
+                  component={ Link }
+                  to={ statGroupTeamScheduleRoute.to }
+                  params={ {
+                    // @ts-ignore (type safety doesn't work with polymorphic links)
+                    statGroupName: statGroupName,
+                    teamName: team.name,
+                  } }
+                >
+                  { team.name }
+                </Text>) : (
+                  <Text span>{ team.name }</Text>
+                )
+            ),
           },
           {
             accessor: "rounds",
@@ -35,18 +53,18 @@ export default function TeamStandingsTable({ teams }: { teams: TeamData[] }) {
             noWrap: true,
             render: (team) =>
               team.quizzes.length !== 0
-                ? `${team.rounds} of ${
-                    new Set(
-                      team.quizzes.map((quiz) => `${quiz.round}-${quiz.room}`),
-                    ).size
-                  }`
+                ? `${ team.rounds } of ${
+                  new Set(
+                    team.quizzes.map((quiz) => `${ quiz.round }-${ quiz.room }`),
+                  ).size
+                }`
                 : team.rounds,
           },
           {
             accessor: "record",
             render: (team) => (
               <Text>
-                {team.wins}/{team.losses}
+                { team.wins }/{ team.losses }
               </Text>
             ),
             title: "Record",
@@ -75,15 +93,15 @@ export default function TeamStandingsTable({ teams }: { teams: TeamData[] }) {
                 : team.averageScore.toFixed(1);
             },
           },
-        ]}
-        records={teamsWithPlaces}
+        ] }
+        records={ teamsWithPlaces }
         striped
         withRowBorders
-        fz={{ base: "md", sm: "lg" }}
+        fz={ { base: "md", sm: "lg" } }
         w="100%"
-        idAccessor={"name"}
+        idAccessor={ "name" }
         pinFirstColumn
-        minHeight={teams.length > 0 ? 50 : 100}
+        minHeight={ teams.length > 0 ? 50 : 100 }
         emptyState={
           <Text>No standings yet. Check back after the first round!</Text>
         }
