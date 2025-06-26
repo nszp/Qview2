@@ -1,10 +1,12 @@
 import type { StreamRoomType, TournamentData } from "@/types/data.ts";
 
 export function transformTournamentData(data: TournamentData) {
-  return addRoomList(data);
+  return transformLocalNoviceIndividuals(addRoomList(data));
 }
 
-export function addRoomList(data: TournamentData): TournamentData & {
+function addRoomList<T extends TournamentData>(
+  data: T,
+): T & {
   rooms: {
     Novice: string[];
     Experienced: string[];
@@ -32,4 +34,15 @@ export function addRoomList(data: TournamentData): TournamentData & {
       Experienced: [...roomsList.Experienced],
     },
   };
+}
+
+function transformLocalNoviceIndividuals<T extends TournamentData>(data: T): T {
+  // Find the statGroup with the webName "Local Novice Individuals" and change the webName to "Local Novice Prelims"
+  const statGroup = data.statGroups.find(
+    (group) => group.webName === "Local Novice Individuals",
+  );
+  if (statGroup) {
+    statGroup.webName = "Local Novice Prelims";
+  }
+  return data;
 }
