@@ -213,6 +213,14 @@ export default function ScheduleTable({
           winners.push(sortedByScore[1].name);
         }
 
+        let defaultMedalEmoji = "🥈 ";
+
+        if (winners.includes(team.name)) {
+          defaultMedalEmoji = "🏆 ";
+        } else if (sortedByScore.length > 2) {
+          defaultMedalEmoji = "🥉 ";
+        }
+
         const color = getTeamColorsForTeamCount(quiz.teams.length)[0];
 
         return (
@@ -225,7 +233,7 @@ export default function ScheduleTable({
                   marginRight: "0.25rem",
                 }}
               />
-              {winners.includes(team.name) && "🏆 "}
+              {quiz.completed && defaultMedalEmoji}
               {primaryTeamName === team.name && (
                 <Text span fw={winners.includes(team.name) ? 700 : 500}>
                   {team.name}
@@ -295,6 +303,14 @@ export default function ScheduleTable({
           winners.push(sortedByScore[1].name);
         }
 
+        let defaultMedalEmoji = "🥈 ";
+
+        if (winners.includes(team.name)) {
+          defaultMedalEmoji = "🏆 ";
+        } else if (sortedByScore.length > 2) {
+          defaultMedalEmoji = "🥉 ";
+        }
+
         const color = getTeamColorsForTeamCount(quiz.teams.length)[1];
 
         return (
@@ -307,7 +323,7 @@ export default function ScheduleTable({
                   marginRight: "0.25rem",
                 }}
               />
-              {winners.includes(team.name) && "🏆 "}
+              {quiz.completed && defaultMedalEmoji}
               {primaryTeamName === team.name && (
                 <Text span fw={winners.includes(team.name) ? 700 : 500}>
                   {team.name}
@@ -386,6 +402,14 @@ export default function ScheduleTable({
             winners.push(sortedByScore[1].name);
           }
 
+          let defaultMedalEmoji = "🥈 ";
+
+          if (winners.includes(team.name)) {
+            defaultMedalEmoji = "🏆 ";
+          } else if (sortedByScore.length > 2) {
+            defaultMedalEmoji = "🥉 ";
+          }
+
           const color = getTeamColorsForTeamCount(quiz.teams.length)[2];
 
           return (
@@ -398,7 +422,7 @@ export default function ScheduleTable({
                     marginRight: "0.25rem",
                   }}
                 />
-                {winners.includes(team.name) && "🏆 "}
+                {quiz.completed && defaultMedalEmoji}
                 {primaryTeamName === team.name && (
                   <Text span fw={winners.includes(team.name) ? 700 : 500}>
                     {team.name}

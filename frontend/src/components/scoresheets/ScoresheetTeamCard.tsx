@@ -65,8 +65,16 @@ export default function ScoresheetTeamCard({
           return current === "" ? "0" : current;
         }, "0")}{" "}
         points
+        {team.place === 1
+          ? " - 🥇"
+          : team.place === 2
+            ? " - 🥈"
+            : team.place === 3
+              ? " - 🥉"
+              : ""}
         {team.place !== 0 &&
-          ` - ${team.place === 1 ? "1st" : team.place === 2 ? "2nd" : "3rd"} place`}
+          ` ${team.place === 1 ? "1st" : team.place === 2 ? "2nd" : "3rd"} place`}
+
       </Text>
     </Card>
   );
