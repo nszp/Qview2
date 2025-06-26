@@ -43,14 +43,19 @@ export const roomScheduleRoute = createRoute({
       const lowerRoomName = roomName.toLowerCase();
       if (!data || !tickertapeData) return [];
       const addedRounds = new Set<string>();
-      const quizzes: TeamRoundData[] = [];
-      for (const quiz of data.statGroups
-        .flatMap((statGroup) => statGroup.teams)
-        .flatMap((team) => team.quizzes)) {
-        if (quiz.room.toLowerCase() !== lowerRoomName) continue;
-        if (addedRounds.has(quiz.round)) continue;
-        addedRounds.add(quiz.round);
-        quizzes.push(quiz);
+      const quizzes: (TeamRoundData & {
+        statGroupName: string;
+      })[] = [];
+
+      for (const statGroup of data.statGroups) {
+        for (const team of statGroup.teams) {
+          for (const quiz of team.quizzes) {
+            if (quiz.room.toLowerCase() !== lowerRoomName) continue;
+            if (addedRounds.has(quiz.round)) continue;
+            addedRounds.add(quiz.round);
+            quizzes.push({ ...quiz, statGroupName: statGroup.name });
+          }
+        }
       }
 
       console.log("quizzes", quizzes);
@@ -79,7 +84,7 @@ export const roomScheduleRoute = createRoute({
               };
         });
 
-      // Set all of the rounds before the first one that is inProgress to completed
+      // Set all the rounds before the first one that is inProgress to completed
       const firstInProgressIndex = sortedQuizzes.findIndex((q) => q.inProgress);
       if (firstInProgressIndex === -1) {
         return sortedQuizzes;

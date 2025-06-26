@@ -1,5 +1,9 @@
 import { ScoresheetTeamIcon } from "@/components/scoresheets/ScoresheetTeamIcon.tsx";
-import { roomStreamRoute, scoresheetRoute } from "@/pages";
+import {
+  roomStreamRoute,
+  scoresheetRoute,
+  statGroupTeamScheduleRoute,
+} from "@/pages";
 import { theme } from "@/theme.ts";
 import type { TeamRoundData } from "@/types/data.ts";
 import { getTeamColorsForTeamCount } from "@/utils/styleUtils.ts";
@@ -16,22 +20,31 @@ import {
 import { DataTable } from "mantine-datatable";
 
 type Props = {
+  statGroupName?: string;
+  primaryTeamName?: string;
   showRoundColumn?: boolean;
   showCurrentQuestionColumn?: boolean;
 } & (QuizWithTime | QuizWithoutTime);
 
 type QuizWithTime = {
-  quizzes: TeamRoundData[];
+  quizzes: (TeamRoundData & {
+    statGroupName?: string;
+  })[];
   includeTime?: true;
 };
 
 type QuizWithoutTime = {
-  quizzes: (Omit<TeamRoundData, "time"> & { time?: string })[];
+  quizzes: (Omit<TeamRoundData, "time"> & {
+    time?: string;
+    statGroupName?: string;
+  })[];
   includeTime: false;
 };
 
 export default function ScheduleTable({
   quizzes,
+  statGroupName,
+  primaryTeamName,
   showRoundColumn = false,
   includeTime = true,
   showCurrentQuestionColumn = false,
@@ -161,7 +174,7 @@ export default function ScheduleTable({
             textAlign: "left",
             noWrap: true,
             render: (quiz) => {
-              if (quiz.teams.some((team) => team.name === "BYE")) {
+              if (quiz.teams.some((team) => team.name === "Bye")) {
                 return (
                   <Text span>
                     <ScoresheetTeamIcon
@@ -177,29 +190,28 @@ export default function ScheduleTable({
               }
 
               const winners: string[] = [];
+              const sortedByScore = [...quiz.teams].sort(
+                (a, b) => b.score - a.score,
+              );
 
-              if (quiz.completed) {
-                const sortedByScore = [...quiz.teams].sort(
-                  (a, b) => b.score - a.score,
-                );
+              winners.push(sortedByScore[0].name);
 
-                winners.push(sortedByScore[0].name);
-
-                if (
-                  sortedByScore.length > 2 &&
-                  sortedByScore[0].score === sortedByScore[1].score
-                ) {
-                  // Jank way to handle ties (we don't have placement information in this data)
-                  winners.push(sortedByScore[1].name);
-                }
+              if (
+                sortedByScore.length > 2 &&
+                sortedByScore[0].score === sortedByScore[1].score
+              ) {
+                // Jank way to handle ties (we don't have placement information in this data)
+                winners.push(sortedByScore[1].name);
               }
+
+              console.log(winners);
 
               return getTeamColorsForTeamCount(quiz.teams.length).map(
                 (color, index) => (
                   <Text span key={color}>
                     <Text
                       span
-                      fw={winners.includes(quiz.teams[index].name) ? 600 : 500}
+                      fw={winners.includes(quiz.teams[index].name) ? 700 : 500}
                     >
                       <ScoresheetTeamIcon
                         color={color}
@@ -208,7 +220,35 @@ export default function ScheduleTable({
                           marginRight: "0.25rem",
                         }}
                       />
-                      {quiz.teams[index].name}
+                      {primaryTeamName === quiz.teams[index].name && (
+                        <Text
+                          span
+                          fw={
+                            winners.includes(quiz.teams[index].name) ? 700 : 500
+                          }
+                        >
+                          {quiz.teams[index].name}
+                        </Text>
+                      )}
+                      {primaryTeamName !== quiz.teams[index].name && (
+                        <Text
+                          component={Link}
+                          to={statGroupTeamScheduleRoute.to}
+                          fw={
+                            winners.includes(quiz.teams[index].name) ? 700 : 500
+                          }
+                          params={{
+                            // @ts-ignore (type safety unfortunately doesn't work with polymorphic links)
+                            statGroupName: statGroupName
+                              ? statGroupName
+                              : quiz.statGroupName,
+                            teamName: quiz.teams[index].name,
+                          }}
+                        >
+                          {quiz.teams[index].name}
+                        </Text>
+                      )}
+
                       {(quiz.inProgress || quiz.completed) &&
                         ` (${quiz.teams[index].score})`}
                     </Text>

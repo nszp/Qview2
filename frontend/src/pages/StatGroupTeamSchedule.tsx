@@ -100,7 +100,12 @@ export const statGroupTeamScheduleRoute = createRoute({
             {statGroup.webName} Schedule
           </Text>
         </Flex>
-        <ScheduleTable quizzes={quizzes} showRoundColumn={showRoundColumn} />
+        <ScheduleTable
+          quizzes={quizzes}
+          showRoundColumn={showRoundColumn}
+          statGroupName={statGroupName}
+          primaryTeamName={teamName}
+        />
       </>
     );
   },
